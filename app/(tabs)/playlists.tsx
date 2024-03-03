@@ -3,7 +3,7 @@ import React from 'react';
 
 const playlists = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>playlists</Text>
     </View>
   );
@@ -11,4 +11,10 @@ const playlists = () => {
 
 export default playlists;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
