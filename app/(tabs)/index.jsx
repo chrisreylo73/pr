@@ -5,8 +5,15 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  Animated,
+  ViewToken,
 } from 'react-native';
+
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+  Easing,
+} from 'react-native-reanimated';
 import { useState, useEffect } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import MusicInfo from 'expo-music-info-2';
@@ -14,6 +21,9 @@ import { Storage } from 'expo-storage';
 import { StatusBar } from 'expo-status-bar';
 import { BarIndicator } from 'react-native-indicators';
 import Song from '../../components/Song';
+import { Link, router } from 'expo-router';
+import Footer from '~/components/Footer';
+import Player from '~/components/Player';
 
 const index = () => {
   const [songData, setSongData] = useState([]);
@@ -59,6 +69,9 @@ const index = () => {
     '#ee3d36',
     '#ee592e',
   ];
+  // Animation
+
+  const viewableItems = useSharedValue([]);
 
   useEffect(() => {
     fetchData();
@@ -154,10 +167,19 @@ const index = () => {
         </View>
       ) : (
         <FlatList
-          contentContainerStyle={{ paddingBottom: 250, paddingTop: 140 }}
+          contentContainerStyle={{ paddingBottom: 250, paddingTop: 30 }}
           data={songData}
+          onViewableItemsChanged={({ viewableItems: vItems }) => {
+            console.log(viewableItems);
+            viewableItems.value = vItems;
+          }}
           renderItem={({ item }) => (
-            <Song item={item} setCurrentSong={setCurrentSong} currentSong={currentSong} />
+            <Song
+              item={item}
+              setCurrentSong={setCurrentSong}
+              currentSong={currentSong}
+              viewableItems={viewableItems}
+            />
           )}
           keyExtractor={(item) => item.uri}
         />
@@ -174,6 +196,14 @@ const index = () => {
       ) : (
         <></>
       )}
+      {/* <Footer
+        currentSong={currentSong}
+        setCurrentSong={setCurrentSong}
+        isPlayerVisible={isPlayerVisible}
+        setIsPlayerVisible={setIsPlayerVisible}
+        setPlayState={setPlayState}
+        playState={playState}
+      /> */}
     </View>
   );
 };

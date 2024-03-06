@@ -1,17 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Animated,
-  Easing,
-  ImageBackground,
-} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 
-const Song = React.memo(({ item, setCurrentSong, currentSong }) => {
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+  Easing,
+} from 'react-native-reanimated';
+
+const Song = React.memo(({ item, setCurrentSong, currentSong, viewableItems }) => {
+  const rStyle = useAnimatedStyle(() => {
+    const isVisible = Boolean(
+      viewableItems.value
+        .filter((item) => item.isViewable)
+        .find((viewableItem) => viewableItem.item.uri === item.uri)
+    );
+    return {
+      transform: [
+        {
+          scale: withTiming(isVisible ? 1 : 0.95, {
+            duration: 500, // Animation duration in milliseconds
+            easing: Easing.inOut(Easing.ease), // Easing function
+          }),
+        },
+      ],
+    };
+  }, []);
+
   return (
+    // <Animated.View style={[styles.audioItem, rStyle]}>
     <TouchableOpacity style={styles.audioItem} onPress={() => setCurrentSong(item)}>
       {item.coverArtUri ? (
         <ImageBackground
@@ -42,6 +59,7 @@ const Song = React.memo(({ item, setCurrentSong, currentSong }) => {
         </View>
       )}
     </TouchableOpacity>
+    //</Animated.View>
   );
 });
 export default Song;
@@ -51,10 +69,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
-    aspectRatio: 1,
-    marginTop: -120,
-    marginBottom: -100,
+    // aspectRatio: 1,
+    //marginTop: -100,
+    marginBottom: -200,
     width: 320,
+    height: 320,
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderTopWidth: 2,
