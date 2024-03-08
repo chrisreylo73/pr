@@ -1,15 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import Footer from '~/components/Footer';
 
-const Add = () => {
+const playlists = () => {
   return (
     <View style={styles.container}>
-      <Text>Add</Text>
+      <Text>playlists</Text>
     </View>
   );
 };
 
-export default Add;
+export default playlists;
 
 const styles = StyleSheet.create({
   container: {

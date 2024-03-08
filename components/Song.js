@@ -8,24 +8,28 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 
-const Song = React.memo(({ item, setCurrentSong, currentSong, viewableItems }) => {
-  const rStyle = useAnimatedStyle(() => {
-    const isVisible = Boolean(
-      viewableItems.value
-        .filter((item) => item.isViewable)
-        .find((viewableItem) => viewableItem.item.uri === item.uri)
-    );
-    return {
-      transform: [
-        {
-          scale: withTiming(isVisible ? 1 : 0.95, {
-            duration: 500, // Animation duration in milliseconds
-            easing: Easing.inOut(Easing.ease), // Easing function
-          }),
-        },
-      ],
-    };
-  }, []);
+const Song = React.memo(({ item, setCurrentSong, currentSong }) => {
+  // useEffect(() => {
+  //   console.log(currentSong?.title);
+  // }, []);
+
+  // const rStyle = useAnimatedStyle(() => {
+  //   const isVisible = Boolean(
+  //     viewableItems.value
+  //       .filter((item) => item.isViewable)
+  //       .find((viewableItem) => viewableItem.item.uri === item.uri)
+  //   );
+  //   return {
+  //     transform: [
+  //       {
+  //         scale: withTiming(isVisible ? 1 : 0.95, {
+  //           duration: 500, // Animation duration in milliseconds
+  //           easing: Easing.inOut(Easing.ease), // Easing function
+  //         }),
+  //       },
+  //     ],
+  //   };
+  // }, []);
 
   return (
     // <Animated.View style={[styles.audioItem, rStyle]}>
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     // aspectRatio: 1,
     //marginTop: -100,
-    marginBottom: -200,
+    marginBottom: -210,
     width: 320,
     height: 320,
     borderLeftWidth: 1,

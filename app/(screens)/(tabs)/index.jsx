@@ -20,16 +20,28 @@ import MusicInfo from 'expo-music-info-2';
 import { Storage } from 'expo-storage';
 import { StatusBar } from 'expo-status-bar';
 import { BarIndicator } from 'react-native-indicators';
-import Song from '../../components/Song';
+import Song from '~/components/Song';
 import { Link, router } from 'expo-router';
-import Footer from '~/components/Footer';
 import Player from '~/components/Player';
+import { useAppContext } from '../../../services/AppContext';
 
 const index = () => {
-  const [songData, setSongData] = useState([]);
-  const [isLoading, setIsLoading] = useState();
-  const [currentSong, setCurrentSong] = useState();
-  const [playState, setPlayState] = useState(false);
+  // const [songData, setSongData] = useState([]);
+  // const [isLoading, setIsLoading] = useState();
+  // const [currentSong, setCurrentSong] = useState();
+  // const [playState, setPlayState] = useState(false);
+
+  const {
+    currentSong,
+    setCurrentSong,
+    playState,
+    setPlayState,
+    isLoading,
+    setIsLoading,
+    songData,
+    setSongData,
+  } = useAppContext();
+
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const backupColors = [
     '#d93f27',

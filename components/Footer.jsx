@@ -1,7 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-const Footer = ({ currentSong, playState, setPlayState, isPlayerVisible, setIsPlayerVisible }) => {
+import { useRouter } from 'expo-router';
+import { useAppContext } from '../services/AppContext';
+const Footer = () => {
+  const { currentSong, playState, setPlayState } = useAppContext();
+  const router = useRouter();
   useEffect(() => {
     console.log(
       'currentSong: ',
@@ -13,7 +17,7 @@ const Footer = ({ currentSong, playState, setPlayState, isPlayerVisible, setIsPl
     <>
       {currentSong && currentSong.title && currentSong.artist ? (
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.playback} onPress={() => setIsPlayerVisible(true)}>
+          <TouchableOpacity style={styles.playback} onPress={() => router.push('player')}>
             <View style={styles.songInfoContainer}>
               <Text style={styles.songTitle} numberOfLines={1}>
                 {currentSong.title}
