@@ -1,23 +1,21 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 import { useAppContext } from '../services/AppContext';
 const Footer = () => {
-  const { currentSong, playState, setPlayState } = useAppContext();
-  const router = useRouter();
+  const { currentSong, playState, setPlayState, hideFooter, isPlayerVisible, setIsPlayerVisible } =
+    useAppContext();
   useEffect(() => {
     console.log(
       'currentSong: ',
       currentSong && currentSong.title && currentSong.artist ? currentSong.title : ''
     );
   }, [currentSong]);
-
   return (
     <>
-      {currentSong && currentSong.title && currentSong.artist ? (
+      {currentSong && currentSong.title && currentSong.artist && hideFooter === false ? (
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.playback} onPress={() => router.push('player')}>
+          <TouchableOpacity style={styles.playback} onPress={() => setIsPlayerVisible(true)}>
             <View style={styles.songInfoContainer}>
               <Text style={styles.songTitle} numberOfLines={1}>
                 {currentSong.title}
@@ -43,15 +41,12 @@ const Footer = () => {
     </>
   );
 };
-
 export default Footer;
-
 const styles = StyleSheet.create({
   footer: {
     flexDirection: 'column',
     position: 'absolute',
     alignItems: 'center',
-    // justifyContent: "space-between",
     left: 0,
     right: 0,
     zIndex: 10,
@@ -64,18 +59,9 @@ const styles = StyleSheet.create({
   },
   playback: {
     flexDirection: 'row',
-    // position: "absolute",
     alignItems: 'center',
     justifyContent: 'space-between',
-    // left: 0,
-    // right: 0,
-    // zIndex: 10,
-    // bottom: 0,
     height: 80,
-    // elevation: 8,
-    // backgroundColor: "blue",
-    // borderTopWidth: 2,
-    // borderColor: "#101010",
   },
   currentRouteContainer: {
     flexDirection: 'row',
@@ -84,15 +70,12 @@ const styles = StyleSheet.create({
     width: '60%',
   },
   routeContainer: {
-    // backgroundColor: "blue",
     width: 30,
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
   route: {
-    // color: "white",
-    // backgroundColor: "white",
     width: 8,
     aspectRatio: 1,
     borderRadius: 100,
@@ -102,13 +85,11 @@ const styles = StyleSheet.create({
   router: {
     padding: 5,
     alignItems: 'center',
-    // backgroundColor: "blue",
     height: 50,
     width: '100%',
   },
   songInfoContainer: {
     width: '80%',
-    // backgroundColor: "red",
     padding: 8,
   },
   songTitle: {
@@ -121,7 +102,6 @@ const styles = StyleSheet.create({
   },
   playPauseButton: {
     padding: 20,
-    // backgroundColor: "blue",
   },
   routeTitle: {
     color: 'white',

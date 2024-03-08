@@ -7,6 +7,8 @@ export const AppProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState();
   const [currentSong, setCurrentSong] = useState();
   const [playState, setPlayState] = useState(false);
+  const [isPlayerVisible, setIsPlayerVisible] = useState(false);
+  const [hideFooter, setHideFooter] = useState(false);
 
   return (
     <AppContext.Provider
@@ -19,6 +21,10 @@ export const AppProvider = ({ children }) => {
         setIsLoading,
         songData,
         setSongData,
+        hideFooter,
+        setHideFooter,
+        isPlayerVisible,
+        setIsPlayerVisible,
       }}>
       {children}
     </AppContext.Provider>

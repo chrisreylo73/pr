@@ -3,7 +3,10 @@
     "name": "pr",
     "slug": "pr",
     "version": "1.0.0",
-
+    "androidStatusBar": {
+      "backgroundColor": "#000000",
+      "color": "#000000"
+    },
     "scheme": "pr",
     "web": {
       "bundler": "metro",
@@ -19,7 +22,7 @@
 
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -32,7 +35,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       }
     }
   }

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     //  zIndex: 2,
     //backgroundColor: "#0D0D0D",
     backgroundColor: 'black',
-    paddingTop: 30,
+    paddingTop: 10,
     elevation: 10,
     borderBottomWidth: 2,
     // borderColor: "black",

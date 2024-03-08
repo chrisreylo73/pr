@@ -23,14 +23,9 @@ import { BarIndicator } from 'react-native-indicators';
 import Song from '~/components/Song';
 import { Link, router } from 'expo-router';
 import Player from '~/components/Player';
-import { useAppContext } from '../../../services/AppContext';
+import { useAppContext } from '../../services/AppContext';
 
 const index = () => {
-  // const [songData, setSongData] = useState([]);
-  // const [isLoading, setIsLoading] = useState();
-  // const [currentSong, setCurrentSong] = useState();
-  // const [playState, setPlayState] = useState(false);
-
   const {
     currentSong,
     setCurrentSong,
@@ -40,6 +35,7 @@ const index = () => {
     setIsLoading,
     songData,
     setSongData,
+    setHideFooter,
   } = useAppContext();
 
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
@@ -88,6 +84,7 @@ const index = () => {
   useEffect(() => {
     fetchData();
     console.log('SONGS MOUNTED');
+    // setHideFooter(false);
   }, []);
 
   const fetchData = async () => {
@@ -179,7 +176,7 @@ const index = () => {
         </View>
       ) : (
         <FlatList
-          contentContainerStyle={{ paddingBottom: 250, paddingTop: 30 }}
+          contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
           data={songData}
           onViewableItemsChanged={({ viewableItems: vItems }) => {
             console.log(viewableItems);
@@ -208,14 +205,6 @@ const index = () => {
       ) : (
         <></>
       )}
-      {/* <Footer
-        currentSong={currentSong}
-        setCurrentSong={setCurrentSong}
-        isPlayerVisible={isPlayerVisible}
-        setIsPlayerVisible={setIsPlayerVisible}
-        setPlayState={setPlayState}
-        playState={playState}
-      /> */}
     </View>
   );
 };

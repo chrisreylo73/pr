@@ -12,12 +12,28 @@ import {
   Animated,
   ImageBackground,
 } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import Modal from 'react-native-modal';
 import { FontAwesome5 } from '@expo/vector-icons';
 // import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from '@expo/vector-icons';
+import { useAppContext } from '../services/AppContext';
 
-const Player = ({ setIsPlayerVisible, isPlayerVisible, currentSong, playState, setPlayState }) => {
+const Player = () => {
+  const {
+    currentSong,
+    setCurrentSong,
+    playState,
+    setPlayState,
+    isLoading,
+    setIsLoading,
+    songData,
+    setSongData,
+    setHideFooter,
+    isPlayerVisible,
+    setIsPlayerVisible,
+  } = useAppContext();
+
   const [spinValue] = useState(new Animated.Value(0));
   const [startAngle, setStartAngle] = useState(0); // Store initial angle when rotation starts
   useEffect(() => {
@@ -71,68 +87,91 @@ const Player = ({ setIsPlayerVisible, isPlayerVisible, currentSong, playState, s
       coverScreen={true}
       hasBackdrop={true}
       backdropOpacity={1}
-      backdropColor="transparent"
+      backdropColor="black"
       onRequestClose={() => setIsPlayerVisible(false)}>
-      <View style={styles.infoContainer}>
-        <Text style={styles.songTitle}>{currentSong.title}</Text>
-        <Text style={styles.artistName}>{currentSong.artist}</Text>
-      </View>
-      <Animated.View
-        style={[
-          styles.record,
-          {
-            transform: [
+      {currentSong && currentSong.title && currentSong.artist ? (
+        <>
+          <View style={styles.infoContainer}>
+            <Text style={styles.songTitle}>{currentSong.title}</Text>
+            <Text style={styles.artistName}>{currentSong.artist}</Text>
+          </View>
+
+          <Animated.View
+            style={[
+              styles.record,
               {
-                rotate: spinValue.interpolate({
-                  inputRange: [-180, 180],
-                  outputRange: ['-180deg', '180deg'],
-                }),
+                transform: [
+                  {
+                    rotate: spinValue.interpolate({
+                      inputRange: [-180, 180],
+                      outputRange: ['-180deg', '180deg'],
+                    }),
+                  },
+                ],
               },
-            ],
-          },
-        ]}
-        {...panResponder.panHandlers}>
-        <ImageBackground source={{ uri: currentSong.coverArtUri }} style={{ flex: 1 }} />
-      </Animated.View>
-      <TouchableOpacity style={styles.backButton} onPress={() => setIsPlayerVisible(false)}>
-        <FontAwesome5 name="angle-left" size={24} color="white" />
-      </TouchableOpacity>
-      <View style={styles.playbackButtonContainer}>
-        <TouchableOpacity style={styles.prevButton}>
-          <FontAwesome5 name="backward" size={20} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.playPauseButton} onPress={() => setPlayState(!playState)}>
-          {playState ? (
-            <FontAwesome5 name="play" size={20} color="white" />
-          ) : (
-            <FontAwesome5 name="pause" size={20} color="white" />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <FontAwesome5 style={styles.nextButton} name="forward" size={20} color="white" />
-        </TouchableOpacity>
-      </View>
+            ]}
+            {...panResponder.panHandlers}>
+            {currentSong.coverArtUri ? (
+              <ImageBackground source={{ uri: currentSong.coverArtUri }} style={{ flex: 1 }} />
+            ) : (
+              <View
+                style={[
+                  {
+                    flex: 1,
+                    alignItems: 'center',
+                    padding: 10,
+                    justifyContent: 'center',
+                    backgroundColor: currentSong.backupColor,
+                  },
+                ]}>
+                <Text style={styles.recordSongTitle}>{currentSong.title.toUpperCase()}</Text>
+                <Text style={[styles.artistName, { color: 'white', opacity: 0.3 }]}>
+                  {currentSong.artist}
+                </Text>
+              </View>
+            )}
+          </Animated.View>
+          <View style={styles.playbackButtonContainer}>
+            <TouchableOpacity style={styles.prevButton}>
+              <FontAwesome5 name="backward" size={20} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.playPauseButton}
+              onPress={() => setPlayState(!playState)}>
+              {playState ? (
+                <FontAwesome5 name="play" size={20} color="white" />
+              ) : (
+                <FontAwesome5 name="pause" size={20} color="white" />
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <FontAwesome5 style={styles.nextButton} name="forward" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : (
+        <></>
+      )}
     </Modal>
   );
 };
 
 export default Player;
-
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-    justifyContent: 'flex-end',
+    // justifyContent: "flex-end",
     width: '100%',
     height: '100%',
     flex: 1,
     alignSelf: 'center',
-    backgroundColor: '#090909',
+    // backgroundColor: "#090909",
   },
   record: {
     overflow: 'hidden',
     position: 'absolute',
     top: 180,
-    backgroundColor: 'black',
+    // backgroundColor: "black",
     width: '90%',
     aspectRatio: 1,
     borderRadius: 200,
@@ -140,6 +179,8 @@ const styles = StyleSheet.create({
     // elevation: 8,
     borderColor: 'white',
     borderWidth: 2,
+    flex: 1,
+    // pointerEvents: "none",
   },
   infoContainer: {
     position: 'absolute',
@@ -174,4 +215,5 @@ const styles = StyleSheet.create({
   prevButton: { marginBottom: 30, marginRight: 45, padding: 10 },
   shuffleButton: {},
   backButton: { position: 'absolute', top: 0, left: 0, padding: 20 },
+  recordSongTitle: { color: 'white', fontSize: 30, opacity: 0.3 },
 });
