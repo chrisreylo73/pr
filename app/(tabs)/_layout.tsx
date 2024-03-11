@@ -22,7 +22,12 @@ const Layout = () => {
   return (
     <MaterialTopTabs
       screenOptions={{
-        tabBarStyle: { backgroundColor: 'black', height: 50 },
+        tabBarStyle: {
+          backgroundColor: 'black',
+          height: 50,
+          borderBottomColor: '#101010',
+          borderWidth: 2,
+        },
         tabBarActiveTintColor: '#555555',
         tabBarInactiveTintColor: 'black',
         tabBarIndicatorStyle: { backgroundColor: 'white' },
