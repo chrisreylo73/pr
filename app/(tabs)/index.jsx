@@ -35,10 +35,11 @@ const index = () => {
     setIsLoading,
     songData,
     setSongData,
-    setHideFooter,
+    isPlayerVisible,
+    setIsPlayerVisible,
   } = useAppContext();
 
-  const [isPlayerVisible, setIsPlayerVisible] = useState(false);
+  // const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const backupColors = [
     '#d93f27',
     '#152b53',
@@ -187,6 +188,8 @@ const index = () => {
               item={item}
               setCurrentSong={setCurrentSong}
               currentSong={currentSong}
+              setIsPlayerVisible={setIsPlayerVisible}
+              isPlayerVisible={isPlayerVisible}
               viewableItems={viewableItems}
             />
           )}

@@ -15,7 +15,6 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import Modal from 'react-native-modal';
 import { FontAwesome5 } from '@expo/vector-icons';
-// import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from '@expo/vector-icons';
 import { useAppContext } from '../services/AppContext';
 
@@ -36,9 +35,9 @@ const Player = () => {
 
   const [spinValue] = useState(new Animated.Value(0));
   const [startAngle, setStartAngle] = useState(0); // Store initial angle when rotation starts
-  useEffect(() => {
-    console.log(startAngle);
-  }, [startAngle]);
+  // useEffect(() => {
+  //   // console.log(startAngle);
+  // }, [startAngle]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -82,12 +81,13 @@ const Player = () => {
       isVisible={isPlayerVisible}
       animationIn="fadeIn"
       animationOut="fadeOut"
-      animationInTiming={500}
+      animationInTiming={300}
       animationOutTiming={500}
       coverScreen={true}
       hasBackdrop={true}
       backdropOpacity={1}
-      backdropColor="black"
+      backdropColor="#050505"
+      useNativeDriver={true}
       onRequestClose={() => setIsPlayerVisible(false)}>
       {currentSong && currentSong.title && currentSong.artist ? (
         <>

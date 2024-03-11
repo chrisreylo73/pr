@@ -25,6 +25,7 @@ const Layout = () => {
         tabBarStyle: { backgroundColor: 'black', height: 50 },
         tabBarActiveTintColor: '#555555',
         tabBarInactiveTintColor: 'black',
+        tabBarIndicatorStyle: { backgroundColor: 'white' },
       }}>
       <MaterialTopTabs.Screen name="add" options={{ title: 'Add' }} />
       <MaterialTopTabs.Screen name="index" options={{ title: 'SONGS' }} />

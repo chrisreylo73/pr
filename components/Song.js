@@ -8,64 +8,90 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 
-const Song = React.memo(({ item, setCurrentSong, currentSong }) => {
-  // useEffect(() => {
-  //   console.log(currentSong?.title);
-  // }, []);
+const Song = React.memo(
+  ({ item, setCurrentSong, currentSong, setIsPlayerVisible, isPlayerVisible }) => {
+    // useEffect(() => {
+    //   console.log(currentSong?.title);
+    // }, []);
 
-  // const rStyle = useAnimatedStyle(() => {
-  //   const isVisible = Boolean(
-  //     viewableItems.value
-  //       .filter((item) => item.isViewable)
-  //       .find((viewableItem) => viewableItem.item.uri === item.uri)
-  //   );
-  //   return {
-  //     transform: [
-  //       {
-  //         scale: withTiming(isVisible ? 1 : 0.95, {
-  //           duration: 500, // Animation duration in milliseconds
-  //           easing: Easing.inOut(Easing.ease), // Easing function
-  //         }),
-  //       },
-  //     ],
-  //   };
-  // }, []);
+    // const rStyle = useAnimatedStyle(() => {
+    //   const isVisible = Boolean(
+    //     viewableItems.value
+    //       .filter((item) => item.isViewable)
+    //       .find((viewableItem) => viewableItem.item.uri === item.uri)
+    //   );
+    //   return {
+    //     transform: [
+    //       {
+    //         scale: withTiming(isVisible ? 1 : 0.95, {
+    //           duration: 500, // Animation duration in milliseconds
+    //           easing: Easing.inOut(Easing.ease), // Easing function
+    //         }),
+    //       },
+    //     ],
+    //   };
+    // }, []);
 
-  return (
-    // <Animated.View style={[styles.audioItem, rStyle]}>
-    <TouchableOpacity style={styles.audioItem} onPress={() => setCurrentSong(item)}>
-      {item.coverArtUri ? (
-        <ImageBackground
-          source={{ uri: item.coverArtUri }}
-          style={[styles.albumArtContainer, { backgroundColor: 'black' }]}>
-          <View style={styles.songInfoContainer}>
-            <Text style={styles.songTitle} numberOfLines={1}>
-              {item.title}
-            </Text>
-            <Text style={styles.artistName} numberOfLines={1}>
-              {item.artist}
-            </Text>
+    const chooseSong = () => {
+      setIsPlayerVisible(true);
+      setCurrentSong(item);
+    };
+
+    return (
+      // <Animated.View style={[styles.audioItem, rStyle]}>
+      <TouchableOpacity style={styles.audioItem} onPress={chooseSong}>
+        {item.coverArtUri ? (
+          <ImageBackground
+            source={{ uri: item.coverArtUri }}
+            style={[styles.albumArtContainer, { backgroundColor: 'black' }]}>
+            {currentSong && currentSong.title && currentSong.title == item.title ? (
+              <View style={styles.songInfoContainer}>
+                <Text style={(styles.songTitle, { color: '#FFA500' })} numberOfLines={1}>
+                  {item.title}
+                </Text>
+                <Text style={[styles.artistName, , { color: '#7F6000' }]} numberOfLines={1}>
+                  {item.artist}
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.songInfoContainer}>
+                <Text style={(styles.songTitle, { color: 'white' })} numberOfLines={1}>
+                  {item.title}
+                </Text>
+                <Text style={[styles.artistName, , { color: '#777777' }]} numberOfLines={1}>
+                  {item.artist}
+                </Text>
+              </View>
+            )}
+          </ImageBackground>
+        ) : (
+          <View style={[styles.albumArtContainer, { backgroundColor: item.backupColor }]}>
+            {currentSong && currentSong.title && currentSong.title === item.title ? (
+              <View style={styles.songInfoContainer}>
+                <Text style={(styles.songTitle, { color: '#FFA500' })} numberOfLines={1}>
+                  {item.title}
+                </Text>
+                <Text style={[styles.artistName, , { color: '#7F6000' }]} numberOfLines={1}>
+                  {item.artist}
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.songInfoContainer}>
+                <Text style={(styles.songTitle, { color: 'white' })} numberOfLines={1}>
+                  {item.title}
+                </Text>
+                <Text style={[styles.artistName, , { color: '#777777' }]} numberOfLines={1}>
+                  {item.artist}
+                </Text>
+              </View>
+            )}
           </View>
-          {}
-        </ImageBackground>
-      ) : (
-        <View style={[styles.albumArtContainer, { backgroundColor: item.backupColor }]}>
-          {}
-          <View style={styles.songInfoContainer}>
-            <Text style={styles.songTitle} numberOfLines={1}>
-              {item.title}
-            </Text>
-            <Text style={styles.artistName} numberOfLines={1}>
-              {item.artist}
-            </Text>
-          </View>
-          {}
-        </View>
-      )}
-    </TouchableOpacity>
-    //</Animated.View>
-  );
-});
+        )}
+      </TouchableOpacity>
+      //</Animated.View>
+    );
+  }
+);
 export default Song;
 const styles = StyleSheet.create({
   audioItem: {
