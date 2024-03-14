@@ -8,6 +8,7 @@ import {
   MaterialTopTabNavigationEventMap,
 } from '@react-navigation/material-top-tabs';
 import { withLayoutContext, usePathname, Slot, Link, Stack, Tabs } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
 const { Navigator } = createMaterialTopTabNavigator();
 

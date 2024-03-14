@@ -9,6 +9,7 @@ export const AppProvider = ({ children }) => {
   const [playState, setPlayState] = useState(false);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [hideFooter, setHideFooter] = useState(false);
+  const [isShuffleOn, setIsShuffleOn] = useState(false);
 
   return (
     <AppContext.Provider
@@ -25,6 +26,8 @@ export const AppProvider = ({ children }) => {
         setHideFooter,
         isPlayerVisible,
         setIsPlayerVisible,
+        isShuffleOn,
+        setIsShuffleOn,
       }}>
       {children}
     </AppContext.Provider>

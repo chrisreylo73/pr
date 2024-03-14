@@ -24,6 +24,7 @@ import Song from '~/components/Song';
 import { Link, router } from 'expo-router';
 import Player from '~/components/Player';
 import { useAppContext } from '../../services/AppContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const index = () => {
   const {
@@ -169,7 +170,7 @@ const index = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar />
       {isLoading ? (
         <View style={styles.loadingContainer}>
@@ -208,7 +209,7 @@ const index = () => {
       ) : (
         <></>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -85,6 +85,9 @@ const Song = React.memo(
                 </Text>
               </View>
             )}
+            {/* <View style={styles.coverInfoContainer}>
+              <Text style={styles.coverSongTitle}> {item.title.toUpperCase()}</Text>
+            </View> */}
           </View>
         )}
       </TouchableOpacity>
@@ -140,5 +143,21 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     overflow: 'hidden',
+  },
+  coverSongTitle: {
+    // position: 'relative',
+    // alignSelf: 'center',
+    //flex: 1,
+
+    color: 'white',
+    fontSize: 30,
+    opacity: 0.05,
+  },
+  coverInfoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: '50%',
+    // flex: 1,
   },
 });

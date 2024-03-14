@@ -17,6 +17,9 @@ import Modal from 'react-native-modal';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppContext } from '../services/AppContext';
+import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 const Player = () => {
   const {
@@ -31,6 +34,8 @@ const Player = () => {
     setHideFooter,
     isPlayerVisible,
     setIsPlayerVisible,
+    isShuffleOn,
+    setIsShuffleOn,
   } = useAppContext();
 
   const [spinValue] = useState(new Animated.Value(0));
@@ -76,83 +81,111 @@ const Player = () => {
   });
 
   return (
-    <Modal
-      style={styles.modal}
-      isVisible={isPlayerVisible}
-      animationIn="fadeIn"
-      animationOut="fadeOut"
-      animationInTiming={300}
-      animationOutTiming={500}
-      coverScreen={true}
-      hasBackdrop={true}
-      backdropOpacity={1}
-      backdropColor="#050505"
-      useNativeDriver={true}
-      onRequestClose={() => setIsPlayerVisible(false)}>
-      {currentSong && currentSong.title && currentSong.artist ? (
-        <>
-          <View style={styles.infoContainer}>
-            <Text style={styles.songTitle}>{currentSong.title}</Text>
-            <Text style={styles.artistName}>{currentSong.artist}</Text>
-          </View>
-
-          <Animated.View
-            style={[
-              styles.record,
-              {
-                transform: [
-                  {
-                    rotate: spinValue.interpolate({
-                      inputRange: [-180, 180],
-                      outputRange: ['-180deg', '180deg'],
-                    }),
-                  },
-                ],
-              },
-            ]}
-            {...panResponder.panHandlers}>
-            {currentSong.coverArtUri ? (
-              <ImageBackground source={{ uri: currentSong.coverArtUri }} style={{ flex: 1 }} />
-            ) : (
-              <View
-                style={[
-                  {
-                    flex: 1,
-                    alignItems: 'center',
-                    padding: 10,
-                    justifyContent: 'center',
-                    backgroundColor: currentSong.backupColor,
-                  },
-                ]}>
-                <Text style={styles.recordSongTitle}>{currentSong.title.toUpperCase()}</Text>
-                <Text style={[styles.artistName, { color: 'white', opacity: 0.3 }]}>
+    <>
+      <StatusBar hidden />
+      <Modal
+        style={styles.modal}
+        isVisible={isPlayerVisible}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        animationInTiming={300}
+        animationOutTiming={300}
+        coverScreen={true}
+        hasBackdrop={true}
+        backdropOpacity={1}
+        backdropColor="#090909"
+        useNativeDriver={true}
+        onRequestClose={() => setIsPlayerVisible(false)}>
+        {currentSong && currentSong.title && currentSong.artist ? (
+          <>
+            <View style={styles.infoContainer}>
+              <Text style={styles.songTitle}>{currentSong.title}</Text>
+              <Text style={styles.artistName}>{currentSong.artist}</Text>
+            </View>
+            <View style={styles.outerCircle}>
+              <View style={styles.middleCircle}>
+                <View style={styles.innerCircle}>
+                  <Animated.View
+                    style={[
+                      styles.record,
+                      {
+                        transform: [
+                          {
+                            rotate: spinValue.interpolate({
+                              inputRange: [-180, 180],
+                              outputRange: ['-180deg', '180deg'],
+                            }),
+                          },
+                        ],
+                      },
+                    ]}
+                    {...panResponder.panHandlers}>
+                    {currentSong.coverArtUri ? (
+                      <ImageBackground
+                        source={{ uri: currentSong.coverArtUri }}
+                        style={{ flex: 1 }}
+                      />
+                    ) : (
+                      <View
+                        style={[
+                          {
+                            flex: 1,
+                            alignItems: 'center',
+                            padding: 10,
+                            justifyContent: 'center',
+                            backgroundColor: currentSong.backupColor,
+                          },
+                        ]}>
+                        <Text style={styles.recordSongTitle}>
+                          {currentSong.title.toUpperCase()}
+                        </Text>
+                        {/* <Text style={[styles.artistName, { color: 'white', opacity: 0.3 }]}>
                   {currentSong.artist}
-                </Text>
+                </Text> */}
+                      </View>
+                    )}
+                  </Animated.View>
+                </View>
               </View>
-            )}
-          </Animated.View>
-          <View style={styles.playbackButtonContainer}>
-            <TouchableOpacity style={styles.prevButton}>
-              <FontAwesome5 name="backward" size={20} color="white" />
+            </View>
+            <View style={styles.playbackButtonContainer}>
+              <TouchableOpacity style={styles.prevButton}>
+                <FontAwesome5 name="backward" size={20} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.playPauseButton}
+                onPress={() => setPlayState(!playState)}>
+                {playState ? (
+                  <FontAwesome5 name="play" size={20} color="white" />
+                ) : (
+                  <FontAwesome5 name="pause" size={20} color="white" />
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <FontAwesome5 style={styles.nextButton} name="forward" size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.backButton} onPress={() => setIsPlayerVisible(false)}>
+              <AntDesign name="left" size={24} color="white" />
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.playPauseButton}
-              onPress={() => setPlayState(!playState)}>
-              {playState ? (
-                <FontAwesome5 name="play" size={20} color="white" />
+              style={styles.shuffleButton}
+              onPress={() => setIsShuffleOn(!isShuffleOn)}>
+              {isShuffleOn ? (
+                <MaterialCommunityIcons name="shuffle-disabled" size={30} color="white" />
               ) : (
-                <FontAwesome5 name="pause" size={20} color="white" />
+                <MaterialCommunityIcons name="shuffle" size={25} color="white" />
               )}
             </TouchableOpacity>
-            <TouchableOpacity>
-              <FontAwesome5 style={styles.nextButton} name="forward" size={20} color="white" />
+            <TouchableOpacity style={styles.addToPlaylistButton}>
+              <Entypo name="add-to-list" size={24} color="white" />
             </TouchableOpacity>
-          </View>
-        </>
-      ) : (
-        <></>
-      )}
-    </Modal>
+          </>
+        ) : (
+          <></>
+        )}
+      </Modal>
+    </>
   );
 };
 
@@ -160,32 +193,71 @@ export default Player;
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-    // justifyContent: "flex-end",
-    width: '100%',
-    height: '100%',
+    justifyContent: 'center',
+    // width: '100%',
+    // height: '100%',
     flex: 1,
-    alignSelf: 'center',
+    alignItems: 'center',
     // backgroundColor: "#090909",
   },
+  outerCircle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: 725,
+    aspectRatio: 1,
+    borderRadius: 1000,
+    borderColor: '#060606',
+    borderWidth: 5,
+  },
+  middleCircle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: 600,
+    aspectRatio: 1,
+    borderRadius: 1000,
+    borderColor: '#060606',
+    borderWidth: 5,
+  },
+  innerCircle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: 475,
+    aspectRatio: 1,
+    borderRadius: 1000,
+    borderColor: '#060606',
+    borderWidth: 5,
+  },
+
   record: {
     overflow: 'hidden',
-    position: 'absolute',
-    top: 180,
+    // position: 'absolute',
+    // top: 200,
     // backgroundColor: "black",
-    width: '90%',
-    aspectRatio: 1,
-    borderRadius: 200,
-    alignSelf: 'center',
+    width: 350,
+    height: 350,
+    // aspectRatio: 1,
+    borderRadius: 1000,
+    // alignSelf: 'center',
     // elevation: 8,
     borderColor: 'white',
     borderWidth: 2,
-    flex: 1,
+    // flex: 1,
     // pointerEvents: "none",
   },
   infoContainer: {
+    backgroundColor: 'black',
+    padding: 10,
+    zIndex: 10,
     position: 'absolute',
-    top: 130,
-    left: 30,
+    top: 140,
+    left: 10,
+    borderRadius: 15,
+    elevation: 8,
+    borderColor: '#111111',
+    borderWidth: 1,
   },
   songTitle: {
     fontSize: 14,
@@ -197,7 +269,6 @@ const styles = StyleSheet.create({
   },
   playPauseButton: {
     padding: 8,
-
     //backgroundColor: "blue",
   },
   playbackButtonContainer: {
@@ -206,14 +277,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 70,
     position: 'absolute',
-    alignSelf: 'center',
-    bottom: '20%',
-
-    // backgroundColor: "blue",
+    // alignSelf: 'center',
+    bottom: 90,
   },
-  nextButton: { marginBottom: 30, marginLeft: 45, padding: 10 },
-  prevButton: { marginBottom: 30, marginRight: 45, padding: 10 },
-  shuffleButton: {},
-  backButton: { position: 'absolute', top: 0, left: 0, padding: 20 },
-  recordSongTitle: { color: 'white', fontSize: 30, opacity: 0.3 },
+  nextButton: { marginBottom: 20, marginLeft: 45, padding: 10 },
+  prevButton: { marginBottom: 20, marginRight: 45, padding: 10 },
+  shuffleButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  addToPlaylistButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    padding: 20,
+  },
+  recordSongTitle: {
+    color: 'white',
+    fontSize: 30,
+    opacity: 0.3,
+  },
 });

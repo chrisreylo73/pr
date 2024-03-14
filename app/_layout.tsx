@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableHighlightBase, View } from 'react-native';
+import { StyleSheet, Text, TouchableHighlightBase, View, SafeAreaView } from 'react-native';
 import { Navigator, usePathname, Slot, Link, Stack } from 'expo-router';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
