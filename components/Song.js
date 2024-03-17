@@ -91,10 +91,11 @@ const Song = React.memo(
           </View>
         )}
       </TouchableOpacity>
-      //</Animated.View>
+      // </Animated.View>
     );
   }
 );
+
 export default Song;
 const styles = StyleSheet.create({
   audioItem: {
