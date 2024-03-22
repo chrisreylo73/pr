@@ -1,14 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { ParamListBase, TabNavigationState } from '@react-navigation/native';
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { ParamListBase, TabNavigationState } from "@react-navigation/native";
 
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabNavigationOptions,
   MaterialTopTabNavigationEventMap,
-} from '@react-navigation/material-top-tabs';
-import { withLayoutContext, usePathname, Slot, Link, Stack, Tabs } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+} from "@react-navigation/material-top-tabs";
+import {
+  withLayoutContext,
+  usePathname,
+  Slot,
+  Link,
+  Stack,
+  Tabs,
+} from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -24,18 +31,23 @@ const Layout = () => {
     <MaterialTopTabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: 'black',
+          backgroundColor: "black",
           height: 50,
-          borderBottomColor: '#101010',
+          borderBottomColor: "#101010",
           borderWidth: 2,
         },
-        tabBarActiveTintColor: '#555555',
-        tabBarInactiveTintColor: 'black',
-        tabBarIndicatorStyle: { backgroundColor: 'white' },
-      }}>
-      <MaterialTopTabs.Screen name="add" options={{ title: 'Add' }} />
-      <MaterialTopTabs.Screen name="index" options={{ title: 'SONGS' }} />
-      <MaterialTopTabs.Screen name="playlists" options={{ title: 'Playlists' }} />
+        tabBarActiveTintColor: "#555555",
+        tabBarInactiveTintColor: "black",
+        tabBarIndicatorStyle: { backgroundColor: "white" },
+      }}
+    >
+      <MaterialTopTabs.Screen name="add" options={{ title: "Add" }} />
+      <MaterialTopTabs.Screen name="index" options={{ title: "SONGS" }} />
+      <MaterialTopTabs.Screen name="artists" options={{ title: "ARTISTS" }} />
+      <MaterialTopTabs.Screen
+        name="playlists"
+        options={{ title: "Playlists" }}
+      />
     </MaterialTopTabs>
   );
 };
