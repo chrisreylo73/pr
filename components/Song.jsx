@@ -15,6 +15,7 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 
+import SongActionsModal from "~/components/SongActionsModal";
 const Song = React.memo(
   ({
     item,
@@ -31,7 +32,16 @@ const Song = React.memo(
     };
 
     return (
-      <TouchableOpacity style={styles.audioItem} onPress={chooseSong}>
+      <TouchableOpacity
+        style={styles.audioItem}
+        onPress={chooseSong}
+        onLongPress={() => setIsModalVisable(true)}
+      >
+        <SongActionsModal
+          isModalVisable={isModalVisable}
+          setIsModalVisable={setIsModalVisable}
+          item={item}
+        />
         {item.coverArtUri ? (
           <ImageBackground
             source={{ uri: item.coverArtUri }}
