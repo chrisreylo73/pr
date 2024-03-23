@@ -20,6 +20,8 @@ import Footer from "~/components/Footer";
 import { AntDesign } from "@expo/vector-icons";
 import { Storage } from "expo-storage";
 import { Hoshi } from "react-native-textinput-effects";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
   const [songTitle, setSongTitle] = useState(item.title);
@@ -44,7 +46,7 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
       animationOutTiming={300}
       coverScreen={true}
       hasBackdrop={true}
-      backdropOpacity={0.95}
+      backdropOpacity={1}
       backdropColor="black"
       useNativeDriver={true}
       statusBarTranslucent={true}
@@ -96,6 +98,16 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.createButton}>
+          <Text style={{ color: "white", margin: 5 }}>UPDATE</Text>
+          <Feather name="check" size={25} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.cancelButton}>
+          <Text style={{ color: "white", margin: 5 }}>CANCEL</Text>
+          <Feather name="x" size={25} color="white" />
+        </TouchableOpacity>
+      </View>
     </Modal>
   );
 };
@@ -144,5 +156,44 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "black",
     borderRadius: 10,
+  },
+  backButton: {
+    position: "absolute",
+    top: 25,
+    left: 0,
+    padding: 20,
+  },
+  cancelButton: {
+    borderColor: "#333333",
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 100,
+    padding: 5,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  createButton: {
+    borderColor: "#333333",
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 100,
+    padding: 5,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  deleteButton: {
+    padding: 10,
+    left: 160,
+    justifyContent: "space-between",
+  },
+  buttonContainer: {
+    // position: "absolute",
+    marginTop: 30,
+    right: 40,
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    width: 250,
+    flexDirection: "row",
   },
 });

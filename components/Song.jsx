@@ -34,7 +34,9 @@ const Song = React.memo(
     return (
       <TouchableOpacity
         style={styles.audioItem}
-        onPress={chooseSong}
+        onPress={() => {
+          setIsPlayerVisible(true), setCurrentSong(item);
+        }}
         onLongPress={() => setIsModalVisable(true)}
       >
         <SongActionsModal

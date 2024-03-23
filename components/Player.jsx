@@ -31,7 +31,6 @@ const Player = () => {
     setIsLoading,
     songData,
     setSongData,
-    setHideFooter,
     isPlayerVisible,
     setIsPlayerVisible,
     isShuffleOn,
@@ -142,9 +141,6 @@ const Player = () => {
                         <Text style={styles.recordSongTitle}>
                           {currentSong.title.toUpperCase()}
                         </Text>
-                        {/* <Text style={[styles.artistName, { color: 'white', opacity: 0.3 }]}>
-                  {currentSong.artist}
-                </Text> */}
                       </View>
                     )}
                   </Animated.View>
@@ -269,16 +265,16 @@ const styles = StyleSheet.create({
     // pointerEvents: "none",
   },
   infoContainer: {
-    backgroundColor: "black",
+    // backgroundColor: "black",
     padding: 10,
     zIndex: 10,
     position: "absolute",
-    top: 140,
+    top: 160,
     left: 10,
     borderRadius: 15,
     elevation: 8,
-    borderColor: "#111111",
-    borderWidth: 1,
+    // borderColor: "#111111",
+    // borderWidth: 1,
   },
   songTitle: {
     fontSize: 14,
@@ -299,7 +295,7 @@ const styles = StyleSheet.create({
     height: 70,
     position: "absolute",
     // alignSelf: 'center',
-    bottom: 90,
+    bottom: 105,
   },
   nextButton: { marginBottom: 20, marginLeft: 45, padding: 10 },
   prevButton: { marginBottom: 20, marginRight: 45, padding: 10 },
@@ -307,14 +303,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    bottom: 20,
+    bottom: 40,
     right: 20,
   },
   addToPlaylistButton: {
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    bottom: 20,
+    bottom: 40,
     left: 20,
   },
   backButton: {
