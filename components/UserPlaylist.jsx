@@ -13,20 +13,33 @@ import {
   ImageBackground,
 } from "react-native";
 import UserPlaylistModal from "~/components/UserPlaylistModal";
+import UserPlaylistActionsModal from "~/components/UserPlaylistActionsModal";
 
 const UserPlaylist = ({ playlistName }) => {
-  const [isModalVisable, setIsModalVisable] = useState(false);
+  const [isUserPlaylistModalVisable, setIsUserPlaylistModalVisable] = useState(
+    false
+  );
+  const [
+    isUserPlaylistActionsModalVisable,
+    setIsUserPlaylistActionsModalVisable,
+  ] = useState(false);
   return (
     <>
       <TouchableOpacity
         style={styles.container}
-        onPress={() => setIsModalVisable(true)}
+        onPress={() => setIsUserPlaylistModalVisable(true)}
+        onLongPress={() => setIsUserPlaylistActionsModalVisable(true)}
       >
         <Text style={styles.title}>{playlistName?.toUpperCase()}</Text>
       </TouchableOpacity>
       <UserPlaylistModal
-        isModalVisable={isModalVisable}
-        setIsModalVisable={setIsModalVisable}
+        isModalVisable={isUserPlaylistModalVisable}
+        setIsModalVisable={setIsUserPlaylistModalVisable}
+        playlistName={playlistName}
+      />
+      <UserPlaylistActionsModal
+        isModalVisable={isUserPlaylistActionsModalVisable}
+        setIsModalVisable={setIsUserPlaylistActionsModalVisable}
         playlistName={playlistName}
       />
     </>

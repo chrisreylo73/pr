@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import { useAppContext } from "../../services/AppContext";
 import Footer from "~/components/Footer";
 import { Entypo } from "@expo/vector-icons";
-import AddPlaylist from "~/components/AddPlaylist";
+import AddPlaylistModal from "~/components/AddPlaylistModal";
 import UserPlaylist from "~/components/UserPlaylist";
 
 const playlists = () => {
@@ -47,7 +47,7 @@ const playlists = () => {
       >
         <Entypo name="plus" size={24} color="black" />
       </TouchableOpacity>
-      <AddPlaylist
+      <AddPlaylistModal
         playlistNames={playlistNames}
         setPlaylistNames={setPlaylistNames}
         isModalVisable={isModalVisable}
