@@ -174,7 +174,9 @@ const index = () => {
     let allSongs = [...songData, ...songsWithMetadata];
     allSongs = allSongs.sort((a, b) => a.title.localeCompare(b.title));
     // Get all unique artist names
-    const artistNames = [...new Set(allSongs.map((song) => song.artist))];
+    const artistNames = [
+      ...new Set(allSongs.map((song) => song.artist)),
+    ].sort();
     console.log(artistNames);
     // Split songs by artist
     // const songsByArtist = allSongs.reduce((acc, song) => {

@@ -39,13 +39,13 @@ const UserPlaylistActionsModal = ({
   };
   const updatePlaylist = async () => {
     let allPlaylists = playlistNames.filter((name) => name !== playlistName);
-    allPlaylists = [...allPlaylists, playlistTitle];
+    allPlaylists = [...allPlaylists, playlistTitle].sort();
     await Storage.setItem({
       key: "playlistNames",
       value: JSON.stringify(allPlaylists),
     });
     setPlaylistNames(allPlaylists);
-    // onClose();
+
     Keyboard.dismiss();
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);

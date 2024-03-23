@@ -32,7 +32,7 @@ const AddPlaylistModal = ({
   };
 
   const createPlaylist = async () => {
-    let allPlaylists = [...playlistNames, playlistTitle];
+    let allPlaylists = [...playlistNames, playlistTitle].sort();
     await Storage.setItem({
       key: "playlistNames",
       value: JSON.stringify(allPlaylists),
