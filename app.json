@@ -3,10 +3,6 @@
     "name": "pr",
     "slug": "pr",
     "version": "1.0.0",
-    "androidStatusBar": {
-      "backgroundColor": "#000000",
-      "color": "#000000"
-    },
     "scheme": "pr",
     "web": {
       "bundler": "metro",
@@ -22,10 +18,12 @@
 
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "text": "Welcome",
+      "textColor": "white",
+      "textFontSize": 24,
+
       "backgroundColor": "black"
     },
     "assetBundlePatterns": ["**/*"],

@@ -15,7 +15,6 @@ import {
   Stack,
   Tabs,
 } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 
 const { Navigator } = createMaterialTopTabNavigator();
 

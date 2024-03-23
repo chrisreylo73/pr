@@ -67,6 +67,7 @@ const ArtistPlaylistModal = ({
       backdropOpacity={1}
       backdropColor="#090909"
       useNativeDriver={true}
+      statusBarTranslucent={true}
       onRequestClose={onClose}
     >
       <View style={styles.header}>
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     width: "100%",
-    height: 70,
+    height: 85,
     //  position: 'absolute',
     //  zIndex: 2,
     //backgroundColor: "#0D0D0D",
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: "bold",
-    marginBottom: 10,
+    // marginBottom: 10,
     // color: "#CCCCCC", // Light color scheme
     alignSelf: "center",
     letterSpacing: 2,
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 0,
+    top: 15,
     left: 0,
     padding: 20,
   },

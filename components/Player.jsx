@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,15 +11,15 @@ import {
   PanResponder,
   Animated,
   ImageBackground,
-} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import Modal from 'react-native-modal';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { useAppContext } from '../services/AppContext';
-import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+} from "react-native";
+import Modal from "react-native-modal";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { useAppContext } from "../services/AppContext";
+import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 const Player = () => {
   const {
@@ -47,7 +47,7 @@ const Player = () => {
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: (evt, gestureState) => {
-      const { width, height } = Dimensions.get('window');
+      const { width, height } = Dimensions.get("window");
       const centerX = width / 2;
       const centerY = height / 2;
       const x = gestureState.x0 - centerX; // Use x0 and y0 for initial touch position
@@ -56,7 +56,7 @@ const Player = () => {
       setStartAngle(angle);
     },
     onPanResponderMove: (evt, gestureState) => {
-      const { width, height } = Dimensions.get('window');
+      const { width, height } = Dimensions.get("window");
       const centerX = width / 2;
       const centerY = height / 2;
       const x = gestureState.moveX - centerX;
@@ -82,7 +82,6 @@ const Player = () => {
 
   return (
     <>
-      <StatusBar hidden />
       <Modal
         style={styles.modal}
         isVisible={isPlayerVisible}
@@ -95,7 +94,9 @@ const Player = () => {
         backdropOpacity={1}
         backdropColor="#090909"
         useNativeDriver={true}
-        onRequestClose={() => setIsPlayerVisible(false)}>
+        statusBarTranslucent={true}
+        onRequestClose={() => setIsPlayerVisible(false)}
+      >
         {currentSong && currentSong.title && currentSong.artist ? (
           <>
             <View style={styles.infoContainer}>
@@ -113,13 +114,14 @@ const Player = () => {
                           {
                             rotate: spinValue.interpolate({
                               inputRange: [-180, 180],
-                              outputRange: ['-180deg', '180deg'],
+                              outputRange: ["-180deg", "180deg"],
                             }),
                           },
                         ],
                       },
                     ]}
-                    {...panResponder.panHandlers}>
+                    {...panResponder.panHandlers}
+                  >
                     {currentSong.coverArtUri ? (
                       <ImageBackground
                         source={{ uri: currentSong.coverArtUri }}
@@ -130,12 +132,13 @@ const Player = () => {
                         style={[
                           {
                             flex: 1,
-                            alignItems: 'center',
+                            alignItems: "center",
                             padding: 10,
-                            justifyContent: 'center',
+                            justifyContent: "center",
                             backgroundColor: currentSong.backupColor,
                           },
-                        ]}>
+                        ]}
+                      >
                         <Text style={styles.recordSongTitle}>
                           {currentSong.title.toUpperCase()}
                         </Text>
@@ -154,7 +157,8 @@ const Player = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.playPauseButton}
-                onPress={() => setPlayState(!playState)}>
+                onPress={() => setPlayState(!playState)}
+              >
                 {playState ? (
                   <FontAwesome5 name="play" size={20} color="white" />
                 ) : (
@@ -162,19 +166,36 @@ const Player = () => {
                 )}
               </TouchableOpacity>
               <TouchableOpacity>
-                <FontAwesome5 style={styles.nextButton} name="forward" size={20} color="white" />
+                <FontAwesome5
+                  style={styles.nextButton}
+                  name="forward"
+                  size={20}
+                  color="white"
+                />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.backButton} onPress={() => setIsPlayerVisible(false)}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => setIsPlayerVisible(false)}
+            >
               <AntDesign name="left" size={24} color="white" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.shuffleButton}
-              onPress={() => setIsShuffleOn(!isShuffleOn)}>
+              onPress={() => setIsShuffleOn(!isShuffleOn)}
+            >
               {isShuffleOn ? (
-                <MaterialCommunityIcons name="shuffle-disabled" size={30} color="white" />
+                <MaterialCommunityIcons
+                  name="shuffle-disabled"
+                  size={30}
+                  color="white"
+                />
               ) : (
-                <MaterialCommunityIcons name="shuffle" size={25} color="white" />
+                <MaterialCommunityIcons
+                  name="shuffle"
+                  size={25}
+                  color="white"
+                />
               )}
             </TouchableOpacity>
             <TouchableOpacity style={styles.addToPlaylistButton}>
@@ -193,46 +214,46 @@ export default Player;
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-    justifyContent: 'center',
+    justifyContent: "center",
     // width: '100%',
     // height: '100%',
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     // backgroundColor: "#090909",
   },
   outerCircle: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
     width: 725,
     aspectRatio: 1,
     borderRadius: 1000,
-    borderColor: '#060606',
+    borderColor: "#060606",
     borderWidth: 5,
   },
   middleCircle: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
     width: 600,
     aspectRatio: 1,
     borderRadius: 1000,
-    borderColor: '#060606',
+    borderColor: "#060606",
     borderWidth: 5,
   },
   innerCircle: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
     width: 475,
     aspectRatio: 1,
     borderRadius: 1000,
-    borderColor: '#060606',
+    borderColor: "#060606",
     borderWidth: 5,
   },
 
   record: {
-    overflow: 'hidden',
+    overflow: "hidden",
     // position: 'absolute',
     // top: 200,
     // backgroundColor: "black",
@@ -242,68 +263,68 @@ const styles = StyleSheet.create({
     borderRadius: 1000,
     // alignSelf: 'center',
     // elevation: 8,
-    borderColor: 'white',
+    borderColor: "white",
     borderWidth: 2,
     // flex: 1,
     // pointerEvents: "none",
   },
   infoContainer: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     padding: 10,
     zIndex: 10,
-    position: 'absolute',
+    position: "absolute",
     top: 140,
     left: 10,
     borderRadius: 15,
     elevation: 8,
-    borderColor: '#111111',
+    borderColor: "#111111",
     borderWidth: 1,
   },
   songTitle: {
     fontSize: 14,
-    color: 'white',
+    color: "white",
   },
   artistName: {
     fontSize: 12,
-    color: '#777777',
+    color: "#777777",
   },
   playPauseButton: {
     padding: 8,
     //backgroundColor: "blue",
   },
   playbackButtonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     height: 70,
-    position: 'absolute',
+    position: "absolute",
     // alignSelf: 'center',
     bottom: 90,
   },
   nextButton: { marginBottom: 20, marginLeft: 45, padding: 10 },
   prevButton: { marginBottom: 20, marginRight: 45, padding: 10 },
   shuffleButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     bottom: 20,
     right: 20,
   },
   addToPlaylistButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     bottom: 20,
     left: 20,
   },
   backButton: {
-    position: 'absolute',
-    top: 0,
+    position: "absolute",
+    top: 15,
     left: 0,
     padding: 20,
   },
   recordSongTitle: {
-    color: 'white',
+    color: "white",
     fontSize: 30,
     opacity: 0.3,
   },

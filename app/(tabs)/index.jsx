@@ -220,39 +220,21 @@ const index = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar />
-      {isLoading === true ? (
-        <View style={styles.loadingContainer}>
-          <BarIndicator color="white" />
-        </View>
-      ) : (
-        <FlatList
-          contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
-          data={songData}
-          renderItem={({ item }) => (
-            <Song
-              item={item}
-              setCurrentSong={setCurrentSong}
-              currentSong={currentSong}
-              setIsPlayerVisible={setIsPlayerVisible}
-              isPlayerVisible={isPlayerVisible}
-            />
-          )}
-          keyExtractor={(item) => item.uri}
-        />
-      )}
-      {isPlayerVisible ? (
-        <Player
-          currentSong={currentSong}
-          setCurrentSong={setCurrentSong}
-          isPlayerVisible={isPlayerVisible}
-          setIsPlayerVisible={setIsPlayerVisible}
-          setPlayState={setPlayState}
-          playState={playState}
-        />
-      ) : (
-        <></>
-      )}
+      {/* <StatusBar hidden /> */}
+      <FlatList
+        contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
+        data={songData}
+        renderItem={({ item }) => (
+          <Song
+            item={item}
+            setCurrentSong={setCurrentSong}
+            currentSong={currentSong}
+            setIsPlayerVisible={setIsPlayerVisible}
+            isPlayerVisible={isPlayerVisible}
+          />
+        )}
+        keyExtractor={(item) => item.uri}
+      />
     </SafeAreaView>
   );
 };

@@ -10,9 +10,9 @@ import React from "react";
 
 const Header = () => {
   return (
-    <SafeAreaView style={styles.header}>
+    <View style={styles.header}>
       <Text style={styles.title}>POCKET RECORDS</Text>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     //  position: 'absolute',
     //  zIndex: 2,
     //backgroundColor: "#0D0D0D",
+    // marginTop: 30,
     backgroundColor: "black",
     paddingTop: 10,
     elevation: 10,
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     // paddingBottom: 10,
   },
   title: {
+    // marginTop: 30,
     fontSize: 15,
     fontWeight: "bold",
     marginBottom: 10,
