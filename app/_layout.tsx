@@ -19,8 +19,8 @@ const _layout = () => {
       <StatusBar hidden />
       <Header />
       <Slot />
-      <Footer />
       <Player />
+      <Footer />
       <LoadingModal />
     </AppProvider>
   );

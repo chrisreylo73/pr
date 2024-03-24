@@ -15,12 +15,8 @@ import {
   Keyboard,
 } from "react-native";
 import Modal from "react-native-modal";
-import { useAppContext } from "~/services/AppContext";
-import Footer from "~/components/Footer";
-import { AntDesign } from "@expo/vector-icons";
-import { Storage } from "expo-storage";
-import { Hoshi } from "react-native-textinput-effects";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+// import { useAppContext } from "~/services/AppContext";
+
 import { Feather } from "@expo/vector-icons";
 
 const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
@@ -31,10 +27,19 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
     Keyboard.dismiss();
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);
+    setSongTitle(item.title);
+    setArtistName(item.artist);
+    setAlbumName(item.album);
   };
 
-  const onChangeText = (inputText) => {
-    console.log("Something");
+  const onChangeSongTitle = (inputText) => {
+    setSongTitle(inputText);
+  };
+  const onChangeArtistName = (inputText) => {
+    setArtistName(inputText);
+  };
+  const onChangeAlbumName = (inputText) => {
+    setAlbumName(inputText);
   };
   return (
     <Modal
@@ -47,15 +52,14 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
       coverScreen={true}
       hasBackdrop={true}
       backdropOpacity={1}
-      backdropColor="black"
+      backdropColor="#090909"
       useNativeDriver={true}
-      statusBarTranslucent={true}
       onRequestClose={onClose}
     >
-      <Text style={styles.inputHeader}>SONG TITLE</Text>
+      <Text style={[styles.inputHeader, { paddingTop: 30 }]}>SONG TITLE</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeText}
+        onChangeText={onChangeSongTitle}
         value={songTitle}
         caretHidden={true}
         autoCorrect={false}
@@ -64,7 +68,7 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
       <Text style={styles.inputHeader}>ARTIST NAME</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeText}
+        onChangeText={onChangeArtistName}
         value={artistName}
         caretHidden={true}
         autoCorrect={false}
@@ -73,7 +77,7 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
       <Text style={styles.inputHeader}>ALBUM NAME</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeText}
+        onChangeText={onChangeAlbumName}
         value={albumName}
         caretHidden={true}
         autoCorrect={false}
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     // position: "absolute",
-    marginTop: 30,
+    marginTop: 5,
     right: 40,
     justifyContent: "space-between",
     alignItems: "center",

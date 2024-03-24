@@ -1,5 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useState, useEffect, useRef } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
+import { useState, useEffect, useRef } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useAppContext } from "../services/AppContext";
 const Footer = () => {
@@ -9,44 +15,34 @@ const Footer = () => {
     setPlayState,
     setIsPlayerVisible,
   } = useAppContext();
-  // useEffect(() => {
-  //   console.log(
-  //     'currentSong: ',
-  //     currentSong && currentSong.title && currentSong.artist ? currentSong.title : ''
-  //   );
-  // }, [currentSong]);
   return (
-    <>
-      {currentSong && currentSong.title && currentSong.artist ? (
-        <View style={styles.footer}>
+    <View style={styles.footer}>
+      {currentSong?.title && currentSong?.artist && (
+        <TouchableOpacity
+          style={styles.playback}
+          onPress={() => setIsPlayerVisible(true)}
+        >
+          <View style={styles.songInfoContainer}>
+            <Text style={styles.songTitle} numberOfLines={1}>
+              {currentSong.title}
+            </Text>
+            <Text style={styles.artistName} numberOfLines={1}>
+              {currentSong.artist}
+            </Text>
+          </View>
           <TouchableOpacity
-            style={styles.playback}
-            onPress={() => setIsPlayerVisible(true)}
+            style={styles.playPauseButton}
+            onPress={() => setPlayState(!playState)}
           >
-            <View style={styles.songInfoContainer}>
-              <Text style={styles.songTitle} numberOfLines={1}>
-                {currentSong.title}
-              </Text>
-              <Text style={styles.artistName} numberOfLines={1}>
-                {currentSong.artist}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.playPauseButton}
-              onPress={() => setPlayState(!playState)}
-            >
-              {playState ? (
-                <FontAwesome5 name="play" size={20} color="white" />
-              ) : (
-                <FontAwesome5 name="pause" size={20} color="white" />
-              )}
-            </TouchableOpacity>
+            <FontAwesome5
+              name={playState ? "play" : "pause"}
+              size={20}
+              color="white"
+            />
           </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={styles.footer}></View>
+        </TouchableOpacity>
       )}
-    </>
+    </View>
   );
 };
 export default Footer;

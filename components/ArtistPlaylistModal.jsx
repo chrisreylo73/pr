@@ -67,7 +67,7 @@ const ArtistPlaylistModal = ({
       backdropOpacity={1}
       backdropColor="#090909"
       useNativeDriver={true}
-      statusBarTranslucent={true}
+      // statusBarTranslucent={true}
       onRequestClose={onClose}
     >
       <View style={styles.header}>
@@ -75,7 +75,7 @@ const ArtistPlaylistModal = ({
           style={styles.backButton}
           onPress={() => setIsModalVisable(false)}
         >
-          <AntDesign name="left" size={24} color="white" />
+          <AntDesign name="left" size={20} color="white" />
         </TouchableOpacity>
         <Text style={styles.title}>{playlistName.toUpperCase()}</Text>
       </View>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     width: "100%",
-    height: 100,
+    height: 70,
     //  position: 'absolute',
     //  zIndex: 2,
     //backgroundColor: "#0D0D0D",
@@ -127,14 +127,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: "bold",
-    marginTop: 15,
+    marginBottom: 5,
     alignSelf: "center",
     letterSpacing: 2,
     color: "white",
   },
   backButton: {
     position: "absolute",
-    top: 25,
+    top: 0,
     left: 0,
     padding: 20,
   },

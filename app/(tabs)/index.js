@@ -1,30 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-  ViewToken,
-} from "react-native";
-// 3rd Party Components
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle,
-  Easing,
-} from "react-native-reanimated";
+import { StyleSheet, FlatList, SafeAreaView } from "react-native";
 import { useState, useEffect } from "react";
 import * as MediaLibrary from "expo-media-library";
 import MusicInfo from "expo-music-info-2";
 import { Storage } from "expo-storage";
-import { StatusBar } from "expo-status-bar";
-import { BarIndicator } from "react-native-indicators";
-import { useAppContext } from "../../services/AppContext";
-import { SafeAreaView } from "react-native-safe-area-context";
-// Custom Components
+import { useAppContext } from "~/services/AppContext";
 import Song from "~/components/Song";
-import Player from "~/components/Player";
 
 const index = () => {
   const {
@@ -44,50 +24,49 @@ const index = () => {
     setIsPlayerVisible,
   } = useAppContext();
 
+  // const backupColors = [
+  //   "#81E979",
+  //   "#20FC8F",
+  //   "#06D6A0",
+  //   "#058E3F",
+  //   "#FCE694",
+  //   "#F9CB40",
+  //   "#FFBE0B",
+  //   "#FCAA67",
+  //   "#FF8811",
+  //   "#F15025",
+  //   "#FF5A5F",
+  //   "#D7263D",
+  //   "#DB222A",
+  //   "#F24333",
+  //   "#7CC6FE",
+  //   "#3A86FF",
+  //   "#00CECB",
+  //   "#2F52E0",
+  //   "#5E2BFF",
+  //   "#232ED1",
+  // ];
   const backupColors = [
-    "#d93f27",
-    "#152b53",
-    "#1f6e8d",
-    "#83a89f",
-    "#f4ddb3",
-    "#eda96c",
-    "#a9ad8a",
-    "#aa492c",
-    "#afbeb9",
-    "#7996a6",
-    "#6c7280",
-    "#4d4a53",
-    "#ef343b",
-    "#009287",
-    "#63a29f",
-    "#bf0d01",
-    "#61737f",
-    "#939da9",
-    "#d87067",
-    "#edc393",
-    "#979680",
-    "#fae6c3",
-    "#f8ca1d",
-    "#800f01",
-    "#530900",
-    "#1d0b01",
-    "#f8aa00",
-    "#f7e5a5",
-    "#f69f69",
-    "#f17859",
-    "#c6d8cc",
-    "#2e4660",
-    "#fed295",
-    "#5d9b84",
-    "#ee3d36",
-    "#ee592e",
+    "#99B2DD",
+    "#C9C8D3",
+    "#F87575",
+    "#B8D3D1",
+    "#BFD3C1",
+    "#D66853",
+    "#AF3E4D",
+    "#B0C592",
+    "#7EA8BE",
+    "#F2A359",
+    "#7E9181 ",
+    "#9ABCA7",
+    "#A997DF",
+    "#457EAC",
+    "#EB5E28",
+    "#A22C29",
   ];
-
   // Get song data once page mounts
   useEffect(() => {
     fetchData();
-
-    // console.log(songData);
     console.log("DATA MOUNTED");
   }, []);
 
@@ -122,9 +101,9 @@ const index = () => {
 
     // Compare the number of stored audioFiles to the ones freshly fetched. If they differ handle new songs
     if (storedAudioFileCount !== fetchedAudioFileCount) {
-      console.log("NEW SONGS");
-      console.log("storedAudioFileCount:  ", storedAudioFileCount);
-      console.log("fetchedAudioFileCount:  ", fetchedAudioFileCount);
+      // console.log("NEW SONGS");
+      // console.log("storedAudioFileCount:  ", storedAudioFileCount);
+      // console.log("fetchedAudioFileCount:  ", fetchedAudioFileCount);
       handleNewSongs(fetchedAudioFileData.assets);
     }
     setIsLoading(false);
@@ -222,19 +201,10 @@ const index = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <StatusBar hidden /> */}
       <FlatList
         contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
         data={songData}
-        renderItem={({ item }) => (
-          <Song
-            item={item}
-            setCurrentSong={setCurrentSong}
-            currentSong={currentSong}
-            setIsPlayerVisible={setIsPlayerVisible}
-            isPlayerVisible={isPlayerVisible}
-          />
-        )}
+        renderItem={({ item }) => <Song item={item} />}
         keyExtractor={(item) => item.uri}
       />
     </SafeAreaView>
@@ -242,58 +212,9 @@ const index = () => {
 };
 
 export default index;
-
 const styles = StyleSheet.create({
-  loadingContainer: {
-    // ...StyleSheet.absoluteFillObject,
-    zIndex: 10,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   container: {
     flex: 1,
-    // paddingTop: 40,
-    // paddingHorizontal: 20,
-
     backgroundColor: "#090909",
-    // borderBottomRadius: 40,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    // color: "#CCCCCC", // Light color scheme
-    color: "#333333",
-  },
-  audioItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#333333",
-    backgroundColor: "#222222",
-    height: 60,
-  },
-  songInfoContainer: {
-    justifyContent: "flex-start",
-    width: "60%",
-    overflow: "hidden",
-    height: "100%",
-  },
-  albumArtContainer: {
-    aspectRatio: 1,
-    width: 40,
-    borderRadius: 10,
-    backgroundColor: "#111111",
-  },
-  songTitle: {
-    marginLeft: 5,
-    color: "white",
-  },
-  artistName: {
-    marginLeft: 5,
-    color: "#444444",
   },
 });

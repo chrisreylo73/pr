@@ -6,6 +6,7 @@ import { BarIndicator } from "react-native-indicators";
 
 const LoadingModal = () => {
   const { isLoading } = useAppContext();
+
   return (
     <Modal
       style={styles.loadingContainer}
@@ -21,7 +22,9 @@ const LoadingModal = () => {
       useNativeDriver={true}
     >
       <BarIndicator color="white" />
-      <Text>Loading...</Text>
+      {/* <Text style={{ color: "white", position: "absolute", top: "55%" }}>
+        Loading...
+      </Text> */}
     </Modal>
   );
 };
