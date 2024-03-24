@@ -202,7 +202,7 @@ const index = () => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
+        contentContainerStyle={{ paddingBottom: 340, paddingTop: 20 }}
         data={songData}
         renderItem={({ item }) => <Song item={item} />}
         keyExtractor={(item) => item.uri}
@@ -215,6 +215,6 @@ export default index;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#090909",
+    backgroundColor: "#080808",
   },
 });

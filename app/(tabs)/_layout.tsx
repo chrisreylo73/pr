@@ -32,10 +32,10 @@ const Layout = () => {
         tabBarStyle: {
           backgroundColor: "black",
           height: 50,
-          borderBottomColor: "#101010",
+          borderBottomColor: "#0A0A0A",
           borderWidth: 2,
         },
-        tabBarActiveTintColor: "#555555",
+        tabBarActiveTintColor: "#333333",
         tabBarInactiveTintColor: "black",
         tabBarIndicatorStyle: { backgroundColor: "white" },
       }}

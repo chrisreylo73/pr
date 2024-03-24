@@ -14,6 +14,7 @@ import SongActionsModal from "~/components/SongActionsModal";
 const Song = React.memo(({ item }) => {
   const [isModalVisable, setIsModalVisable] = useState(false);
   const { currentSong, setCurrentSong, setIsPlayerVisible } = useAppContext();
+
   return (
     <TouchableOpacity
       style={styles.audioItem}
@@ -29,37 +30,40 @@ const Song = React.memo(({ item }) => {
           { backgroundColor: item.backupColor },
         ]}
       >
-        {currentSong && currentSong.title && currentSong.title == item.title ? (
-          <View style={styles.songInfoContainer}>
-            <Text
-              style={(styles.songTitle, { color: "#FFA500" })}
-              numberOfLines={1}
-            >
-              {item.title}
-            </Text>
-            <Text
-              style={[styles.artistName, , { color: "#7F6000" }]}
-              numberOfLines={1}
-            >
-              {item.artist}
-            </Text>
-          </View>
-        ) : (
-          <View style={styles.songInfoContainer}>
-            <Text
-              style={(styles.songTitle, { color: "white" })}
-              numberOfLines={1}
-            >
-              {item.title}
-            </Text>
-            <Text
-              style={[styles.artistName, , { color: "#777777" }]}
-              numberOfLines={1}
-            >
-              {item.artist}
-            </Text>
-          </View>
-        )}
+        <View style={styles.songInfoContainer}>
+          <Text
+            style={
+              (styles.songTitle,
+              {
+                color:
+                  currentSong &&
+                  currentSong.title &&
+                  currentSong.title == item.title
+                    ? "#FFA500"
+                    : "white",
+              })
+            }
+            numberOfLines={1}
+          >
+            {item.title}
+          </Text>
+          <Text
+            style={[
+              styles.artistName,
+              {
+                color:
+                  currentSong &&
+                  currentSong.title &&
+                  currentSong.title == item.title
+                    ? "#7F6000"
+                    : "#777777",
+              },
+            ]}
+            numberOfLines={1}
+          >
+            {item.artist}
+          </Text>
+        </View>
       </ImageBackground>
       {isModalVisable && (
         <SongActionsModal

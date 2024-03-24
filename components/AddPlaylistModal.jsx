@@ -69,7 +69,7 @@ const AddPlaylistModal = ({
           value={playlistTitle}
           placeholder="PLAYLIST TITLE"
           placeholderTextColor="#222222"
-          caretHidden={true}
+          caretHidden={false}
           autoCorrect={false}
           autoCapitalize="characters"
         ></TextInput>

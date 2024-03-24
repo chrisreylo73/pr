@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#090909",
+    backgroundColor: "#080808",
   },
   addButton: {
     alignItems: "center",

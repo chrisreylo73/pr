@@ -15,14 +15,16 @@ import {
   Keyboard,
 } from "react-native";
 import Modal from "react-native-modal";
-// import { useAppContext } from "~/services/AppContext";
-
+import { useAppContext } from "~/services/AppContext";
+import { Storage } from "expo-storage";
 import { Feather } from "@expo/vector-icons";
 
 const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
   const [songTitle, setSongTitle] = useState(item.title);
   const [artistName, setArtistName] = useState(item.artist);
   const [albumName, setAlbumName] = useState(item.album);
+  const { songData, setSongData } = useAppContext();
+
   const onClose = () => {
     Keyboard.dismiss();
     setTimeout(() => {}, 5000);
@@ -41,18 +43,44 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
   const onChangeAlbumName = (inputText) => {
     setAlbumName(inputText);
   };
+
+  const onUpdate = async () => {
+    const updatedData = songData
+      .map((song) =>
+        song.uri === item.uri
+          ? {
+              ...item,
+              title: songTitle,
+              artist: artistName ? artistName : "Unknown Artist",
+              album: albumName ? albumName : albumName,
+            }
+          : song
+      )
+      .sort();
+
+    await Storage.setItem({
+      key: "songData",
+      value: JSON.stringify(updatedData),
+    });
+
+    setSongData(updatedData);
+    Keyboard.dismiss();
+    setTimeout(() => {}, 5000);
+    setIsModalVisable(false);
+  };
+
   return (
     <Modal
       style={styles.modal}
       isVisible={isModalVisable}
-      animationIn="fadeInUp"
-      animationOut="fadeOutDown"
+      animationIn="fadeIn"
+      animationOut="fadeOut"
       animationInTiming={400}
       animationOutTiming={300}
       coverScreen={true}
       hasBackdrop={true}
       backdropOpacity={1}
-      backdropColor="#090909"
+      backdropColor="#060606"
       useNativeDriver={true}
       onRequestClose={onClose}
     >
@@ -61,27 +89,27 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
         style={styles.input}
         onChangeText={onChangeSongTitle}
         value={songTitle}
-        caretHidden={true}
+        caretHidden={false}
         autoCorrect={false}
-        autoCapitalize="characters"
+        // autoCapitalize="characters"
       ></TextInput>
       <Text style={styles.inputHeader}>ARTIST NAME</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeArtistName}
         value={artistName}
-        caretHidden={true}
+        caretHidden={false}
         autoCorrect={false}
-        autoCapitalize="characters"
+        // autoCapitalize="characters"
       ></TextInput>
       <Text style={styles.inputHeader}>ALBUM NAME</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeAlbumName}
         value={albumName}
-        caretHidden={true}
+        caretHidden={false}
         autoCorrect={false}
-        autoCapitalize="characters"
+        // autoCapitalize="characters"
       ></TextInput>
       <View style={styles.coverContainer}>
         <View style={{ width: "50%" }}>
@@ -103,11 +131,11 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.createButton}>
+        <TouchableOpacity style={styles.createButton} onPress={onUpdate}>
           <Text style={{ color: "white", margin: 5 }}>UPDATE</Text>
           <Feather name="check" size={25} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.cancelButton}>
+        <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
           <Text style={{ color: "white", margin: 5 }}>CANCEL</Text>
           <Feather name="x" size={25} color="white" />
         </TouchableOpacity>

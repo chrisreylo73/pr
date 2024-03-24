@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     elevation: 8,
     backgroundColor: "black",
     borderTopWidth: 2,
-    borderColor: "#111111",
+    borderColor: "#0A0A0A",
   },
   playback: {
     flexDirection: "row",
