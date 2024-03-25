@@ -64,24 +64,18 @@ const index = () => {
     "#EB5E28",
     "#A22C29",
   ];
+
   // Get song data once page mounts
   useEffect(() => {
     fetchData();
     console.log("DATA MOUNTED");
   }, []);
 
-  // await Storage.setItem({ key: "songData", value: [] });
   const fetchData = async () => {
-    // await Storage.setItem({ key: "songData", value: [] });
     // Show loading till method finishes
     setIsLoading(true);
     // Get Data from storage
-    const storedSongData = await Storage.getItem({ key: "songData" });
-    setSongData(JSON.parse(storedSongData));
-    const storedArtistNames = await Storage.getItem({ key: "artistNames" });
-    setArtistNames(JSON.parse(storedArtistNames));
-    const storedplaylistNames = await Storage.getItem({ key: "playlistNames" });
-    setPlaylistNames(JSON.parse(storedplaylistNames));
+
     // Get the number of songs in storage
     const storedAudioFileCount = await Storage.getItem({
       key: "audioFileCount",
@@ -105,6 +99,15 @@ const index = () => {
       // console.log("storedAudioFileCount:  ", storedAudioFileCount);
       // console.log("fetchedAudioFileCount:  ", fetchedAudioFileCount);
       handleNewSongs(fetchedAudioFileData.assets);
+    } else {
+      const storedSongData = await Storage.getItem({ key: "songData" });
+      setSongData(JSON.parse(storedSongData));
+      const storedArtistNames = await Storage.getItem({ key: "artistNames" });
+      setArtistNames(JSON.parse(storedArtistNames));
+      const storedPlaylistNames = await Storage.getItem({
+        key: "playlistNames",
+      });
+      setPlaylistNames(JSON.parse(storedPlaylistNames));
     }
     setIsLoading(false);
   };
@@ -157,13 +160,6 @@ const index = () => {
       ...new Set(allSongs.map((song) => song.artist)),
     ].sort();
     console.log(artistNames);
-    // Split songs by artist
-    // const songsByArtist = allSongs.reduce((acc, song) => {
-    //   acc[song.artist] = [...(acc[song.artist] || []), song];
-    //   return acc;
-    // }, {});
-    // console.log("artist names: ", Object.keys(songsByArtist));
-
     // store data
     await Storage.setItem({
       key: "songData",

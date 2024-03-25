@@ -41,7 +41,7 @@ const ArtistPlaylistModal = ({
 
   useEffect(() => {
     filterSongData();
-  }, []);
+  }, [songData]);
 
   const filterSongData = () => {
     const filtered = songData.filter((song) => song.artist === playlistName);

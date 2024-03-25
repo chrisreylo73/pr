@@ -16,6 +16,7 @@ import ArtistPlaylistModal from "~/components/ArtistPlaylistModal";
 
 const ArtistPlaylist = ({ playlistName }) => {
   const [isModalVisable, setIsModalVisable] = useState(false);
+
   return (
     <>
       <TouchableOpacity

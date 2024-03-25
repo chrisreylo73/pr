@@ -64,7 +64,7 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
     });
 
     setSongData(updatedData);
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);
   };
