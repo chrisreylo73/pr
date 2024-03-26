@@ -37,9 +37,7 @@ const Song = React.memo(({ item }) => {
               (styles.songTitle,
               {
                 color:
-                  currentSong &&
-                  currentSong.title &&
-                  currentSong.title == item.title
+                  currentSong?.title == item.title
                     ? "#FFA500"
                     : "white",
               })
@@ -53,9 +51,7 @@ const Song = React.memo(({ item }) => {
               styles.artistName,
               {
                 color:
-                  currentSong &&
-                  currentSong.title &&
-                  currentSong.title == item.title
+                  currentSong?.title == item.title
                     ? "#7F6000"
                     : "#777777",
               },

@@ -17,17 +17,16 @@ const Footer = () => {
   } = useAppContext();
   return (
     <View style={styles.footer}>
-      {currentSong?.title && currentSong?.artist && (
         <TouchableOpacity
           style={styles.playback}
           onPress={() => setIsPlayerVisible(true)}
         >
           <View style={styles.songInfoContainer}>
             <Text style={styles.songTitle} numberOfLines={1}>
-              {currentSong.title}
+              {currentSong?.title}
             </Text>
             <Text style={styles.artistName} numberOfLines={1}>
-              {currentSong.artist}
+              {currentSong?.artist}
             </Text>
           </View>
           <TouchableOpacity
@@ -41,7 +40,6 @@ const Footer = () => {
             />
           </TouchableOpacity>
         </TouchableOpacity>
-      )}
     </View>
   );
 };
