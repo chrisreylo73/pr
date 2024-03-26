@@ -14,7 +14,6 @@ import Song from "~/components/Song";
 import { useAppContext } from "~/services/AppContext";
 import Footer from "~/components/Footer";
 import { AntDesign } from "@expo/vector-icons";
-
 const UserPlaylistModal = ({
   isModalVisable,
   setIsModalVisable,
@@ -32,21 +31,11 @@ const UserPlaylistModal = ({
     isPlayerVisible,
     setIsPlayerVisible,
   } = useAppContext();
-
-  // const [filteredSongData, setFilteredSongData] = useState();
-
-  // useEffect(() => {
-  //   filterSongData();
-  // }, []);
-
-  // const filterSongData = () => {};
-
   const onClose = () => {
     Keyboard.dismiss();
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);
   };
-
   return (
     <Modal
       style={styles.modal}
@@ -60,7 +49,6 @@ const UserPlaylistModal = ({
       backdropOpacity={1}
       backdropColor="#090909"
       useNativeDriver={true}
-      // statusBarTranslucent={true}
       onRequestClose={onClose}
     >
       <View style={styles.header}>
@@ -92,9 +80,7 @@ const UserPlaylistModal = ({
     </Modal>
   );
 };
-
 export default UserPlaylistModal;
-
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
@@ -104,19 +90,12 @@ const styles = StyleSheet.create({
   },
   header: {
     justifyContent: "center",
-    //top: 30,
     alignItems: "center",
-
     width: "100%",
     height: 70,
-    //  position: 'absolute',
-    //  zIndex: 2,
-    //backgroundColor: "#0D0D0D",
     backgroundColor: "black",
-    // paddingTop: 10,
     elevation: 10,
     borderBottomWidth: 2,
-    // borderColor: "black",
     borderColor: "#101010",
   },
   title: {

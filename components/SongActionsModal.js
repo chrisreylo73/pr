@@ -44,6 +44,11 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
     setAlbumName(inputText);
   };
 
+  const formatSting = (str) => {
+    const formattedString = str.trim().replace(/\s+/g, " ").toLowerCase();
+    return formattedString.replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+  };
+
   const onUpdate = async () => {
     const songs = [...songData];
     const updatedSongData = songs
@@ -51,9 +56,9 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
         song.uri === item.uri
           ? {
               ...item,
-              title: songTitle,
-              artist: artistName ? artistName : "Unknown Artist",
-              album: albumName ? albumName : albumName,
+              title: formatSting(songTitle),
+              artist: artistName ? formatSting(artistName) : "Unknown Artist",
+              album: albumName ? formatSting(albumName) : "Unknown Album",
             }
           : song
       )

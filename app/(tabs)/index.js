@@ -78,7 +78,6 @@ const index = () => {
   const fetchData = async () => {
     // Show loading till method finishes
     setIsLoading(true);
-    // Get Data from storage
 
     // Get the number of songs in storage
     const storedAudioFileCount = await Storage.getItem({
@@ -101,6 +100,7 @@ const index = () => {
     if (storedAudioFileCount !== fetchedAudioFileCount) {
       handleNewSongs(fetchedAudioFileData.assets);
     } else {
+      // Get Data from storage
       const storedSongData = await Storage.getItem({ key: "songData" });
       setSongData(JSON.parse(storedSongData));
       const storedArtistNames = await Storage.getItem({ key: "artistNames" });
