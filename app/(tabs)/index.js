@@ -25,26 +25,26 @@ const index = () => {
   } = useAppContext();
 
   // const backupColors = [
-  //   "#81E979",
-  //   "#20FC8F",
-  //   "#06D6A0",
-  //   "#058E3F",
-  //   "#FCE694",
-  //   "#F9CB40",
-  //   "#FFBE0B",
-  //   "#FCAA67",
-  //   "#FF8811",
-  //   "#F15025",
-  //   "#FF5A5F",
-  //   "#D7263D",
-  //   "#DB222A",
-  //   "#F24333",
-  //   "#7CC6FE",
-  //   "#3A86FF",
-  //   "#00CECB",
-  //   "#2F52E0",
-  //   "#5E2BFF",
-  //   "#232ED1",
+    // "#81E979",
+    // "#20FC8F",
+    // "#06D6A0",
+    // "#058E3F",
+    // "#FCE694",
+    // "#F9CB40",
+    // "#FFBE0B",
+    // "#FCAA67",
+    // "#FF8811",
+    // "#F15025",
+    // "#FF5A5F",
+    // "#D7263D",
+    // "#DB222A",
+    // "#F24333",
+    // "#7CC6FE",
+    // "#3A86FF",
+    // "#00CECB",
+    // "#2F52E0",
+    // "#5E2BFF",
+    // "#232ED1",
   // ];
   const backupColors = [
     "#99B2DD",
@@ -63,6 +63,26 @@ const index = () => {
     "#457EAC",
     "#EB5E28",
     "#A22C29",
+    "#81E979",
+    "#20FC8F",
+    "#06D6A0",
+    "#058E3F",
+    "#FCE694",
+    "#F9CB40",
+    "#FFBE0B",
+    "#FCAA67",
+    "#FF8811",
+    "#F15025",
+    "#FF5A5F",
+    "#D7263D",
+    "#DB222A",
+    "#F24333",
+    "#7CC6FE",
+    "#3A86FF",
+    "#00CECB",
+    "#2F52E0",
+    "#5E2BFF",
+    "#232ED1",
   ];
 
   // Get song data once page mounts
@@ -105,9 +125,7 @@ const index = () => {
       setSongData(JSON.parse(storedSongData));
       const storedArtistNames = await Storage.getItem({ key: "artistNames" });
       setArtistNames(JSON.parse(storedArtistNames));
-      const storedPlaylistNames = await Storage.getItem({
-        key: "playlistNames",
-      });
+      const storedPlaylistNames = await Storage.getItem({ key: "playlistNames",});
       setPlaylistNames(JSON.parse(storedPlaylistNames));
     }
     setIsLoading(false);
@@ -132,14 +150,16 @@ const index = () => {
             );
             return {
               uri: uri,
-              title: filename.replace(/\.[^/.]+$/, ""),
+              title: formatSting(filename.replace(/\.[^/.]+$/, "")),
               duration: formatSongDuration(duration),
               artist:
                 metadata && metadata.artist
-                  ? metadata.artist
+                  ? formatSting(metadata.artist)
                   : "Unknown Artist",
               album:
-                metadata && metadata.album ? metadata.album : "Unknown Album",
+                metadata && metadata.album
+                  ? formatSting(metadata.album)
+                  : "Unknown Album",
               coverArtUri:
                 metadata && metadata.picture && metadata.picture.pictureData
                   ? metadata.picture.pictureData
@@ -166,6 +186,11 @@ const index = () => {
       value: JSON.stringify(audioFileData.length),
     });
     setSongData(allSongs);
+  };
+
+  const formatSting = (str) => {
+    const formattedString = str.trim().replace(/\s+/g, " ").toLowerCase();
+    return formattedString.replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
   };
 
   const getArtistNames = async () => {

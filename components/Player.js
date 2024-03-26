@@ -27,7 +27,7 @@ const Player = () => {
     isShuffleOn,
     setIsShuffleOn,
   } = useAppContext();
-
+  
   const [spinValue] = useState(new Animated.Value(0));
   const [startAngle, setStartAngle] = useState(0);
 
@@ -73,100 +73,100 @@ const Player = () => {
       useNativeDriver={true}
       onRequestClose={() => setIsPlayerVisible(false)}
     >
-      {currentSong && currentSong.title && currentSong.artist && (
-        <>
-          <View style={styles.infoContainer}>
-            <Text style={styles.songTitle}>{currentSong.title}</Text>
-            <Text style={styles.artistName}>{currentSong.artist}</Text>
-          </View>
-          <View style={styles.outerCircle}>
-            <View style={styles.middleCircle}>
-              <View style={styles.innerCircle}>
-                <Animated.View
-                  style={[
-                    styles.record,
+{/* {currentSong && currentSong.title && currentSong.artist && (
+    <View> */}
+      <View style={styles.infoContainer}>
+        <Text style={styles.songTitle}>{currentSong?.title}</Text>
+        <Text style={styles.artistName}>{currentSong?.artist}</Text>
+      </View>
+      <View style={styles.outerCircle}>
+        <View style={styles.middleCircle}>
+          <View style={styles.innerCircle}>
+            <Animated.View
+              style={[
+                styles.record,
+                {
+                  transform: [
                     {
-                      transform: [
-                        {
-                          rotate: spinValue.interpolate({
-                            inputRange: [-180, 180],
-                            outputRange: ["-180deg", "180deg"],
-                          }),
-                        },
-                      ],
+                      rotate: spinValue.interpolate({
+                        inputRange: [-180, 180],
+                        outputRange: ["-180deg", "180deg"],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+              {...panResponder.panHandlers}
+            >
+              {currentSong?.coverArtUri ? (
+                <ImageBackground
+                  source={{ uri: currentSong?.coverArtUri }}
+                  style={{ flex: 1 }}
+                />
+              ) : (
+                <View
+                  style={[
+                    {
+                      flex: 1,
+                      alignItems: "center",
+                      padding: 10,
+                      justifyContent: "center",
+                      backgroundColor: currentSong?.backupColor || "black",
                     },
                   ]}
-                  {...panResponder.panHandlers}
                 >
-                  {currentSong.coverArtUri ? (
-                    <ImageBackground
-                      source={{ uri: currentSong.coverArtUri }}
-                      style={{ flex: 1 }}
-                    />
-                  ) : (
-                    <View
-                      style={[
-                        {
-                          flex: 1,
-                          alignItems: "center",
-                          padding: 10,
-                          justifyContent: "center",
-                          backgroundColor: currentSong.backupColor,
-                        },
-                      ]}
-                    >
-                      <Text style={styles.recordSongTitle}>
-                        {currentSong.title.toUpperCase()}
-                      </Text>
-                    </View>
-                  )}
-                </Animated.View>
-              </View>
-            </View>
+                  <Text style={styles.recordSongTitle}>
+                    {currentSong?.title.toUpperCase()}
+                  </Text>
+                </View>
+              )}
+            </Animated.View>
           </View>
-          <View style={styles.playbackButtonContainer}>
-            <TouchableOpacity style={styles.prevButton}>
-              <FontAwesome5 name="backward" size={20} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.playPauseButton}
-              onPress={() => setPlayState(!playState)}
-            >
-              <FontAwesome5
-                name={playState ? "play" : "pause"}
-                size={20}
-                color="white"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.nextButton}>
-              <FontAwesome5 name="forward" size={20} color="white" />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => setIsPlayerVisible(false)}
-          >
-            <AntDesign name="left" size={20} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.shuffleButton}
-            onPress={() => setIsShuffleOn(!isShuffleOn)}
-          >
-            {isShuffleOn ? (
-              <MaterialCommunityIcons
-                name="shuffle-disabled"
-                size={30}
-                color="white"
-              />
-            ) : (
-              <MaterialCommunityIcons name="shuffle" size={25} color="white" />
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.addToPlaylistButton}>
-            <Entypo name="add-to-list" size={24} color="white" />
-          </TouchableOpacity>
-        </>
-      )}
+        </View>
+      </View>
+      <View style={styles.playbackButtonContainer}>
+        <TouchableOpacity style={styles.prevButton}>
+          <FontAwesome5 name="backward" size={20} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.playPauseButton}
+          onPress={() => setPlayState(!playState)}
+        >
+          <FontAwesome5
+            name={playState ? "play" : "pause"}
+            size={20}
+            color="white"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.nextButton}>
+          <FontAwesome5 name="forward" size={20} color="white" />
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => setIsPlayerVisible(false)}
+      >
+        <AntDesign name="left" size={20} color="white" />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.shuffleButton}
+        onPress={() => setIsShuffleOn(!isShuffleOn)}
+      >
+        {isShuffleOn ? (
+          <MaterialCommunityIcons
+            name="shuffle-disabled"
+            size={30}
+            color="white"
+          />
+        ) : (
+          <MaterialCommunityIcons name="shuffle" size={25} color="white" />
+        )}
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.addToPlaylistButton}>
+        <Entypo name="add-to-list" size={24} color="white" />
+      </TouchableOpacity>
+    {/* </View>
+  )} */}
     </Modal>
   );
 };
@@ -271,6 +271,6 @@ const styles = StyleSheet.create({
   recordSongTitle: {
     color: "white",
     fontSize: 30,
-    opacity: 0.3,
+    opacity: 0.5,
   },
 });

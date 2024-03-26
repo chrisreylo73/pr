@@ -23,6 +23,7 @@ const Song = React.memo(({ item }) => {
       }}
       onLongPress={() => setIsModalVisable(true)}
     >
+      
       <ImageBackground
         source={{ uri: item.coverArtUri }}
         style={[

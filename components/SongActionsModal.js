@@ -86,7 +86,7 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
       isVisible={isModalVisable}
       animationIn="fadeIn"
       animationOut="fadeOut"
-      animationInTiming={400}
+      animationInTiming={300}
       animationOutTiming={300}
       coverScreen={true}
       hasBackdrop={true}
@@ -160,7 +160,7 @@ export default SongActionsModal;
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   inputHeader: {
