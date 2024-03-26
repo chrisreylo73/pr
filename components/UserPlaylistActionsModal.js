@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,25 +8,16 @@ import {
   ScrollView,
   TextInput,
   Alert,
-  Dimensions,
-  PanResponder,
-  Animated,
   ImageBackground,
   Keyboard,
-} from "react-native";
-import Modal from "react-native-modal";
-import Song from "~/components/Song";
-import { useAppContext } from "~/services/AppContext";
-import Footer from "~/components/Footer";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { Storage } from "expo-storage";
-const UserPlaylistActionsModal = ({
-  isModalVisable,
-  setIsModalVisable,
-  playlistName,
-}) => {
+} from 'react-native';
+import Modal from 'react-native-modal';
+import { useAppContext } from '~/services/AppContext';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { Storage } from 'expo-storage';
+
+const UserPlaylistActionsModal = ({ isModalVisable, setIsModalVisable, playlistName }) => {
   const { playlistNames, setPlaylistNames } = useAppContext();
   const [playlistTitle, setPlaylistTitle] = useState(playlistName);
 
@@ -37,15 +28,15 @@ const UserPlaylistActionsModal = ({
   const onChangeText = (inputText) => {
     setPlaylistTitle(inputText);
   };
+
   const updatePlaylist = async () => {
     let allPlaylists = playlistNames.filter((name) => name !== playlistName);
     allPlaylists = [...allPlaylists, playlistTitle].sort();
     await Storage.setItem({
-      key: "playlistNames",
+      key: 'playlistNames',
       value: JSON.stringify(allPlaylists),
     });
     setPlaylistNames(allPlaylists);
-
     Keyboard.dismiss();
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);
@@ -54,11 +45,10 @@ const UserPlaylistActionsModal = ({
   const deletePlaylist = async () => {
     const allPlaylists = playlistNames.filter((name) => name !== playlistName);
     await Storage.setItem({
-      key: "playlistNames",
+      key: 'playlistNames',
       value: JSON.stringify(allPlaylists),
     });
     setPlaylistNames(allPlaylists);
-    // onClose();
     Keyboard.dismiss();
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);
@@ -70,6 +60,7 @@ const UserPlaylistActionsModal = ({
     setPlaylistTitle(playlistName);
     setIsModalVisable(false);
   };
+
   return (
     <Modal
       style={styles.modal}
@@ -83,8 +74,7 @@ const UserPlaylistActionsModal = ({
       backdropOpacity={0.95}
       backdropColor="black"
       useNativeDriver={true}
-      onRequestClose={onCancel}
-    >
+      onRequestClose={onCancel}>
       <View style={styles.addPlaylist}>
         <TextInput
           style={styles.input}
@@ -94,27 +84,16 @@ const UserPlaylistActionsModal = ({
           placeholderTextColor="#222222"
           caretHidden={false}
           autoCorrect={false}
-          autoCapitalize="characters"
-        ></TextInput>
+          autoCapitalize="characters"></TextInput>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.createButton}
-            onPress={updatePlaylist}
-          >
+          <TouchableOpacity style={styles.createButton} onPress={updatePlaylist}>
             <Feather name="check" size={30} color="white" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
             <Feather name="x" size={30} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={deletePlaylist}
-          >
-            <MaterialCommunityIcons
-              name="delete-empty-outline"
-              size={30}
-              color="white"
-            />
+          <TouchableOpacity style={styles.deleteButton} onPress={deletePlaylist}>
+            <MaterialCommunityIcons name="delete-empty-outline" size={30} color="white" />
           </TouchableOpacity>
         </View>
       </View>
@@ -127,29 +106,29 @@ export default UserPlaylistActionsModal;
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addPlaylist: {
-    width: "98%",
+    width: '98%',
     // aspectRatio: 1,
-    backgroundColor: "#090909",
+    backgroundColor: '#090909',
     borderRadius: 10,
-    justifyContent: "flex-end",
-    alignItems: "flex-start",
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
     // elevation: 8,
-    borderColor: "#111111",
+    borderColor: '#111111',
     borderWidth: 2,
   },
   input: {
-    width: "90%",
+    width: '90%',
     height: 60,
-    borderBottomColor: "#222222",
+    borderBottomColor: '#222222',
     borderBottomWidth: 2,
-    alignSelf: "center",
-    textAlign: "center",
+    alignSelf: 'center',
+    textAlign: 'center',
     fontSize: 30,
-    color: "white",
+    color: 'white',
   },
   cancelButton: {
     padding: 10,
@@ -160,11 +139,11 @@ const styles = StyleSheet.create({
   deleteButton: {
     padding: 10,
     left: 160,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   buttonContainer: {
     padding: 8,
-    width: "100%",
-    flexDirection: "row",
+    width: '100%',
+    flexDirection: 'row',
   },
 });

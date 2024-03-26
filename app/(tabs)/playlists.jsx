@@ -1,18 +1,9 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-  ViewToken,
-} from "react-native";
-import { useState, useEffect } from "react";
-import { useAppContext } from "../../services/AppContext";
-import Footer from "~/components/Footer";
-import { Entypo } from "@expo/vector-icons";
-import AddPlaylistModal from "~/components/AddPlaylistModal";
-import UserPlaylist from "~/components/UserPlaylist";
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
+import { useState, useEffect } from 'react';
+import { useAppContext } from '~/services/AppContext';
+import { Entypo } from '@expo/vector-icons';
+import AddPlaylistModal from '~/components/AddPlaylistModal';
+import UserPlaylist from '~/components/UserPlaylist';
 
 const playlists = () => {
   const {
@@ -41,10 +32,7 @@ const playlists = () => {
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
       />
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => setIsModalVisable(!isModalVisable)}
-      >
+      <TouchableOpacity style={styles.addButton} onPress={() => setIsModalVisable(!isModalVisable)}>
         <Entypo name="plus" size={24} color="black" />
       </TouchableOpacity>
       <AddPlaylistModal
@@ -62,21 +50,21 @@ export default playlists;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#080808",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#080808',
   },
   addButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
     bottom: 110,
     right: 10,
     width: 50,
     height: 50,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: "#101010",
+    borderColor: '#101010',
   },
 });

@@ -1,26 +1,13 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
-import { useState, useEffect, useRef } from "react";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { useAppContext } from "../services/AppContext";
+import { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { useAppContext } from '../services/AppContext';
 const Footer = () => {
-  const {
-    currentSong,
-    playState,
-    setPlayState,
-    setIsPlayerVisible,
-  } = useAppContext();
+  const { currentSong, playState, setPlayState, setIsPlayerVisible } = useAppContext();
   return (
     <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.playback}
-          onPress={() => setIsPlayerVisible(true)}
-        >
+      {currentSong && (
+        <TouchableOpacity style={styles.playback} onPress={() => setIsPlayerVisible(true)}>
           <View style={styles.songInfoContainer}>
             <Text style={styles.songTitle} numberOfLines={1}>
               {currentSong?.title}
@@ -29,84 +16,78 @@ const Footer = () => {
               {currentSong?.artist}
             </Text>
           </View>
-          <TouchableOpacity
-            style={styles.playPauseButton}
-            onPress={() => setPlayState(!playState)}
-          >
-            <FontAwesome5
-              name={playState ? "play" : "pause"}
-              size={20}
-              color="white"
-            />
+          <TouchableOpacity style={styles.playPauseButton} onPress={() => setPlayState(!playState)}>
+            <FontAwesome5 name={playState ? 'play' : 'pause'} size={20} color="white" />
           </TouchableOpacity>
         </TouchableOpacity>
+      )}
     </View>
   );
 };
 export default Footer;
 const styles = StyleSheet.create({
   footer: {
-    flexDirection: "column",
-    position: "absolute",
-    alignItems: "center",
+    flexDirection: 'column',
+    position: 'absolute',
+    alignItems: 'center',
     left: 0,
     right: 0,
     zIndex: 10,
     bottom: 0,
     height: 100,
     elevation: 8,
-    backgroundColor: "black",
+    backgroundColor: 'black',
     borderTopWidth: 2,
-    borderColor: "#0A0A0A",
+    borderColor: '#0A0A0A',
   },
   playback: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     height: 80,
   },
   currentRouteContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    width: "60%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    width: '60%',
   },
   routeContainer: {
     width: 30,
     height: 30,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   route: {
     width: 8,
     aspectRatio: 1,
     borderRadius: 100,
-    borderColor: "white",
+    borderColor: 'white',
     borderWidth: 1,
   },
   router: {
     padding: 5,
-    alignItems: "center",
+    alignItems: 'center',
     height: 50,
-    width: "100%",
+    width: '100%',
   },
   songInfoContainer: {
-    width: "80%",
+    width: '80%',
     padding: 8,
   },
   songTitle: {
     fontSize: 14,
-    color: "white",
+    color: 'white',
   },
   artistName: {
     fontSize: 12,
-    color: "#777777",
+    color: '#777777',
   },
   playPauseButton: {
     padding: 20,
   },
   routeTitle: {
-    color: "white",
+    color: 'white',
     fontSize: 12,
   },
 });

@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useAppContext } from '../services/AppContext';
+import { useAppContext } from '~/services/AppContext';
 import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 const Player = () => {

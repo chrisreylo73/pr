@@ -4,13 +4,9 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image,
   ScrollView,
   TextInput,
   Alert,
-  Dimensions,
-  PanResponder,
-  Animated,
   ImageBackground,
   Keyboard,
 } from 'react-native';
@@ -95,27 +91,21 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
         onChangeText={onChangeSongTitle}
         value={songTitle}
         caretHidden={false}
-        autoCorrect={false}
-        // autoCapitalize="characters"
-      ></TextInput>
+        autoCorrect={false}></TextInput>
       <Text style={styles.inputHeader}>ARTIST NAME</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeArtistName}
         value={artistName}
         caretHidden={false}
-        autoCorrect={false}
-        // autoCapitalize="characters"
-      ></TextInput>
+        autoCorrect={false}></TextInput>
       <Text style={styles.inputHeader}>ALBUM NAME</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeAlbumName}
         value={albumName}
         caretHidden={false}
-        autoCorrect={false}
-        // autoCapitalize="characters"
-      ></TextInput>
+        autoCorrect={false}></TextInput>
       <View style={styles.coverContainer}>
         <View style={{ width: '50%' }}>
           <Text style={styles.inputHeader}>BACKUP COLOR</Text>
