@@ -71,6 +71,10 @@ const index = () => {
     console.log("DATA MOUNTED");
   }, []);
 
+  useEffect(() => {
+    getArtistNames();
+  }, [songData]);
+
   const fetchData = async () => {
     // Show loading till method finishes
     setIsLoading(true);
@@ -95,9 +99,6 @@ const index = () => {
 
     // Compare the number of stored audioFiles to the ones freshly fetched. If they differ handle new songs
     if (storedAudioFileCount !== fetchedAudioFileCount) {
-      // console.log("NEW SONGS");
-      // console.log("storedAudioFileCount:  ", storedAudioFileCount);
-      // console.log("fetchedAudioFileCount:  ", fetchedAudioFileCount);
       handleNewSongs(fetchedAudioFileData.assets);
     } else {
       const storedSongData = await Storage.getItem({ key: "songData" });
@@ -155,11 +156,6 @@ const index = () => {
     // combine all the songs together and sort the data alphabetically
     let allSongs = [...songData, ...songsWithMetadata];
     allSongs = allSongs.sort((a, b) => a.title.localeCompare(b.title));
-    // Get all unique artist names
-    const artistNames = [
-      ...new Set(allSongs.map((song) => song.artist)),
-    ].sort();
-    console.log(artistNames);
     // store data
     await Storage.setItem({
       key: "songData",
@@ -169,12 +165,23 @@ const index = () => {
       key: "audioFileCount",
       value: JSON.stringify(audioFileData.length),
     });
+    setSongData(allSongs);
+  };
+
+  const getArtistNames = async () => {
+    // Get all unique artist names
+    const allSongs = songData;
+    const artistNames = [...new Set(allSongs.map((song) => song.artist))];
+
+    artistNames.sort();
+
     await Storage.setItem({
       key: "artistNames",
       value: JSON.stringify(artistNames),
     });
-    setSongData(allSongs);
+
     setArtistNames(artistNames);
+    // console.log(artistNames);
   };
 
   // Used to get Random song color

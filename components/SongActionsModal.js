@@ -45,7 +45,8 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
   };
 
   const onUpdate = async () => {
-    const updatedData = songData
+    const songs = [...songData];
+    const updatedSongData = songs
       .map((song) =>
         song.uri === item.uri
           ? {
@@ -56,14 +57,19 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
             }
           : song
       )
-      .sort();
+      .sort((a, b) => a.title.localeCompare(b.title));
 
+    // const updatedArtistNames =
+    // const artistNames = [
+    //   ...new Set(songData.map((song) => song.artist)),
+    // ].sort();
+    // console.log(artistNames);
     await Storage.setItem({
       key: "songData",
-      value: JSON.stringify(updatedData),
+      value: JSON.stringify(updatedSongData),
     });
 
-    setSongData(updatedData);
+    setSongData(updatedSongData);
     // Keyboard.dismiss();
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);

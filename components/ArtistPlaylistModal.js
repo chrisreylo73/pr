@@ -15,7 +15,7 @@ import { useAppContext } from "~/services/AppContext";
 import Footer from "~/components/Footer";
 import { AntDesign } from "@expo/vector-icons";
 
-const UserPlaylistModal = ({
+const ArtistPlaylistModal = ({
   isModalVisable,
   setIsModalVisable,
   playlistName,
@@ -23,27 +23,12 @@ const UserPlaylistModal = ({
   const {
     currentSong,
     setCurrentSong,
-    playState,
-    setPlayState,
-    isLoading,
-    setIsLoading,
     songData,
-    setSongData,
     artistNames,
     setArtistNames,
-    playlistNames,
-    setPlaylistNames,
     isPlayerVisible,
     setIsPlayerVisible,
   } = useAppContext();
-
-  const [filteredSongData, setFilteredSongData] = useState();
-
-  useEffect(() => {
-    filterSongData();
-  }, []);
-
-  const filterSongData = () => {};
 
   const onClose = () => {
     Keyboard.dismiss();
@@ -64,7 +49,6 @@ const UserPlaylistModal = ({
       backdropOpacity={1}
       backdropColor="#090909"
       useNativeDriver={true}
-      // statusBarTranslucent={true}
       onRequestClose={onClose}
     >
       <View style={styles.header}>
@@ -78,7 +62,7 @@ const UserPlaylistModal = ({
       </View>
       <FlatList
         contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
-        data={filteredSongData}
+        data={songData.filter((song) => song.artist === playlistName)}
         renderItem={({ item }) => (
           <Song
             item={item}
@@ -95,7 +79,7 @@ const UserPlaylistModal = ({
   );
 };
 
-export default UserPlaylistModal;
+export default ArtistPlaylistModal;
 
 const styles = StyleSheet.create({
   modal: {
@@ -106,19 +90,12 @@ const styles = StyleSheet.create({
   },
   header: {
     justifyContent: "center",
-    //top: 30,
     alignItems: "center",
-
     width: "100%",
     height: 70,
-    //  position: 'absolute',
-    //  zIndex: 2,
-    //backgroundColor: "#0D0D0D",
     backgroundColor: "black",
-    // paddingTop: 10,
     elevation: 10,
     borderBottomWidth: 2,
-    // borderColor: "black",
     borderColor: "#101010",
   },
   title: {

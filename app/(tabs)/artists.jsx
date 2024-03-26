@@ -33,7 +33,10 @@ const artists = () => {
       <FlatList
         contentContainerStyle={{ paddingBottom: 110, paddingTop: 10 }}
         data={artistNames}
-        renderItem={({ item }) => <ArtistPlaylist playlistName={item} />}
+        extraData={artistNames}
+        renderItem={({ item, index }) => (
+          <ArtistPlaylist playlistName={item} index={index} />
+        )}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
       />

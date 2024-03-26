@@ -15,7 +15,7 @@ import { useAppContext } from "~/services/AppContext";
 import Footer from "~/components/Footer";
 import { AntDesign } from "@expo/vector-icons";
 
-const ArtistPlaylistModal = ({
+const UserPlaylistModal = ({
   isModalVisable,
   setIsModalVisable,
   playlistName,
@@ -23,10 +23,6 @@ const ArtistPlaylistModal = ({
   const {
     currentSong,
     setCurrentSong,
-    playState,
-    setPlayState,
-    isLoading,
-    setIsLoading,
     songData,
     setSongData,
     artistNames,
@@ -37,16 +33,13 @@ const ArtistPlaylistModal = ({
     setIsPlayerVisible,
   } = useAppContext();
 
-  const [filteredSongData, setFilteredSongData] = useState();
+  // const [filteredSongData, setFilteredSongData] = useState();
 
-  useEffect(() => {
-    filterSongData();
-  }, [songData]);
+  // useEffect(() => {
+  //   filterSongData();
+  // }, []);
 
-  const filterSongData = () => {
-    const filtered = songData.filter((song) => song.artist === playlistName);
-    setFilteredSongData(filtered);
-  };
+  // const filterSongData = () => {};
 
   const onClose = () => {
     Keyboard.dismiss();
@@ -81,7 +74,9 @@ const ArtistPlaylistModal = ({
       </View>
       <FlatList
         contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
-        data={filteredSongData}
+        data={songData.filter((song) =>
+          song.playListNames.includes(playlistName)
+        )}
         renderItem={({ item }) => (
           <Song
             item={item}
@@ -98,7 +93,7 @@ const ArtistPlaylistModal = ({
   );
 };
 
-export default ArtistPlaylistModal;
+export default UserPlaylistModal;
 
 const styles = StyleSheet.create({
   modal: {
