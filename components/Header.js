@@ -1,5 +1,5 @@
-import { SafeAreaView, StyleSheet, Text } from "react-native";
-import React from "react";
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import React, { memo, useCallback } from 'react';
 
 const Header = () => {
   return (
@@ -8,24 +8,24 @@ const Header = () => {
     </SafeAreaView>
   );
 };
-export default Header;
+export default memo(Header);
 
 const styles = StyleSheet.create({
   header: {
-    alignSelf: "center",
-    width: "100%",
-    backgroundColor: "black",
+    alignSelf: 'center',
+    width: '100%',
+    backgroundColor: 'black',
     paddingTop: 10,
-    elevation: 10,
-    borderBottomWidth: 2,
+    // elevation: 10,
+    // borderBottomWidth: 2,
   },
   title: {
-    fontSize: 15,
-    fontWeight: "bold",
-    marginBottom: 10,
-    alignSelf: "center",
+    fontSize: 12,
+    fontWeight: 'bold',
+    // marginBottom: 10,
+    alignSelf: 'center',
     letterSpacing: 10,
-    color: "white",
+    color: 'white',
     paddingHorizontal: 20,
   },
 });

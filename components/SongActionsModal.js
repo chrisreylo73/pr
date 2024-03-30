@@ -22,7 +22,7 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
   const { songData, setSongData } = useAppContext();
 
   const onClose = () => {
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);
     setSongTitle(item.title);
@@ -82,7 +82,7 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
       coverScreen={true}
       hasBackdrop={true}
       backdropOpacity={1}
-      backdropColor="#060606"
+      backdropColor="#080808"
       useNativeDriver={true}
       onRequestClose={onClose}>
       <Text style={[styles.inputHeader, { paddingTop: 30 }]}>SONG TITLE</Text>
@@ -91,21 +91,29 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
         onChangeText={onChangeSongTitle}
         value={songTitle}
         caretHidden={false}
-        autoCorrect={false}></TextInput>
+        autoCorrect={false}
+        scrollEnabled={false}
+        numberOfLines={1}></TextInput>
+
       <Text style={styles.inputHeader}>ARTIST NAME</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeArtistName}
         value={artistName}
         caretHidden={false}
-        autoCorrect={false}></TextInput>
+        autoCorrect={false}
+        // scrollEnabled={true}
+        numberOfLines={1}></TextInput>
       <Text style={styles.inputHeader}>ALBUM NAME</Text>
+
       <TextInput
         style={styles.input}
         onChangeText={onChangeAlbumName}
         value={albumName}
         caretHidden={false}
-        autoCorrect={false}></TextInput>
+        autoCorrect={false}
+        // scrollEnabled={true}
+        numberOfLines={1}></TextInput>
       <View style={styles.coverContainer}>
         <View style={{ width: '50%' }}>
           <Text style={styles.inputHeader}>BACKUP COLOR</Text>
@@ -151,8 +159,9 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
     height: 40,
-    borderBottomColor: '#333333',
+    borderBottomColor: '#FFFFFF',
     borderBottomWidth: 2,
+    backgroundColor: 'black',
     // alignSelf: "center",
     textAlign: 'auto',
     fontSize: 15,
@@ -169,7 +178,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 120,
     aspectRatio: 1,
-    borderColor: '#333333',
+    borderColor: '#111111',
     borderWidth: 2,
     borderRadius: 20,
   },
@@ -187,8 +196,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   cancelButton: {
-    borderColor: '#333333',
-    borderWidth: 1,
+    borderColor: '#111111',
+    borderWidth: 2,
     borderRadius: 10,
     width: 100,
     padding: 5,
@@ -196,8 +205,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   createButton: {
-    borderColor: '#333333',
-    borderWidth: 1,
+    borderColor: '#111111',
+    borderWidth: 2,
     borderRadius: 10,
     width: 100,
     padding: 5,

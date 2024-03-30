@@ -1,22 +1,31 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { memo, useCallback } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useAppContext } from '../services/AppContext';
 const Footer = () => {
   const { currentSong, playState, setPlayState, setIsPlayerVisible } = useAppContext();
+
+  const togglePlayState = useCallback(() => {
+    setPlayState((prevState) => !prevState);
+  }, []);
+
+  const showPlayer = useCallback(() => {
+    setIsPlayerVisible(true);
+  }, []);
+
   return (
     <View style={styles.footer}>
       {currentSong && (
-        <TouchableOpacity style={styles.playback} onPress={() => setIsPlayerVisible(true)}>
+        <TouchableOpacity style={styles.playback} onPress={showPlayer}>
           <View style={styles.songInfoContainer}>
             <Text style={styles.songTitle} numberOfLines={1}>
-              {currentSong?.title}
+              {currentSong.title}
             </Text>
             <Text style={styles.artistName} numberOfLines={1}>
-              {currentSong?.artist}
+              {currentSong.artist}
             </Text>
           </View>
-          <TouchableOpacity style={styles.playPauseButton} onPress={() => setPlayState(!playState)}>
+          <TouchableOpacity style={styles.playPauseButton} onPress={togglePlayState}>
             <FontAwesome5 name={playState ? 'play' : 'pause'} size={20} color="white" />
           </TouchableOpacity>
         </TouchableOpacity>
@@ -24,7 +33,7 @@ const Footer = () => {
     </View>
   );
 };
-export default Footer;
+export default memo(Footer);
 const styles = StyleSheet.create({
   footer: {
     flexDirection: 'column',
@@ -34,11 +43,11 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 10,
     bottom: 0,
-    height: 100,
+    height: 70,
     elevation: 8,
     backgroundColor: 'black',
-    borderTopWidth: 2,
-    borderColor: '#0A0A0A',
+    borderTopWidth: 1,
+    borderColor: '#111111',
   },
   playback: {
     flexDirection: 'row',

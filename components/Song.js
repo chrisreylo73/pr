@@ -1,19 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { useAppContext } from '~/services/AppContext';
 import SongActionsModal from '~/components/SongActionsModal';
+import FastImage from 'react-native-fast-image';
+import ExpoFastImage from 'expo-fast-image';
 
-const Song = React.memo(({ item }) => {
-  const [isModalVisable, setIsModalVisable] = useState(false);
-  const { currentSong, setCurrentSong, setIsPlayerVisible } = useAppContext();
+const Song = ({ item }) => {
+  // const [isModalVisable, setIsModalVisable] = useState(false);
+  const {
+    currentSong,
+    setCurrentSong,
+    // setIsPlayerVisible,
+    // songToEdit,
+    // setSongToEdit,
+    // isSongActionsModalVisable,
+    // setIsSongActionsModalVisable,
+  } = useAppContext();
+
+  // const startEditing = () => {
+  //   setSongToEdit(item);
+  //   setIsSongActionsModalVisable(true);
+  // };
+
+  const handlePress = useCallback(() => {
+    setCurrentSong(item);
+    //, setIsPlayerVisible(true);
+  }, [currentSong]);
+
+  const isCurrentSong = currentSong?.title === item.title;
 
   return (
-    <TouchableOpacity
-      style={styles.audioItem}
-      onPress={() => {
-        setCurrentSong(item), setIsPlayerVisible(true);
-      }}
-      onLongPress={() => setIsModalVisable(true)}>
+    <TouchableOpacity style={styles.audioItem} onPress={handlePress}>
       <ImageBackground
         source={{ uri: item.coverArtUri }}
         style={[styles.albumArtContainer, { backgroundColor: item.backupColor }]}>
@@ -22,7 +39,7 @@ const Song = React.memo(({ item }) => {
             style={
               (styles.songTitle,
               {
-                color: currentSong?.title == item.title ? '#FFA500' : 'white',
+                color: isCurrentSong ? '#FFA500' : 'white',
               })
             }
             numberOfLines={1}>
@@ -32,7 +49,7 @@ const Song = React.memo(({ item }) => {
             style={[
               styles.artistName,
               {
-                color: currentSong?.title == item.title ? '#7F6000' : '#777777',
+                color: isCurrentSong ? '#7F6000' : '#777777',
               },
             ]}
             numberOfLines={1}>
@@ -40,18 +57,11 @@ const Song = React.memo(({ item }) => {
           </Text>
         </View>
       </ImageBackground>
-      {isModalVisable && (
-        <SongActionsModal
-          isModalVisable={isModalVisable}
-          setIsModalVisable={setIsModalVisable}
-          item={item}
-        />
-      )}
     </TouchableOpacity>
   );
-});
+};
 
-export default Song;
+export default memo(Song);
 const styles = StyleSheet.create({
   audioItem: {
     flexDirection: 'row',

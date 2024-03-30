@@ -1,5 +1,5 @@
 import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { useState, useEffect } from 'react';
+import { memo, useCallback, useState, useEffect } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import MusicInfo from 'expo-music-info-2';
 import { Storage } from 'expo-storage';
@@ -7,22 +7,7 @@ import { useAppContext } from '~/services/AppContext';
 import Song from '~/components/Song';
 
 const index = () => {
-  const {
-    currentSong,
-    setCurrentSong,
-    playState,
-    setPlayState,
-    isLoading,
-    setIsLoading,
-    songData,
-    setSongData,
-    artistNames,
-    setArtistNames,
-    playlistNames,
-    setPlaylistNames,
-    isPlayerVisible,
-    setIsPlayerVisible,
-  } = useAppContext();
+  const { setIsLoading, songData, setSongData, setArtistNames, setPlaylistNames } = useAppContext();
 
   const backupColors = [
     '#99B2DD',
@@ -73,7 +58,7 @@ const index = () => {
     getArtistNames();
   }, [songData]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     // Show loading till method finishes
     setIsLoading(true);
 
@@ -107,7 +92,7 @@ const index = () => {
       setPlaylistNames(JSON.parse(storedPlaylistNames));
     }
     setIsLoading(false);
-  };
+  }, []);
 
   const handleNewSongs = async (audioFileData) => {
     const songsWithMetadata = await Promise.all(
@@ -196,13 +181,18 @@ const index = () => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
+  const renderItem = ({ item }) => <Song item={item} />;
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        contentContainerStyle={{ paddingBottom: 340, paddingTop: 20 }}
         data={songData}
-        renderItem={({ item }) => <Song item={item} />}
+        renderItem={renderItem}
         keyExtractor={(item) => item.uri}
+        initialNumToRender={5}
+        maxToRenderPerBatch={10}
+        windowSize={10}
+        contentContainerStyle={styles.flatListContent}
       />
     </SafeAreaView>
   );
@@ -214,4 +204,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#080808',
   },
+  flatListContent: { paddingBottom: 340, paddingTop: 20 },
 });

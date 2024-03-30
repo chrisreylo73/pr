@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
 const AppContext = createContext();
 
@@ -11,8 +11,9 @@ export const AppProvider = ({ children }) => {
   const [currentPlaylist, setCurrentPlaylist] = useState();
   const [playState, setPlayState] = useState(false);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
-  const [hideFooter, setHideFooter] = useState(false);
   const [isShuffleOn, setIsShuffleOn] = useState(false);
+  const [songToEdit, setSongToEdit] = useState();
+  const [isSongActionsModalVisable, setIsSongActionsModalVisable] = useState(false);
 
   return (
     <AppContext.Provider
@@ -31,14 +32,15 @@ export const AppProvider = ({ children }) => {
         setCurrentSong,
         currentPlaylist,
         setCurrentPlaylist,
-        hideFooter,
-        setHideFooter,
         isPlayerVisible,
         setIsPlayerVisible,
         isShuffleOn,
         setIsShuffleOn,
-      }}
-    >
+        songToEdit,
+        setSongToEdit,
+        isSongActionsModalVisable,
+        setIsSongActionsModalVisable,
+      }}>
       {children}
     </AppContext.Provider>
   );

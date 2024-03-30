@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   Text,
@@ -58,20 +58,31 @@ const Player = () => {
     },
   });
 
+  const handleClose = useCallback(() => {
+    setIsPlayerVisible(false);
+  }, []);
+
+  const playPauseButtonPressed = useCallback(() => {
+    setPlayState((prevState) => !prevState);
+  }, []);
+  const shuffleButtonPressed = useCallback(() => {
+    setIsShuffleOn((prevState) => !prevState);
+  }, []);
+
+  const addToPlaylistButtonPressed = useCallback(() => {}, []);
+
   return (
     <Modal
       style={styles.modal}
       isVisible={isPlayerVisible}
       animationIn="fadeIn"
       animationOut="fadeOut"
-      animationInTiming={300}
-      animationOutTiming={300}
       coverScreen={true}
       hasBackdrop={true}
       backdropOpacity={1}
       backdropColor="#090909"
       useNativeDriver={true}
-      onRequestClose={() => setIsPlayerVisible(false)}>
+      onRequestClose={handleClose}>
       <View style={styles.infoContainer}>
         <Text style={styles.songTitle}>{currentSong?.title}</Text>
         <Text style={styles.artistName}>{currentSong?.artist}</Text>
@@ -118,17 +129,17 @@ const Player = () => {
         <TouchableOpacity style={styles.prevButton}>
           <FontAwesome5 name="backward" size={20} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.playPauseButton} onPress={() => setPlayState(!playState)}>
+        <TouchableOpacity style={styles.playPauseButton} onPress={playPauseButtonPressed}>
           <FontAwesome5 name={playState ? 'play' : 'pause'} size={20} color="white" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.nextButton}>
           <FontAwesome5 name="forward" size={20} color="white" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.backButton} onPress={() => setIsPlayerVisible(false)}>
+      <TouchableOpacity style={styles.backButton} onPress={handleClose}>
         <AntDesign name="left" size={20} color="white" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.shuffleButton} onPress={() => setIsShuffleOn(!isShuffleOn)}>
+      <TouchableOpacity style={styles.shuffleButton} onPress={shuffleButtonPressed}>
         <MaterialCommunityIcons
           name={isShuffleOn ? 'shuffle-disabled' : 'shuffle'}
           size={isShuffleOn ? 30 : 25}

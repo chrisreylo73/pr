@@ -25,7 +25,7 @@ const Add = () => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={[styles.inputHeader, { paddingTop: 30 }]}>URL</Text>
+        <Text style={[styles.inputHeader, { paddingTop: 10 }]}>URL</Text>
         <TextInput
           style={styles.input}
           onChangeText={onChange}
