@@ -6,14 +6,14 @@ export const AppProvider = ({ children }) => {
   const [songData, setSongData] = useState([]);
   const [playlistNames, setPlaylistNames] = useState([]);
   const [artistNames, setArtistNames] = useState([]);
-  const [isLoading, setIsLoading] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [currentSong, setCurrentSong] = useState();
   const [currentPlaylist, setCurrentPlaylist] = useState();
   const [playState, setPlayState] = useState(false);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [isShuffleOn, setIsShuffleOn] = useState(false);
   const [songToEdit, setSongToEdit] = useState();
-  const [isSongActionsModalVisable, setIsSongActionsModalVisable] = useState(false);
+  const [isEditSongModalVisable, setIsEditSongModalVisable] = useState(false);
 
   return (
     <AppContext.Provider
@@ -38,8 +38,8 @@ export const AppProvider = ({ children }) => {
         setIsShuffleOn,
         songToEdit,
         setSongToEdit,
-        isSongActionsModalVisable,
-        setIsSongActionsModalVisable,
+        isEditSongModalVisable,
+        setIsEditSongModalVisable,
       }}>
       {children}
     </AppContext.Provider>

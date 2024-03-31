@@ -10,42 +10,26 @@ const index = () => {
   const { setIsLoading, songData, setSongData, setArtistNames, setPlaylistNames } = useAppContext();
 
   const backupColors = [
-    '#99B2DD',
-    '#C9C8D3',
-    '#F87575',
-    '#B8D3D1',
-    '#BFD3C1',
-    '#D66853',
-    '#AF3E4D',
-    '#B0C592',
-    '#7EA8BE',
-    '#F2A359',
-    '#7E9181 ',
-    '#9ABCA7',
-    '#A997DF',
-    '#457EAC',
     '#EB5E28',
-    '#A22C29',
-    '#81E979',
-    '#20FC8F',
-    '#06D6A0',
-    '#058E3F',
-    '#FCE694',
-    '#F9CB40',
-    '#FFBE0B',
-    '#FCAA67',
-    '#FF8811',
     '#F15025',
-    '#FF5A5F',
-    '#D7263D',
-    '#DB222A',
     '#F24333',
-    '#7CC6FE',
+    '#DB222A',
+    '#840000',
     '#3A86FF',
-    '#00CECB',
     '#2F52E0',
+    '#6A5ACD',
     '#5E2BFF',
     '#232ED1',
+    '#3CB371',
+    '#2E8B57',
+    '#228B22',
+    '#058E3F',
+    '#32CD32',
+    '#FF5A5F',
+    '#8F00FF',
+    '#F2A359',
+    '#FFBE0B',
+    '#FF8811',
   ];
 
   // Get song data once page mounts
@@ -81,16 +65,16 @@ const index = () => {
 
     // Compare the number of stored audioFiles to the ones freshly fetched. If they differ handle new songs
     if (storedAudioFileCount !== fetchedAudioFileCount) {
-      handleNewSongs(fetchedAudioFileData.assets);
+      await handleNewSongs(fetchedAudioFileData.assets);
     } else {
       // Get Data from storage
       const storedSongData = await Storage.getItem({ key: 'songData' });
       setSongData(JSON.parse(storedSongData));
       const storedArtistNames = await Storage.getItem({ key: 'artistNames' });
       setArtistNames(JSON.parse(storedArtistNames));
-      const storedPlaylistNames = await Storage.getItem({ key: 'playlistNames' });
-      setPlaylistNames(JSON.parse(storedPlaylistNames));
     }
+    const storedPlaylistNames = await Storage.getItem({ key: 'playlistNames' });
+    setPlaylistNames(JSON.parse(storedPlaylistNames));
     setIsLoading(false);
   }, []);
 
@@ -189,9 +173,9 @@ const index = () => {
         data={songData}
         renderItem={renderItem}
         keyExtractor={(item) => item.uri}
-        initialNumToRender={5}
-        maxToRenderPerBatch={10}
-        windowSize={10}
+        initialNumToRender={6}
+        maxToRenderPerBatch={6}
+        windowSize={6}
         contentContainerStyle={styles.flatListContent}
       />
     </SafeAreaView>

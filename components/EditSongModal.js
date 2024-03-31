@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,19 +15,25 @@ import { useAppContext } from '~/services/AppContext';
 import { Storage } from 'expo-storage';
 import { Feather } from '@expo/vector-icons';
 
-const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
-  const [songTitle, setSongTitle] = useState(item.title);
-  const [artistName, setArtistName] = useState(item.artist);
-  const [albumName, setAlbumName] = useState(item.album);
-  const { songData, setSongData } = useAppContext();
+const EditSongModal = () => {
+  const { songData, setSongData, isEditSongModalVisable, setIsEditSongModalVisable, songToEdit } =
+    useAppContext();
+  const [songTitle, setSongTitle] = useState('');
+  const [artistName, setArtistName] = useState('');
+  const [albumName, setAlbumName] = useState('');
+  useEffect(() => {
+    setSongTitle(songToEdit?.title);
+    setArtistName(songToEdit?.artist);
+    setAlbumName(songToEdit?.album);
+  }, [songToEdit]);
 
   const onClose = () => {
     // Keyboard.dismiss();
     setTimeout(() => {}, 5000);
-    setIsModalVisable(false);
-    setSongTitle(item.title);
-    setArtistName(item.artist);
-    setAlbumName(item.album);
+    setIsEditSongModalVisable(false);
+    setSongTitle(songToEdit?.title);
+    setArtistName(songToEdit?.artist);
+    setAlbumName(songToEdit?.album);
   };
 
   const onChangeSongTitle = (inputText) => {
@@ -49,9 +55,9 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
     const songs = [...songData];
     const updatedSongData = songs
       .map((song) =>
-        song.uri === item.uri
+        song.uri === songToEdit?.uri
           ? {
-              ...item,
+              ...songToEdit,
               title: formatSting(songTitle),
               artist: artistName ? formatSting(artistName) : 'Unknown Artist',
               album: albumName ? formatSting(albumName) : 'Unknown Album',
@@ -60,21 +66,21 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
       )
       .sort((a, b) => a.title.localeCompare(b.title));
 
-    await Storage.setItem({
+    await Storage.setsongToEdit({
       key: 'songData',
       value: JSON.stringify(updatedSongData),
     });
 
     setSongData(updatedSongData);
-    // Keyboard.dismiss();
+    Keyboard.dismiss();
     setTimeout(() => {}, 5000);
-    setIsModalVisable(false);
+    setIsEditSongModalVisable(false);
   };
 
   return (
     <Modal
       style={styles.modal}
-      isVisible={isModalVisable}
+      isVisible={isEditSongModalVisable}
       animationIn="fadeIn"
       animationOut="fadeOut"
       animationInTiming={300}
@@ -118,13 +124,16 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
         <View style={{ width: '50%' }}>
           <Text style={styles.inputHeader}>BACKUP COLOR</Text>
           <TouchableOpacity
-            style={[styles.backupColor, { backgroundColor: item.backupColor }]}></TouchableOpacity>
+            style={[
+              styles.backupColor,
+              { backgroundColor: songToEdit?.backupColor },
+            ]}></TouchableOpacity>
         </View>
         <View style={{ width: '50%' }}>
           <Text style={styles.inputHeader}>COVER ART</Text>
           <TouchableOpacity style={[styles.backupColor, { overflow: 'hidden' }]}>
             <ImageBackground
-              source={{ uri: item.coverArtUri }}
+              source={{ uri: songToEdit?.coverArtUri }}
               style={[styles.albumArtContainer, { backgroundColor: 'black' }]}></ImageBackground>
           </TouchableOpacity>
         </View>
@@ -143,13 +152,13 @@ const SongActionsModal = ({ isModalVisable, setIsModalVisable, item }) => {
   );
 };
 
-export default SongActionsModal;
+export default memo(EditSongModal);
 
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignsongToEdits: 'center',
   },
   inputHeader: {
     marginTop: 15,
@@ -202,7 +211,7 @@ const styles = StyleSheet.create({
     width: 100,
     padding: 5,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignsongToEdits: 'center',
   },
   createButton: {
     borderColor: '#111111',
@@ -211,7 +220,7 @@ const styles = StyleSheet.create({
     width: 100,
     padding: 5,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignsongToEdits: 'center',
   },
   deleteButton: {
     padding: 10,
@@ -223,7 +232,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     right: 40,
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignsongToEdits: 'center',
     padding: 15,
     width: 250,
     flexDirection: 'row',

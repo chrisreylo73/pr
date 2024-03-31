@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { useAppContext } from '~/services/AppContext';
-import SongActionsModal from '~/components/SongActionsModal';
+// import SongActionsModal from '~/components/SongActionsModal';
 import FastImage from 'react-native-fast-image';
 import ExpoFastImage from 'expo-fast-image';
 
@@ -11,26 +11,25 @@ const Song = ({ item }) => {
     currentSong,
     setCurrentSong,
     // setIsPlayerVisible,
-    // songToEdit,
-    // setSongToEdit,
+    songToEdit,
+    setSongToEdit,
     // isSongActionsModalVisable,
-    // setIsSongActionsModalVisable,
+    setIsEditSongModalVisable,
   } = useAppContext();
 
-  // const startEditing = () => {
-  //   setSongToEdit(item);
-  //   setIsSongActionsModalVisable(true);
-  // };
+  const startEditing = useCallback(() => {
+    setSongToEdit(item);
+    setIsEditSongModalVisable(true);
+  }, [songToEdit]);
 
   const handlePress = useCallback(() => {
     setCurrentSong(item);
-    //, setIsPlayerVisible(true);
   }, [currentSong]);
 
   const isCurrentSong = currentSong?.title === item.title;
 
   return (
-    <TouchableOpacity style={styles.audioItem} onPress={handlePress}>
+    <TouchableOpacity style={styles.audioItem} onPress={handlePress} onLongPress={startEditing}>
       <ImageBackground
         source={{ uri: item.coverArtUri }}
         style={[styles.albumArtContainer, { backgroundColor: item.backupColor }]}>

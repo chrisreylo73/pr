@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   Text,
@@ -27,6 +27,10 @@ const Player = () => {
     isShuffleOn,
     setIsShuffleOn,
   } = useAppContext();
+
+  // useEffect(() => {
+  //   console.log(currentSong?.backupColor);
+  // }, [currentSong]);
 
   const [spinValue] = useState(new Animated.Value(0));
   const [startAngle, setStartAngle] = useState(0);
@@ -84,7 +88,9 @@ const Player = () => {
       useNativeDriver={true}
       onRequestClose={handleClose}>
       <View style={styles.infoContainer}>
-        <Text style={styles.songTitle}>{currentSong?.title}</Text>
+        <Text style={styles.songTitle} numberOfLines={1}>
+          {currentSong?.title}
+        </Text>
         <Text style={styles.artistName}>{currentSong?.artist}</Text>
       </View>
       <View style={styles.outerCircle}>
@@ -153,7 +159,7 @@ const Player = () => {
   );
 };
 
-export default Player;
+export default memo(Player);
 
 const styles = StyleSheet.create({
   modal: {

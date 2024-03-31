@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import Modal from "react-native-modal";
-import { useAppContext } from "~/services/AppContext";
-import { BarIndicator } from "react-native-indicators";
+import { StyleSheet } from 'react-native';
+import { memo } from 'react';
+import Modal from 'react-native-modal';
+import { useAppContext } from '~/services/AppContext';
+import { BarIndicator } from 'react-native-indicators';
 
 const LoadingModal = () => {
   const { isLoading } = useAppContext();
@@ -19,8 +19,7 @@ const LoadingModal = () => {
       hasBackdrop={true}
       backdropOpacity={1}
       backdropColor="#090909"
-      useNativeDriver={true}
-    >
+      useNativeDriver={true}>
       <BarIndicator color="white" />
       {/* <Text style={{ color: "white", position: "absolute", top: "55%" }}>
         Loading...
@@ -29,14 +28,14 @@ const LoadingModal = () => {
   );
 };
 
-export default LoadingModal;
+export default memo(LoadingModal);
 
 const styles = StyleSheet.create({
   loadingContainer: {
     margin: 0,
     zIndex: 10,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
