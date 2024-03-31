@@ -7,30 +7,31 @@ import { useAppContext } from '~/services/AppContext';
 import Song from '~/components/Song';
 
 const index = () => {
-  const { setIsLoading, songData, setSongData, setArtistNames, setPlaylistNames } = useAppContext();
+  const { backupColors, setIsLoading, songData, setSongData, setArtistNames, setPlaylistNames } =
+    useAppContext();
 
-  const backupColors = [
-    '#EB5E28',
-    '#F15025',
-    '#F24333',
-    '#DB222A',
-    '#840000',
-    '#3A86FF',
-    '#2F52E0',
-    '#6A5ACD',
-    '#5E2BFF',
-    '#232ED1',
-    '#3CB371',
-    '#2E8B57',
-    '#228B22',
-    '#058E3F',
-    '#32CD32',
-    '#FF5A5F',
-    '#8F00FF',
-    '#F2A359',
-    '#FFBE0B',
-    '#FF8811',
-  ];
+  // const backupColors = [
+  //   '#EB5E28',
+  //   '#F15025',
+  //   '#F24333',
+  //   '#DB222A',
+  //   '#840000',
+  //   '#3A86FF',
+  //   '#2F52E0',
+  //   '#6A5ACD',
+  //   '#5E2BFF',
+  //   '#232ED1',
+  //   '#3CB371',
+  //   '#2E8B57',
+  //   '#228B22',
+  //   '#058E3F',
+  //   '#32CD32',
+  //   '#FF5A5F',
+  //   '#8F00FF',
+  //   '#F2A359',
+  //   '#FFBE0B',
+  //   '#FF8811',
+  // ];
 
   // Get song data once page mounts
   useEffect(() => {

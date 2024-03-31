@@ -29,10 +29,17 @@ const Song = ({ item }) => {
   const isCurrentSong = currentSong?.title === item.title;
 
   return (
-    <TouchableOpacity style={styles.audioItem} onPress={handlePress} onLongPress={startEditing}>
+    <TouchableOpacity
+      activeOpacity={0.6}
+      style={styles.audioItem}
+      onPress={handlePress}
+      onLongPress={startEditing}>
       <ImageBackground
         source={{ uri: item.coverArtUri }}
-        style={[styles.albumArtContainer, { backgroundColor: item.backupColor }]}>
+        style={[
+          styles.albumArtContainer,
+          { backgroundColor: item.coverArtUri ? '#000000' : item.backupColor },
+        ]}>
         <View style={styles.songInfoContainer}>
           <Text
             style={

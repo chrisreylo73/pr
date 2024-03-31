@@ -9,6 +9,7 @@ import {
   Alert,
   ImageBackground,
   Keyboard,
+  FlatList,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { useAppContext } from '~/services/AppContext';
@@ -120,6 +121,8 @@ const EditSongModal = () => {
         autoCorrect={false}
         // scrollEnabled={true}
         numberOfLines={1}></TextInput>
+      {/* <FlatList
+      /> */}
       <View style={styles.coverContainer}>
         <View style={{ width: '50%' }}>
           <Text style={styles.inputHeader}>BACKUP COLOR</Text>
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignsongToEdits: 'center',
+    alignItems: 'center',
   },
   inputHeader: {
     marginTop: 15,
