@@ -15,17 +15,28 @@ import Modal from 'react-native-modal';
 import { useAppContext } from '~/services/AppContext';
 import { Storage } from 'expo-storage';
 import { Feather } from '@expo/vector-icons';
+import ColorSellectModal from '~/components/ColorSellectModal';
 
 const EditSongModal = () => {
-  const { songData, setSongData, isEditSongModalVisable, setIsEditSongModalVisable, songToEdit } =
-    useAppContext();
+  const {
+    songData,
+    setSongData,
+    isEditSongModalVisable,
+    setIsEditSongModalVisable,
+    songToEdit,
+    backupColors,
+  } = useAppContext();
   const [songTitle, setSongTitle] = useState('');
   const [artistName, setArtistName] = useState('');
   const [albumName, setAlbumName] = useState('');
+  const [backupColor, setBackupColor] = useState('');
+  const [isColorModalVisable, setIsColorModalVisable] = useState(false);
+
   useEffect(() => {
     setSongTitle(songToEdit?.title);
     setArtistName(songToEdit?.artist);
     setAlbumName(songToEdit?.album);
+    setBackupColor(songToEdit?.backupColor);
   }, [songToEdit]);
 
   const onClose = () => {
@@ -62,21 +73,32 @@ const EditSongModal = () => {
               title: formatSting(songTitle),
               artist: artistName ? formatSting(artistName) : 'Unknown Artist',
               album: albumName ? formatSting(albumName) : 'Unknown Album',
+              backupColor: backupColor,
             }
           : song
       )
       .sort((a, b) => a.title.localeCompare(b.title));
 
-    await Storage.setsongToEdit({
+    await Storage.setItem({
       key: 'songData',
       value: JSON.stringify(updatedSongData),
     });
 
     setSongData(updatedSongData);
     Keyboard.dismiss();
-    setTimeout(() => {}, 5000);
     setIsEditSongModalVisable(false);
   };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={[
+        styles.colorItem,
+        { backgroundColor: item, borderColor: backupColor === item ? 'white' : 'transparent' },
+      ]}
+      item={item}
+      onPress={() => setBackupColor(item)}
+    />
+  );
 
   return (
     <Modal
@@ -92,7 +114,7 @@ const EditSongModal = () => {
       backdropColor="#080808"
       useNativeDriver={true}
       onRequestClose={onClose}>
-      <Text style={[styles.inputHeader, { paddingTop: 30 }]}>SONG TITLE</Text>
+      <Text style={[styles.inputHeader]}>SONG TITLE</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeSongTitle}
@@ -100,7 +122,8 @@ const EditSongModal = () => {
         caretHidden={false}
         autoCorrect={false}
         scrollEnabled={false}
-        numberOfLines={1}></TextInput>
+        numberOfLines={1}
+      />
 
       <Text style={styles.inputHeader}>ARTIST NAME</Text>
       <TextInput
@@ -109,37 +132,36 @@ const EditSongModal = () => {
         value={artistName}
         caretHidden={false}
         autoCorrect={false}
-        // scrollEnabled={true}
-        numberOfLines={1}></TextInput>
-      <Text style={styles.inputHeader}>ALBUM NAME</Text>
+        numberOfLines={1}
+      />
 
+      <Text style={styles.inputHeader}>ALBUM NAME</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeAlbumName}
         value={albumName}
         caretHidden={false}
         autoCorrect={false}
-        // scrollEnabled={true}
-        numberOfLines={1}></TextInput>
-      {/* <FlatList
-      /> */}
-      <View style={styles.coverContainer}>
-        <View style={{ width: '50%' }}>
-          <Text style={styles.inputHeader}>BACKUP COLOR</Text>
-          <TouchableOpacity
-            style={[
-              styles.backupColor,
-              { backgroundColor: songToEdit?.backupColor },
-            ]}></TouchableOpacity>
-        </View>
-        <View style={{ width: '50%' }}>
-          <Text style={styles.inputHeader}>COVER ART</Text>
-          <TouchableOpacity style={[styles.backupColor, { overflow: 'hidden' }]}>
-            <ImageBackground
-              source={{ uri: songToEdit?.coverArtUri }}
-              style={[styles.albumArtContainer, { backgroundColor: 'black' }]}></ImageBackground>
-          </TouchableOpacity>
-        </View>
+        numberOfLines={1}
+      />
+
+      <View style={{ justifyContent: 'flex-start', width: '90%' }}>
+        <Text style={styles.inputHeader}>COVER ART</Text>
+        <TouchableOpacity style={[styles.cover, { overflow: 'hidden' }]}>
+          <ImageBackground
+            source={{ uri: songToEdit?.coverArtUri }}
+            style={[styles.albumArtContainer, { backgroundColor: 'black' }]}></ImageBackground>
+        </TouchableOpacity>
+      </View>
+      <View style={{ justifyContent: 'flex-start', width: '90%' }}>
+        <Text style={styles.inputHeader}>BACKUP COLOR</Text>
+        <FlatList
+          data={backupColors}
+          renderItem={renderItem}
+          keyExtractor={(index) => index.toString()}
+          numColumns={8}
+          contentContainerStyle={styles.colorList}
+        />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.createButton} onPress={onUpdate}>
@@ -164,7 +186,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputHeader: {
-    marginTop: 15,
+    marginVertical: 10,
     width: '90%',
     color: '#333333',
   },
@@ -175,6 +197,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     backgroundColor: 'black',
     // alignSelf: "center",
+    borderRadius: 10,
     textAlign: 'auto',
     fontSize: 15,
     color: 'white',
@@ -183,12 +206,12 @@ const styles = StyleSheet.create({
   coverContainer: {
     flexDirection: 'row',
     width: '90%',
-    justifyContent: 'space-evenly',
+    // justifyContent: 'space-evenly',
     marginTop: 10,
   },
-  backupColor: {
-    marginTop: 10,
-    height: 120,
+  cover: {
+    // marginTop: 10,
+    height: 150,
     aspectRatio: 1,
     borderColor: '#111111',
     borderWidth: 2,
@@ -239,5 +262,15 @@ const styles = StyleSheet.create({
     padding: 15,
     width: 250,
     flexDirection: 'row',
+  },
+  // colorList: {
+  //   width: '90%',
+  // },
+  colorItem: {
+    borderRadius: 10,
+    borderWidth: 4,
+    margin: 4,
+    width: 30,
+    height: 30,
   },
 });

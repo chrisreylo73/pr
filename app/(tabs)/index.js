@@ -5,6 +5,7 @@ import MusicInfo from 'expo-music-info-2';
 import { Storage } from 'expo-storage';
 import { useAppContext } from '~/services/AppContext';
 import Song from '~/components/Song';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const index = () => {
   const { backupColors, setIsLoading, songData, setSongData, setArtistNames, setPlaylistNames } =
@@ -170,15 +171,17 @@ const index = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={songData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.uri}
-        initialNumToRender={6}
-        maxToRenderPerBatch={6}
-        windowSize={6}
-        contentContainerStyle={styles.flatListContent}
-      />
+      <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>
+        <FlatList
+          data={songData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.uri}
+          initialNumToRender={6}
+          maxToRenderPerBatch={6}
+          windowSize={6}
+          contentContainerStyle={styles.flatListContent}
+        />
+      </LinearGradient>
     </SafeAreaView>
   );
 };
@@ -187,7 +190,12 @@ export default index;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#080808',
+    backgroundColor: '#333740',
   },
   flatListContent: { paddingBottom: 340, paddingTop: 20 },
+  gradient: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
 });

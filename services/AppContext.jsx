@@ -35,6 +35,10 @@ export const AppProvider = ({ children }) => {
     '#F2A359',
     '#FFBE0B',
     '#FF8811',
+    '#48647C',
+    '#520C17',
+    '#1d1936',
+    '#123449',
   ]);
 
   return (

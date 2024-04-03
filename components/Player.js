@@ -16,7 +16,7 @@ import Modal from 'react-native-modal';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useAppContext } from '~/services/AppContext';
 import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-
+import AddToPlaylistModal from '~/components/AddToPlaylistModal';
 const Player = () => {
   const {
     currentSong,
@@ -26,11 +26,14 @@ const Player = () => {
     setPlayState,
     isShuffleOn,
     setIsShuffleOn,
+    playlistNames,
+    setPlaylistNames,
   } = useAppContext();
 
   // useEffect(() => {
   //   console.log(currentSong?.backupColor);
   // }, [currentSong]);
+  const [isAddToPlaylistVisable, setIsAddToPlaylistVisable] = useState(false);
 
   const [spinValue] = useState(new Animated.Value(0));
   const [startAngle, setStartAngle] = useState(0);
@@ -152,9 +155,17 @@ const Player = () => {
           color="white"
         />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.addToPlaylistButton}>
+      <TouchableOpacity
+        style={styles.addToPlaylistButton}
+        onPress={() => setIsAddToPlaylistVisable(true)}>
         <Entypo name="add-to-list" size={24} color="white" />
       </TouchableOpacity>
+      <AddToPlaylistModal
+        isAddToPlaylistVisable={isAddToPlaylistVisable}
+        setIsAddToPlaylistVisable={setIsAddToPlaylistVisable}
+        currentSong={currentSong}
+        playlistNames={playlistNames}
+      />
     </Modal>
   );
 };
@@ -259,6 +270,6 @@ const styles = StyleSheet.create({
   recordSongTitle: {
     color: 'white',
     fontSize: 30,
-    opacity: 0.5,
+    opacity: 0.3,
   },
 });

@@ -14,6 +14,7 @@ import {
   ImageBackground,
   Keyboard,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Add = () => {
   const [url, setUrl] = useState('');
@@ -24,19 +25,21 @@ const Add = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text style={[styles.inputHeader, { paddingTop: 10 }]}>URL</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChange}
-          value={url}
-          caretHidden={false}
-          autoCorrect={false}
-          autoCapitalize="characters"></TextInput>
-      </View>
-      <TouchableOpacity style={styles.findButton}>
-        <Text style={{ fontSize: 12, fontWeight: 'bold' }}>SEARCH</Text>
-      </TouchableOpacity>
+      <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>
+        <View style={styles.inputContainer}>
+          <Text style={[styles.inputHeader, { paddingTop: 10 }]}>URL</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChange}
+            value={url}
+            caretHidden={false}
+            autoCorrect={false}
+            autoCapitalize="characters"></TextInput>
+        </View>
+        <TouchableOpacity style={styles.findButton}>
+          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>SEARCH</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 };
@@ -44,6 +47,11 @@ const Add = () => {
 export default Add;
 
 const styles = StyleSheet.create({
+  gradient: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
