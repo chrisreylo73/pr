@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,18 +11,15 @@ import {
   PanResponder,
   Animated,
   ImageBackground,
-} from "react-native";
-import ArtistPlaylistModal from "~/components/ArtistPlaylistModal";
+} from 'react-native';
+import ArtistPlaylistModal from '~/components/ArtistPlaylistModal';
 
 const ArtistPlaylist = ({ playlistName, index }) => {
   const [isModalVisable, setIsModalVisable] = useState(false);
 
   return (
     <>
-      <TouchableOpacity
-        style={styles.container}
-        onPress={() => setIsModalVisable(true)}
-      >
+      <TouchableOpacity style={styles.container} onPress={() => setIsModalVisable(true)}>
         <Text style={styles.title}>{playlistName?.toUpperCase()}</Text>
       </TouchableOpacity>
       <ArtistPlaylistModal
@@ -38,20 +35,20 @@ export default ArtistPlaylist;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
     width: 170,
     padding: 8,
     margin: 8,
     aspectRatio: 1,
     borderRadius: 15,
     elevation: 8,
-    borderColor: "#0B0B0B",
-    borderWidth: 2,
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
+    borderColor: '#111111',
+    borderWidth: 1,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
-    color: "white",
+    color: 'white',
   },
 });
