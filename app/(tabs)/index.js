@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
 import { memo, useCallback, useState, useEffect } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import MusicInfo from 'expo-music-info-2';
@@ -6,34 +6,11 @@ import { Storage } from 'expo-storage';
 import { useAppContext } from '~/services/AppContext';
 import Song from '~/components/Song';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Feather } from '@expo/vector-icons';
 
 const index = () => {
   const { backupColors, setIsLoading, songData, setSongData, setArtistNames, setPlaylistNames } =
     useAppContext();
-
-  // const backupColors = [
-  //   '#EB5E28',
-  //   '#F15025',
-  //   '#F24333',
-  //   '#DB222A',
-  //   '#840000',
-  //   '#3A86FF',
-  //   '#2F52E0',
-  //   '#6A5ACD',
-  //   '#5E2BFF',
-  //   '#232ED1',
-  //   '#3CB371',
-  //   '#2E8B57',
-  //   '#228B22',
-  //   '#058E3F',
-  //   '#32CD32',
-  //   '#FF5A5F',
-  //   '#8F00FF',
-  //   '#F2A359',
-  //   '#FFBE0B',
-  //   '#FF8811',
-  // ];
-
   // Get song data once page mounts
   useEffect(() => {
     fetchData();
@@ -167,7 +144,7 @@ const index = () => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  const renderItem = ({ item }) => <Song item={item} />;
+  const renderItem = ({ item }) => <Song item={item} allSongs />;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -182,6 +159,9 @@ const index = () => {
           contentContainerStyle={styles.flatListContent}
         />
       </LinearGradient>
+      {/* <TouchableOpacity style={styles.moreButton}>
+        <Feather name="plus" size={15} color="white" />
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };
@@ -197,5 +177,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
+  },
+  moreButton: {
+    position: 'absolute',
+    // right: 20,
+    bottom: 70,
+    backgroundColor: 'black',
+    padding: 10,
   },
 });

@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import ArtistPlaylistModal from '~/components/ArtistPlaylistModal';
 
-const ArtistPlaylist = ({ playlistName, index }) => {
+const ArtistPlaylist = ({ playlistName }) => {
   const [isModalVisable, setIsModalVisable] = useState(false);
 
   return (

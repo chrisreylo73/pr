@@ -32,7 +32,7 @@ const Layout = () => {
         tabBarInactiveTintColor: 'black',
         tabBarIndicatorStyle: { backgroundColor: 'white' },
       }}>
-      <MaterialTopTabs.Screen name="add" options={{ title: 'Add' }} />
+      {/* <MaterialTopTabs.Screen name="add" options={{ title: 'Add' }} /> */}
       <MaterialTopTabs.Screen name="index" options={{ title: 'SONGS' }} />
       <MaterialTopTabs.Screen name="artists" options={{ title: 'ARTISTS' }} />
       <MaterialTopTabs.Screen name="playlists" options={{ title: 'Playlists' }} />

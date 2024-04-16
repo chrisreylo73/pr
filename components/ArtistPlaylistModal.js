@@ -32,6 +32,7 @@ const ArtistPlaylistModal = ({ isModalVisable, setIsModalVisable, playlistName }
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);
   };
+  const renderItem = ({ item }) => <Song item={item} />;
 
   return (
     <Modal
@@ -57,15 +58,7 @@ const ArtistPlaylistModal = ({ isModalVisable, setIsModalVisable, playlistName }
         <FlatList
           contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
           data={songData.filter((song) => song.artist === playlistName)}
-          renderItem={({ item }) => (
-            <Song
-              item={item}
-              setCurrentSong={setCurrentSong}
-              currentSong={currentSong}
-              setIsPlayerVisible={setIsPlayerVisible}
-              isPlayerVisible={isPlayerVisible}
-            />
-          )}
+          renderItem={renderItem}
           keyExtractor={(item) => item.uri}
         />
         <Footer />

@@ -5,7 +5,7 @@ import { useAppContext } from '~/services/AppContext';
 import FastImage from 'react-native-fast-image';
 import ExpoFastImage from 'expo-fast-image';
 
-const Song = ({ item }) => {
+const Song = ({ item, allSongs, list }) => {
   // const [isModalVisable, setIsModalVisable] = useState(false);
   const {
     currentSong,
@@ -24,6 +24,11 @@ const Song = ({ item }) => {
 
   const handlePress = useCallback(() => {
     setCurrentSong(item);
+    if (allSongs) {
+      setCurrentPlaylistSongs(songData);
+    } else {
+      setCurrentPlaylist();
+    }
   }, [currentSong]);
 
   const isCurrentSong = currentSong?.title === item.title;

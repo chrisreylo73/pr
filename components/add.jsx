@@ -19,9 +19,12 @@ import ytdl from 'react-native-ytdl';
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
 import { Feather } from '@expo/vector-icons';
+import { Audio } from 'expo-av';
 
 const Add = () => {
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(
+    'https://www.youtube.com/watch?v=HlTJ9ty3-7k&list=PL39VDaR03WJnGM0oQul7UlUMlGDeRErwJ&index=52'
+  );
   const [songTitle, setSongTitle] = useState('');
   const [artistName, setArtistName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -70,32 +73,51 @@ const Add = () => {
       console.log('!artistName');
       resetError();
       return;
-    } else if (!isValidUrl()) {
-      setGotError(true);
-      setErrorMessage('Invalid URL');
-      console.log('!isValidUrl');
-      resetError();
-      return;
     }
+    // else if (!isValidUrl()) {
+    //   setGotError(true);
+    //   setErrorMessage('Invalid URL');
+    //   console.log('!isValidUrl');
+    //   resetError();
+    //   return;
+    // }
     setErrorMessage('');
 
-    const audioUrl = await fetchAudioUrl();
-    const destinationUri = FileSystem.documentDirectory + 'audio.mp3';
+    try {
+      const audioUrl = await fetchAudioUrl();
+      const downloadObject = FileSystem.createDownloadResumable(
+        audioUrl,
+        FileSystem.documentDirectory + songTitle + '.mp3'
+      );
+      const { uri } = await downloadObject.downloadAsync();
+      console.log('Audio downloaded to:', uri);
+      // const { sound } = await Audio.Sound.createAsync({ uri });
+      // setSound(sound);
+      // await sound.playAsync();
+    } catch (error) {
+      console.error('Failed to download audio:', error);
+    }
+    checkIfFileExists();
+    // await sound.playAsync();
+  };
 
-    // try {
-    //   const downloadObject = FileSystem.createDownloadResumable(audioUrl, destinationUri);
-    //   const { uri } = await downloadObject.downloadAsync();
-    //   console.log('Audio downloaded to:', uri);
-    // } catch (error) {
-    //   console.error('Failed to download audio:', error);
-    // }
+  const checkIfFileExists = async () => {
+    try {
+      const fileUri = FileSystem.documentDirectory + songTitle + '.mp3';
+      const fileInfo = await FileSystem.getInfoAsync(fileUri);
+      console.log(fileInfo.exists);
+      // return fileInfo.exists;
+    } catch (error) {
+      console.error('Error checking file existence:', error);
+      return false;
+    }
   };
 
   const fetchAudioUrl = async () => {
     const youtubeURL =
       'https://www.youtube.com/watch?v=HlTJ9ty3-7k&list=PL39VDaR03WJnGM0oQul7UlUMlGDeRErwJ&index=52';
 
-    const info = await ytdl.getInfo(youtubeURL);
+    const info = await ytdl.getInfo(url);
     const audioFormat = ytdl.chooseFormat(info.formats, { filter: 'audioonly' });
     console.log(audioFormat.url);
     return audioFormat.url;

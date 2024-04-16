@@ -24,14 +24,17 @@ const playlists = () => {
     setIsPlayerVisible,
   } = useAppContext();
   const [isModalVisable, setIsModalVisable] = useState(false);
+
+  const renderItem = ({ item }) => <UserPlaylist playlistName={item} />;
+
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>
         <FlatList
           contentContainerStyle={{ paddingBottom: 110, paddingTop: 10 }}
           data={playlistNames}
-          renderItem={({ item }) => <UserPlaylist playlistName={item} />}
-          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          keyExtractor={(index) => index.toString()}
           numColumns={2}
         />
         <TouchableOpacity

@@ -14,6 +14,8 @@ export const AppProvider = ({ children }) => {
   const [isShuffleOn, setIsShuffleOn] = useState(false);
   const [songToEdit, setSongToEdit] = useState();
   const [isEditSongModalVisable, setIsEditSongModalVisable] = useState(false);
+  const [audio, setAudio] = useState(null);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [backupColors, setBackupColors] = useState([
     '#EB5E28',
     '#F15025',
@@ -67,6 +69,10 @@ export const AppProvider = ({ children }) => {
         isEditSongModalVisable,
         setIsEditSongModalVisable,
         backupColors,
+        audio,
+        setAudio,
+        currentSongIndex,
+        setCurrentSongIndex,
       }}>
       {children}
     </AppContext.Provider>

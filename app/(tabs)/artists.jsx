@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const artists = () => {
   const { artistNames } = useAppContext();
-
+  const renderItem = ({ item }) => <ArtistPlaylist playlistName={item} />;
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>
@@ -14,7 +14,7 @@ const artists = () => {
           contentContainerStyle={{ paddingBottom: 110, paddingTop: 10 }}
           data={artistNames}
           extraData={artistNames}
-          renderItem={({ item, index }) => <ArtistPlaylist playlistName={item} index={index} />}
+          renderItem={renderItem}
           keyExtractor={(index) => index.toString()}
           numColumns={2}
         />

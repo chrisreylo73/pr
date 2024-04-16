@@ -17,6 +17,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useAppContext } from '~/services/AppContext';
 import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import AddToPlaylistModal from '~/components/AddToPlaylistModal';
+import { Audio } from 'expo-av';
+
 const Player = () => {
   const {
     currentSong,
@@ -28,15 +30,30 @@ const Player = () => {
     setIsShuffleOn,
     playlistNames,
     setPlaylistNames,
+    audio,
+    setAudio,
+    currentSongIndex,
+    setCurrentSongIndex,
   } = useAppContext();
 
-  // useEffect(() => {
-  //   console.log(currentSong?.backupColor);
-  // }, [currentSong]);
   const [isAddToPlaylistVisable, setIsAddToPlaylistVisable] = useState(false);
-
   const [spinValue] = useState(new Animated.Value(0));
   const [startAngle, setStartAngle] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      if (currentSong) {
+        setPlayState(true);
+        if (audio) {
+          await audio.unloadAsync();
+        }
+        const uri = currentSong.uri;
+        const { sound } = await Audio.Sound.createAsync({ uri });
+        setAudio(sound);
+        await sound.playAsync();
+      }
+    })();
+  }, [currentSong]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -69,9 +86,18 @@ const Player = () => {
     setIsPlayerVisible(false);
   }, []);
 
-  const playPauseButtonPressed = useCallback(() => {
-    setPlayState((prevState) => !prevState);
-  }, []);
+  const playPauseButtonPressed = async () => {
+    if (audio) {
+      if (playState) {
+        await audio.pauseAsync();
+        setPlayState(false);
+      } else {
+        await audio.playAsync();
+        setPlayState(true);
+      }
+    }
+  };
+
   const shuffleButtonPressed = useCallback(() => {
     setIsShuffleOn((prevState) => !prevState);
   }, []);
@@ -139,7 +165,7 @@ const Player = () => {
           <FontAwesome5 name="backward" size={20} color="white" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.playPauseButton} onPress={playPauseButtonPressed}>
-          <FontAwesome5 name={playState ? 'play' : 'pause'} size={20} color="white" />
+          <FontAwesome5 name={playState ? 'pause' : 'play'} size={20} color="white" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.nextButton}>
           <FontAwesome5 name="forward" size={20} color="white" />
