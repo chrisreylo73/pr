@@ -145,7 +145,7 @@ const EditSongModal = () => {
         numberOfLines={1}
       />
 
-      <View style={{ justifyContent: 'flex-start', width: '90%' }}>
+      <View style={{ justifyContent: 'flex-start', width: '100%' }}>
         <Text style={styles.inputHeader}>COVER ART</Text>
         <TouchableOpacity style={[styles.cover, { overflow: 'hidden' }]}>
           <ImageBackground
@@ -153,7 +153,7 @@ const EditSongModal = () => {
             style={[styles.albumArtContainer, { backgroundColor: 'black' }]}></ImageBackground>
         </TouchableOpacity>
       </View>
-      <View style={{ justifyContent: 'flex-start', width: '90%' }}>
+      <View style={{ justifyContent: 'flex-start', width: '100%' }}>
         <Text style={styles.inputHeader}>BACKUP COLOR</Text>
         <FlatList
           data={backupColors}
@@ -187,11 +187,11 @@ const styles = StyleSheet.create({
   },
   inputHeader: {
     marginVertical: 10,
-    width: '90%',
+    width: '100%',
     color: '#333333',
   },
   input: {
-    width: '90%',
+    width: '100%',
     height: 40,
     borderBottomColor: '#FFFFFF',
     borderBottomWidth: 2,
@@ -204,8 +204,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   coverContainer: {
-    flexDirection: 'row',
-    width: '90%',
+    // flexDirection: 'row',
+    width: '100%',
     // justifyContent: 'space-evenly',
     marginTop: 10,
   },
@@ -224,12 +224,12 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 10,
   },
-  backButton: {
-    position: 'absolute',
-    top: 25,
-    left: 0,
-    padding: 20,
-  },
+  // backButton: {
+  //   position: 'absolute',
+  //   top: 25,
+  //   left: 0,
+  //   padding: 20,
+  // },
   cancelButton: {
     borderColor: '#111111',
     borderWidth: 2,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     width: 100,
     padding: 5,
     flexDirection: 'row',
-    alignsongToEdits: 'center',
+    marginLeft: 10,
   },
   createButton: {
     borderColor: '#111111',
@@ -246,7 +246,6 @@ const styles = StyleSheet.create({
     width: 100,
     padding: 5,
     flexDirection: 'row',
-    alignsongToEdits: 'center',
   },
   deleteButton: {
     padding: 10,
@@ -256,16 +255,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     // position: "absolute",
     marginTop: 5,
-    right: 40,
-    justifyContent: 'space-between',
-    alignsongToEdits: 'center',
+    // justifyContent: 'space-between',
     padding: 15,
-    width: 250,
+    width: '100%',
     flexDirection: 'row',
   },
-  // colorList: {
-  //   width: '90%',
-  // },
   colorItem: {
     borderRadius: 10,
     borderWidth: 4,

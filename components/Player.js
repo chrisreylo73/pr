@@ -151,7 +151,7 @@ const Player = () => {
       <TouchableOpacity style={styles.shuffleButton} onPress={shuffleButtonPressed}>
         <MaterialCommunityIcons
           name={isShuffleOn ? 'shuffle-disabled' : 'shuffle'}
-          size={isShuffleOn ? 30 : 25}
+          size={isShuffleOn ? 28 : 25}
           color="white"
         />
       </TouchableOpacity>
@@ -251,15 +251,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 20,
-    right: 20,
+    padding: 20,
+    bottom: 0,
+    right: 0,
   },
   addToPlaylistButton: {
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 20,
-    left: 20,
+    padding: 20,
+    bottom: 0,
+    left: 0,
   },
   backButton: {
     position: 'absolute',

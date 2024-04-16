@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,18 +8,15 @@ import {
   ActivityIndicator,
   ViewToken,
   Keyboard,
-} from "react-native";
-import Modal from "react-native-modal";
-import Song from "~/components/Song";
-import { useAppContext } from "~/services/AppContext";
-import Footer from "~/components/Footer";
-import { AntDesign } from "@expo/vector-icons";
+} from 'react-native';
+import Modal from 'react-native-modal';
+import Song from '~/components/Song';
+import { useAppContext } from '~/services/AppContext';
+import Footer from '~/components/Footer';
+import { AntDesign } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const ArtistPlaylistModal = ({
-  isModalVisable,
-  setIsModalVisable,
-  playlistName,
-}) => {
+const ArtistPlaylistModal = ({ isModalVisable, setIsModalVisable, playlistName }) => {
   const {
     currentSong,
     setCurrentSong,
@@ -49,32 +46,30 @@ const ArtistPlaylistModal = ({
       backdropOpacity={1}
       backdropColor="#090909"
       useNativeDriver={true}
-      onRequestClose={onClose}
-    >
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => setIsModalVisable(false)}
-        >
-          <AntDesign name="left" size={20} color="white" />
-        </TouchableOpacity>
-        <Text style={styles.title}>{playlistName.toUpperCase()}</Text>
-      </View>
-      <FlatList
-        contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
-        data={songData.filter((song) => song.artist === playlistName)}
-        renderItem={({ item }) => (
-          <Song
-            item={item}
-            setCurrentSong={setCurrentSong}
-            currentSong={currentSong}
-            setIsPlayerVisible={setIsPlayerVisible}
-            isPlayerVisible={isPlayerVisible}
-          />
-        )}
-        keyExtractor={(item) => item.uri}
-      />
-      <Footer />
+      onRequestClose={onClose}>
+      <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={() => setIsModalVisable(false)}>
+            <AntDesign name="left" size={20} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.title}>{playlistName.toUpperCase()}</Text>
+        </View>
+        <FlatList
+          contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
+          data={songData.filter((song) => song.artist === playlistName)}
+          renderItem={({ item }) => (
+            <Song
+              item={item}
+              setCurrentSong={setCurrentSong}
+              currentSong={currentSong}
+              setIsPlayerVisible={setIsPlayerVisible}
+              isPlayerVisible={isPlayerVisible}
+            />
+          )}
+          keyExtractor={(item) => item.uri}
+        />
+        <Footer />
+      </LinearGradient>
     </Modal>
   );
 };
@@ -84,30 +79,35 @@ export default ArtistPlaylistModal;
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 0,
   },
+  gradient: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
   header: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
     height: 70,
-    backgroundColor: "black",
+    backgroundColor: 'black',
     elevation: 10,
-    borderBottomWidth: 2,
-    borderColor: "#101010",
+    borderBottomWidth: 1,
+    borderColor: '#111111',
   },
   title: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 5,
-    alignSelf: "center",
+    alignSelf: 'center',
     letterSpacing: 2,
-    color: "white",
+    color: 'white',
   },
   backButton: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     padding: 20,

@@ -15,13 +15,107 @@ import {
   Keyboard,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import ytdl from 'react-native-ytdl';
+import * as FileSystem from 'expo-file-system';
+import * as Permissions from 'expo-permissions';
+import { Feather } from '@expo/vector-icons';
 
 const Add = () => {
   const [url, setUrl] = useState('');
+  const [songTitle, setSongTitle] = useState('');
+  const [artistName, setArtistName] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [gotError, setGotError] = useState(false);
 
-  const onChange = (inputText) => {
+  const urlChange = (inputText) => {
     setUrl(inputText);
   };
+
+  const songTitleChange = (inputText) => {
+    setSongTitle(inputText);
+  };
+
+  const artistNameChange = (inputText) => {
+    setArtistName(inputText);
+  };
+
+  const isValidUrl = () => {
+    const youtubePattern =
+      /^(http(s)?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([\w\-]+)(\?\S*)?$/;
+    return youtubePattern.test(url);
+  };
+
+  const resetError = () => {
+    setTimeout(() => {
+      setGotError(false);
+    }, 5000);
+  };
+
+  const onPress = async () => {
+    if (!url) {
+      setGotError(true);
+      setErrorMessage('Please fill out URL');
+      console.log('!url');
+      resetError();
+      return;
+    } else if (!songTitle) {
+      setGotError(true);
+      setErrorMessage('Please fill out song title');
+      console.log('!songTitle');
+      resetError();
+      return;
+    } else if (!artistName) {
+      setGotError(true);
+      setErrorMessage('Please fill out artist name');
+      console.log('!artistName');
+      resetError();
+      return;
+    } else if (!isValidUrl()) {
+      setGotError(true);
+      setErrorMessage('Invalid URL');
+      console.log('!isValidUrl');
+      resetError();
+      return;
+    }
+    setErrorMessage('');
+
+    const audioUrl = await fetchAudioUrl();
+    const destinationUri = FileSystem.documentDirectory + 'audio.mp3';
+
+    // try {
+    //   const downloadObject = FileSystem.createDownloadResumable(audioUrl, destinationUri);
+    //   const { uri } = await downloadObject.downloadAsync();
+    //   console.log('Audio downloaded to:', uri);
+    // } catch (error) {
+    //   console.error('Failed to download audio:', error);
+    // }
+  };
+
+  const fetchAudioUrl = async () => {
+    const youtubeURL =
+      'https://www.youtube.com/watch?v=HlTJ9ty3-7k&list=PL39VDaR03WJnGM0oQul7UlUMlGDeRErwJ&index=52';
+
+    const info = await ytdl.getInfo(youtubeURL);
+    const audioFormat = ytdl.chooseFormat(info.formats, { filter: 'audioonly' });
+    console.log(audioFormat.url);
+    return audioFormat.url;
+  };
+
+  // async function downloadAudio() {
+  //   const audioUrl = await fetchAudioUrl();
+  //   const destinationPath = `${RNFS.DocumentDirectoryPath}/audio.mp3`;
+
+  //   const downloadResult = await RNFS.downloadFile({
+  //     fromUrl: audioUrl,
+  //     toFile: destinationPath,
+  //   });
+
+  //   if (downloadResult.statusCode === 200) {
+  //     console.log('Audio downloaded successfully');
+  //   } else {
+  //     console.error('Failed to download audio');
+  //   }
+  // }
 
   return (
     <View style={styles.container}>
@@ -30,14 +124,32 @@ const Add = () => {
           <Text style={[styles.inputHeader, { paddingTop: 10 }]}>URL</Text>
           <TextInput
             style={styles.input}
-            onChangeText={onChange}
+            onChangeText={urlChange}
             value={url}
             caretHidden={false}
             autoCorrect={false}
             autoCapitalize="characters"></TextInput>
+          <Text style={[styles.inputHeader, { paddingTop: 10 }]}>SONG TITLE</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={songTitleChange}
+            value={songTitle}
+            caretHidden={false}
+            autoCorrect={false}
+            autoCapitalize="characters"></TextInput>
+          <Text style={[styles.inputHeader, { paddingTop: 10 }]}>SONG ARTIST</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={artistNameChange}
+            value={artistName}
+            caretHidden={false}
+            autoCorrect={false}
+            autoCapitalize="characters"></TextInput>
+          <Text style={[styles.inputHeader, { paddingTop: 10 }]}>COVER ART</Text>
+          <TouchableOpacity style={styles.coverArtContainer}></TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.findButton}>
-          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>SEARCH</Text>
+        <TouchableOpacity style={styles.downloadButton} onPress={onPress}>
+          <Feather name="download" size={24} color="black" />
         </TouchableOpacity>
       </LinearGradient>
     </View>
@@ -60,8 +172,9 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '90%',
-    top: 0,
+    alignSelf: 'center',
     position: 'absolute',
+    top: 0,
   },
   inputHeader: {
     marginTop: 15,
@@ -75,22 +188,33 @@ const styles = StyleSheet.create({
     borderBottomColor: '#FFFFFF',
     borderBottomWidth: 1,
     backgroundColor: 'black',
-    // alignSelf: "center",
     textAlign: 'auto',
     fontSize: 15,
     color: '#FFA500',
     paddingHorizontal: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    elevation: 5,
   },
-  findButton: {
+  downloadButton: {
+    alignSelf: 'center',
     position: 'absolute',
-    width: 100,
+    width: '90%',
     height: 40,
     borderRadius: 10,
     backgroundColor: 'white',
-    bottom: 110,
-    left: 10,
+    bottom: 80,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  addButton: {},
+  coverArtContainer: {
+    width: 250,
+    aspectRatio: 1,
+    elevation: 10,
+    borderRadius: 20,
+    borderColor: '#111111',
+    borderWidth: 1,
+    backgroundColor: 'black',
+    // alignSelf: 'center',
+  },
 });
