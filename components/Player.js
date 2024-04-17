@@ -34,6 +34,9 @@ const Player = () => {
     setAudio,
     currentSongIndex,
     setCurrentSongIndex,
+    currentPlaylistName,
+    currentPlaylistData,
+    setCurrentSong,
   } = useAppContext();
 
   const [isAddToPlaylistVisable, setIsAddToPlaylistVisable] = useState(false);
@@ -53,6 +56,8 @@ const Player = () => {
         await sound.playAsync();
       }
     })();
+    // setCurrentSongIndex(currentPlaylistData.findIndex((song) => song === currentSong));
+    // console.log(currentSongIndex);
   }, [currentSong]);
 
   const panResponder = PanResponder.create({
@@ -96,6 +101,17 @@ const Player = () => {
         setPlayState(true);
       }
     }
+  };
+
+  const prevButtonPressed = async () => {
+    const prevSongIndex = currentSongIndex - 1;
+    setCurrentSongIndex(prevSongIndex);
+    setCurrentSong(currentPlaylistData[prevSongIndex]);
+  };
+  const nextButtonPressed = async () => {
+    const nextSongIndex = currentSongIndex + 1;
+    setCurrentSongIndex(nextSongIndex);
+    setCurrentSong(currentPlaylistData[nextSongIndex]);
   };
 
   const shuffleButtonPressed = useCallback(() => {
@@ -161,13 +177,13 @@ const Player = () => {
         </View>
       </View>
       <View style={styles.playbackButtonContainer}>
-        <TouchableOpacity style={styles.prevButton}>
+        <TouchableOpacity style={styles.prevButton} onPress={prevButtonPressed}>
           <FontAwesome5 name="backward" size={20} color="white" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.playPauseButton} onPress={playPauseButtonPressed}>
           <FontAwesome5 name={playState ? 'pause' : 'play'} size={20} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.nextButton}>
+        <TouchableOpacity style={styles.nextButton} onPress={nextButtonPressed}>
           <FontAwesome5 name="forward" size={20} color="white" />
         </TouchableOpacity>
       </View>
@@ -186,6 +202,9 @@ const Player = () => {
         onPress={() => setIsAddToPlaylistVisable(true)}>
         <Entypo name="add-to-list" size={24} color="white" />
       </TouchableOpacity>
+      <View style={styles.currentPlaylistName}>
+        <Text style={{ color: '#FFA500' }}>{currentPlaylistName}</Text>
+      </View>
       <AddToPlaylistModal
         isAddToPlaylistVisable={isAddToPlaylistVisable}
         setIsAddToPlaylistVisable={setIsAddToPlaylistVisable}
@@ -299,5 +318,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     opacity: 0.3,
+  },
+  currentPlaylistName: {
+    position: 'absolute',
+    padding: 5,
+    bottom: 0,
   },
 });

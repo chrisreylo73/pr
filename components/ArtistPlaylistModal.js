@@ -32,7 +32,9 @@ const ArtistPlaylistModal = ({ isModalVisable, setIsModalVisable, playlistName }
     setTimeout(() => {}, 5000);
     setIsModalVisable(false);
   };
-  const renderItem = ({ item }) => <Song item={item} />;
+  const renderItem = ({ item, index }) => (
+    <Song item={item} index={index} listName={playlistName} listType="artist" />
+  );
 
   return (
     <Modal

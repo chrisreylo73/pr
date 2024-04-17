@@ -8,7 +8,7 @@ export const AppProvider = ({ children }) => {
   const [artistNames, setArtistNames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentSong, setCurrentSong] = useState();
-  const [currentPlaylist, setCurrentPlaylist] = useState();
+
   const [playState, setPlayState] = useState(false);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [isShuffleOn, setIsShuffleOn] = useState(false);
@@ -16,6 +16,8 @@ export const AppProvider = ({ children }) => {
   const [isEditSongModalVisable, setIsEditSongModalVisable] = useState(false);
   const [audio, setAudio] = useState(null);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [currentPlaylistName, setCurrentPlaylistName] = useState('');
+  const [currentPlaylistData, setCurrentPlaylistData] = useState([]);
   const [backupColors, setBackupColors] = useState([
     '#EB5E28',
     '#F15025',
@@ -58,8 +60,10 @@ export const AppProvider = ({ children }) => {
         setIsLoading,
         currentSong,
         setCurrentSong,
-        currentPlaylist,
-        setCurrentPlaylist,
+        currentPlaylistName,
+        setCurrentPlaylistName,
+        currentPlaylistData,
+        setCurrentPlaylistData,
         isPlayerVisible,
         setIsPlayerVisible,
         isShuffleOn,

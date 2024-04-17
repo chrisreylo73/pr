@@ -26,7 +26,7 @@ const Layout = () => {
           backgroundColor: 'black',
           height: 42,
           borderBottomColor: '#111111',
-          borderWidth: 1,
+          borderWidth: 2,
         },
         tabBarActiveTintColor: '#333333',
         tabBarInactiveTintColor: 'black',

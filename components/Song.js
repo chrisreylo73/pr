@@ -5,16 +5,19 @@ import { useAppContext } from '~/services/AppContext';
 import FastImage from 'react-native-fast-image';
 import ExpoFastImage from 'expo-fast-image';
 
-const Song = ({ item, allSongs, list }) => {
+const Song = ({ item, listType, listName, index }) => {
   // const [isModalVisable, setIsModalVisable] = useState(false);
   const {
     currentSong,
     setCurrentSong,
-    // setIsPlayerVisible,
+    songData,
     songToEdit,
     setSongToEdit,
-    // isSongActionsModalVisable,
     setIsEditSongModalVisable,
+    setCurrentPlaylistData,
+    setCurrentPlaylistName,
+    currentPlaylistName,
+    setCurrentSongIndex,
   } = useAppContext();
 
   const startEditing = useCallback(() => {
@@ -24,11 +27,29 @@ const Song = ({ item, allSongs, list }) => {
 
   const handlePress = useCallback(() => {
     setCurrentSong(item);
-    if (allSongs) {
-      setCurrentPlaylistSongs(songData);
-    } else {
-      setCurrentPlaylist();
+    // let songIndex = 0;
+    let filteredSongs = [];
+    if (listType === 'allSongs') {
+      // songIndex = songData.findIndex((song) => song.uri === currentSong.uri);
+      setCurrentPlaylistData(songData);
+      setCurrentPlaylistName('');
+    } else if (listType === 'artist' && currentPlaylistName !== listName) {
+      filteredSongs = songData.filter((song) => song.artist === listName);
+      // songIndex = filteredSongs.findIndex((song) => song.uri === currentSong.uri);
+      setCurrentPlaylistData(filteredSongs);
+      setCurrentPlaylistName(listName);
+      // setCurrentSongIndex(songIndex);
+      // console.log(songIndex);
+    } else if (listType === 'playlist' && currentPlaylistName !== listName) {
+      filteredSongs = songData.filter((song) => song.playListNames.includes(listName));
+      // songIndex = filteredSongs.findIndex((song) => song.uri === currentSong.uri);
+      setCurrentPlaylistData(filteredSongs);
+      setCurrentPlaylistName(listName);
     }
+    setCurrentSongIndex(index);
+    console.log(index);
+    console.log('listType:  ', currentPlaylistName);
+    console.log('listName:  ', listName);
   }, [currentSong]);
 
   const isCurrentSong = currentSong?.title === item.title;

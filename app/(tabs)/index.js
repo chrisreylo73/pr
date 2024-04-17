@@ -144,7 +144,7 @@ const index = () => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  const renderItem = ({ item }) => <Song item={item} allSongs />;
+  const renderItem = ({ item, index }) => <Song item={item} index={index} listType={'allSongs'} />;
 
   return (
     <SafeAreaView style={styles.container}>

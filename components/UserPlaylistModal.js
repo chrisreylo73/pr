@@ -35,7 +35,9 @@ const UserPlaylistModal = ({ isModalVisable, setIsModalVisable, playlistName }) 
     setIsModalVisable(false);
   };
 
-  const renderItem = ({ item }) => <Song item={item} allSongs />;
+  const renderItem = ({ item, index }) => (
+    <Song item={item} index={index} listName={playlistName} listType="playlist" />
+  );
   return (
     <Modal
       style={styles.modal}

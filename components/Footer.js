@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     height: 70,
     elevation: 8,
     backgroundColor: 'black',
-    borderTopWidth: 1,
+    borderTopWidth: 2,
     borderColor: '#111111',
   },
   playback: {
