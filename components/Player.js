@@ -109,9 +109,15 @@ const Player = () => {
     setCurrentSong(currentPlaylistData[prevSongIndex]);
   };
   const nextButtonPressed = async () => {
-    const nextSongIndex = currentSongIndex + 1;
-    setCurrentSongIndex(nextSongIndex);
-    setCurrentSong(currentPlaylistData[nextSongIndex]);
+    if (isShuffleOn === false) {
+      const nextSongIndex = currentSongIndex + 1;
+      setCurrentSongIndex(nextSongIndex);
+      setCurrentSong(currentPlaylistData[nextSongIndex]);
+    } else {
+      const randomIndex = Math.floor(Math.random() * currentPlaylistData.length);
+      setCurrentSongIndex(randomIndex);
+      setCurrentSong(currentPlaylistData[randomIndex]);
+    }
   };
 
   const shuffleButtonPressed = useCallback(() => {
@@ -192,7 +198,7 @@ const Player = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.shuffleButton} onPress={shuffleButtonPressed}>
         <MaterialCommunityIcons
-          name={isShuffleOn ? 'shuffle-disabled' : 'shuffle'}
+          name={isShuffleOn ? 'shuffle' : 'shuffle-disabled'}
           size={isShuffleOn ? 28 : 25}
           color="white"
         />
