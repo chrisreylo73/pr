@@ -38,6 +38,7 @@ const Player = () => {
     setCurrentPlaylist,
     setCurrentSong,
     songData,
+    setSongData,
   } = useAppContext();
 
   const [isAddToPlaylistVisable, setIsAddToPlaylistVisable] = useState(false);
@@ -57,7 +58,7 @@ const Player = () => {
         await sound.playAsync();
       }
     })();
-  }, [currentSong]);
+  }, [currentSong?.uri]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -110,8 +111,6 @@ const Player = () => {
     try {
       if (currentSongIndex !== 0) {
         const prevSongIndex = currentSongIndex - 1;
-        console.log(prevSongIndex);
-        console.log(currentPlaylist.data.findIndex((song) => song === currentSong) - 1);
         setCurrentSongIndex(prevSongIndex);
         setCurrentSong(currentPlaylist.data[prevSongIndex]);
       }
@@ -124,8 +123,6 @@ const Player = () => {
     try {
       if (currentSongIndex !== currentPlaylist.data.length - 1) {
         const nextSongIndex = currentSongIndex + 1;
-        console.log(nextSongIndex);
-        console.log(currentPlaylist.data.findIndex((song) => song === currentSong) + 1);
         setCurrentSongIndex(nextSongIndex);
         setCurrentSong(currentPlaylist.data[nextSongIndex]);
       }
@@ -263,7 +260,10 @@ const Player = () => {
         isAddToPlaylistVisable={isAddToPlaylistVisable}
         setIsAddToPlaylistVisable={setIsAddToPlaylistVisable}
         currentSong={currentSong}
+        setCurrentSong={setCurrentSong}
         playlistNames={playlistNames}
+        songData={songData}
+        setSongData={setSongData}
       />
     </Modal>
   );

@@ -17,22 +17,58 @@ import { Storage } from 'expo-storage';
 import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
+import playlists from '~/app/(tabs)/playlists';
 
 const AddToPlaylistModal = ({
   isAddToPlaylistVisable,
   setIsAddToPlaylistVisable,
   currentSong,
+  setCurrentSong,
   playlistNames,
+  songData,
+  setSongData,
 }) => {
   const [inPlaylist, setInPlaylist] = useState([]);
 
   useEffect(() => {
     console.log(currentSong.playListNames);
-    setInPlaylist(...currentSong.playListNames);
+    setInPlaylist([...currentSong.playListNames]);
   }, [currentSong]);
 
   const handlePress = (item) => {
-    setInPlaylist(...inPlaylist, item);
+    setInPlaylist((prevInPlaylist) => {
+      if (prevInPlaylist.includes(item)) {
+        // If the item is already in the playlist, remove it
+        return prevInPlaylist.filter((playlistItem) => playlistItem !== item);
+      } else {
+        // If the item is not in the playlist, add it
+        return [...prevInPlaylist, item];
+      }
+    });
+    console.log(inPlaylist);
+  };
+
+  const handleSave = async () => {
+    const songs = [...songData];
+    console.log(inPlaylist);
+    const updatedSongData = songs
+      .map((song) =>
+        song.uri === currentSong?.uri
+          ? {
+              ...currentSong,
+              playListNames: inPlaylist,
+            }
+          : song
+      )
+      .sort((a, b) => a.title.localeCompare(b.title));
+
+    await Storage.setItem({
+      key: 'songData',
+      value: JSON.stringify(updatedSongData),
+    });
+    setCurrentSong({ ...currentSong, playListNames: inPlaylist });
+    setSongData(updatedSongData);
+    setIsAddToPlaylistVisable(false);
   };
 
   return (
@@ -52,11 +88,9 @@ const AddToPlaylistModal = ({
       <FlatList
         data={playlistNames}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[styles.itemContainer]}
-            onPress={() => setInPlaylist(...inPlaylist, item)}>
+          <TouchableOpacity style={[styles.itemContainer]} onPress={() => handlePress(item)}>
             <Text style={[styles.title]}>{item.toUpperCase()}</Text>
-            {inPlaylist?.includes(item) && (
+            {inPlaylist.includes(item) && (
               <View style={styles.itemIcon}>
                 <Feather name="check" size={20} color="black" />
               </View>
@@ -69,7 +103,7 @@ const AddToPlaylistModal = ({
       <TouchableOpacity style={styles.backButton} onPress={() => setIsAddToPlaylistVisable(false)}>
         <AntDesign name="left" size={20} color="white" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.saveButton} onPress={() => setIsAddToPlaylistVisable(false)}>
+      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
         <Text>SAVE</Text>
       </TouchableOpacity>
     </Modal>

@@ -52,10 +52,6 @@ const Song = ({ item, listType, listName, index }) => {
       };
     }
     setCurrentPlaylist(playlist);
-
-    // console.log(index);
-    // console.log('listType:  ', playlist.type);
-    // console.log('listName:  ', playlist.name);
   }, [currentSong]);
 
   const isCurrentSong = currentSong?.title === item.title;
