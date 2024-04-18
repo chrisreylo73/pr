@@ -14,9 +14,8 @@ const Song = ({ item, listType, listName, index }) => {
     songToEdit,
     setSongToEdit,
     setIsEditSongModalVisable,
-    setCurrentPlaylistData,
-    setCurrentPlaylistName,
-    currentPlaylistName,
+    setCurrentPlaylist,
+    currentPlaylist,
     setCurrentSongIndex,
   } = useAppContext();
 
@@ -27,29 +26,36 @@ const Song = ({ item, listType, listName, index }) => {
 
   const handlePress = useCallback(() => {
     setCurrentSong(item);
-    // let songIndex = 0;
-    let filteredSongs = [];
-    if (listType === 'allSongs') {
-      // songIndex = songData.findIndex((song) => song.uri === currentSong.uri);
-      setCurrentPlaylistData(songData);
-      setCurrentPlaylistName('');
-    } else if (listType === 'artist' && currentPlaylistName !== listName) {
-      filteredSongs = songData.filter((song) => song.artist === listName);
-      // songIndex = filteredSongs.findIndex((song) => song.uri === currentSong.uri);
-      setCurrentPlaylistData(filteredSongs);
-      setCurrentPlaylistName(listName);
-      // setCurrentSongIndex(songIndex);
-      // console.log(songIndex);
-    } else if (listType === 'playlist' && currentPlaylistName !== listName) {
-      filteredSongs = songData.filter((song) => song.playListNames.includes(listName));
-      // songIndex = filteredSongs.findIndex((song) => song.uri === currentSong.uri);
-      setCurrentPlaylistData(filteredSongs);
-      setCurrentPlaylistName(listName);
-    }
     setCurrentSongIndex(index);
-    console.log(index);
-    console.log('listType:  ', currentPlaylistName);
-    console.log('listName:  ', listName);
+    let playlist = {};
+    let filteredSongs = [];
+    const allSongs = [...songData];
+    if (listType === 'allSongs') {
+      playlist = {
+        name: listName,
+        type: listType,
+        data: allSongs,
+      };
+    } else if (listType === 'artist' && currentPlaylist.name !== listName) {
+      filteredSongs = allSongs.filter((song) => song.artist === listName);
+      playlist = {
+        name: listName,
+        type: listType,
+        data: filteredSongs,
+      };
+    } else if (listType === 'playlist' && currentPlaylist.name !== listName) {
+      filteredSongs = allSongs.filter((song) => song.playListNames.includes(listName));
+      playlist = {
+        name: listName,
+        type: listType,
+        data: filteredSongs,
+      };
+    }
+    setCurrentPlaylist(playlist);
+
+    // console.log(index);
+    // console.log('listType:  ', playlist.type);
+    // console.log('listName:  ', playlist.name);
   }, [currentSong]);
 
   const isCurrentSong = currentSong?.title === item.title;

@@ -34,9 +34,10 @@ const Player = () => {
     setAudio,
     currentSongIndex,
     setCurrentSongIndex,
-    currentPlaylistName,
-    currentPlaylistData,
+    currentPlaylist,
+    setCurrentPlaylist,
     setCurrentSong,
+    songData,
   } = useAppContext();
 
   const [isAddToPlaylistVisable, setIsAddToPlaylistVisable] = useState(false);
@@ -56,8 +57,6 @@ const Player = () => {
         await sound.playAsync();
       }
     })();
-    // setCurrentSongIndex(currentPlaylistData.findIndex((song) => song === currentSong));
-    // console.log(currentSongIndex);
   }, [currentSong]);
 
   const panResponder = PanResponder.create({
@@ -92,37 +91,86 @@ const Player = () => {
   }, []);
 
   const playPauseButtonPressed = async () => {
-    if (audio) {
-      if (playState) {
-        await audio.pauseAsync();
-        setPlayState(false);
-      } else {
-        await audio.playAsync();
-        setPlayState(true);
+    try {
+      if (audio) {
+        if (playState) {
+          await audio.pauseAsync();
+          setPlayState(false);
+        } else {
+          await audio.playAsync();
+          setPlayState(true);
+        }
       }
+    } catch (error) {
+      console.log('@ playPauseButtonPressed:  ', error);
     }
   };
 
   const prevButtonPressed = async () => {
-    const prevSongIndex = currentSongIndex - 1;
-    setCurrentSongIndex(prevSongIndex);
-    setCurrentSong(currentPlaylistData[prevSongIndex]);
-  };
-  const nextButtonPressed = async () => {
-    if (isShuffleOn === false) {
-      const nextSongIndex = currentSongIndex + 1;
-      setCurrentSongIndex(nextSongIndex);
-      setCurrentSong(currentPlaylistData[nextSongIndex]);
-    } else {
-      const randomIndex = Math.floor(Math.random() * currentPlaylistData.length);
-      setCurrentSongIndex(randomIndex);
-      setCurrentSong(currentPlaylistData[randomIndex]);
+    try {
+      if (currentSongIndex !== 0) {
+        const prevSongIndex = currentSongIndex - 1;
+        console.log(prevSongIndex);
+        console.log(currentPlaylist.data.findIndex((song) => song === currentSong) - 1);
+        setCurrentSongIndex(prevSongIndex);
+        setCurrentSong(currentPlaylist.data[prevSongIndex]);
+      }
+    } catch (error) {
+      console.log('@ prevButtonPressed:  ', error);
     }
   };
 
-  const shuffleButtonPressed = useCallback(() => {
-    setIsShuffleOn((prevState) => !prevState);
-  }, []);
+  const nextButtonPressed = async () => {
+    try {
+      if (currentSongIndex !== currentPlaylist.data.length - 1) {
+        const nextSongIndex = currentSongIndex + 1;
+        console.log(nextSongIndex);
+        console.log(currentPlaylist.data.findIndex((song) => song === currentSong) + 1);
+        setCurrentSongIndex(nextSongIndex);
+        setCurrentSong(currentPlaylist.data[nextSongIndex]);
+      }
+    } catch (error) {
+      console.log('@ nextButtonPressed:  ', error);
+    }
+  };
+
+  const shuffleButtonPressed = async () => {
+    try {
+      let updatedPlaylistData = [];
+      if (isShuffleOn === false) {
+        updatedPlaylistData = shuffleArray(currentPlaylist.data);
+      } else if (isShuffleOn === true) {
+        const songDataCopy = [...songData];
+        if (currentPlaylist.type === 'allSongs') {
+          updatedPlaylistData = songDataCopy;
+          setCurrentSongIndex(updatedPlaylistData.findIndex((song) => song === currentSong));
+        } else if (currentPlaylist.type === 'artist') {
+          updatedPlaylistData = songDataCopy.filter((song) => song.artist === currentPlaylist.name);
+          setCurrentSongIndex(updatedPlaylistData.findIndex((song) => song === currentSong));
+        } else if (currentPlaylist.type === 'playlist') {
+          updatedPlaylistData = songDataCopy.filter((song) =>
+            song.playListNames.includes(currentPlaylist.name)
+          );
+          setCurrentSongIndex(updatedPlaylistData.findIndex((song) => song === currentSong));
+        }
+      }
+      setCurrentPlaylist({
+        ...currentPlaylist,
+        data: updatedPlaylistData,
+      });
+      setIsShuffleOn((prevState) => !prevState);
+    } catch (error) {
+      console.log('@ shuffleButtonPressed:  ', error);
+    }
+  };
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // Generate random index from 0 to i
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements at indices i and j
+    }
+    return array;
+  };
 
   const addToPlaylistButtonPressed = useCallback(() => {}, []);
 
@@ -209,7 +257,7 @@ const Player = () => {
         <Entypo name="add-to-list" size={24} color="white" />
       </TouchableOpacity>
       <View style={styles.currentPlaylistName}>
-        <Text style={{ color: '#FFA500' }}>{currentPlaylistName}</Text>
+        <Text style={{ color: '#FFA500' }}>{currentPlaylist?.name}</Text>
       </View>
       <AddToPlaylistModal
         isAddToPlaylistVisable={isAddToPlaylistVisable}
