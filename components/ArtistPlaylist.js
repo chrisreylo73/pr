@@ -1,26 +1,17 @@
 import { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  Alert,
-  Dimensions,
-  PanResponder,
-  Animated,
-  ImageBackground,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import ArtistPlaylistModal from '~/components/ArtistPlaylistModal';
-
+import { useAppContext } from '~/services/AppContext';
 const ArtistPlaylist = ({ playlistName }) => {
+  const { currentPlaylist } = useAppContext();
   const [isModalVisable, setIsModalVisable] = useState(false);
 
   return (
     <>
       <TouchableOpacity style={styles.container} onPress={() => setIsModalVisable(true)}>
-        <Text style={styles.title}>{playlistName?.toUpperCase()}</Text>
+        <Text style={{ color: currentPlaylist?.name === playlistName ? '#FFA500' : '#FFFFFF' }}>
+          {playlistName?.toUpperCase()}
+        </Text>
       </TouchableOpacity>
       <ArtistPlaylistModal
         isModalVisable={isModalVisable}
@@ -47,8 +38,5 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  title: {
-    color: 'white',
   },
 });

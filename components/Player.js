@@ -13,9 +13,8 @@ import {
   ImageBackground,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { useAppContext } from '~/services/AppContext';
-import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import AddToPlaylistModal from '~/components/AddToPlaylistModal';
 import { Audio } from 'expo-av';
 
@@ -29,7 +28,6 @@ const Player = () => {
     isShuffleOn,
     setIsShuffleOn,
     playlistNames,
-    setPlaylistNames,
     audio,
     setAudio,
     currentSongIndex,
@@ -46,18 +44,27 @@ const Player = () => {
   const [startAngle, setStartAngle] = useState(0);
 
   useEffect(() => {
-    (async () => {
-      if (currentSong) {
-        setPlayState(true);
+    try {
+      (async () => {
+        if (currentSong) {
+          setPlayState(true);
+          if (audio) {
+            await audio.unloadAsync();
+          }
+          const uri = currentSong.uri;
+          const { sound } = await Audio.Sound.createAsync({ uri });
+          setAudio(sound);
+          await sound.playAsync();
+        }
+      })();
+    } catch (error) {
+      console.log('@ useEffect [currentSong?uri] :  ', error);
+      async () => {
         if (audio) {
           await audio.unloadAsync();
         }
-        const uri = currentSong.uri;
-        const { sound } = await Audio.Sound.createAsync({ uri });
-        setAudio(sound);
-        await sound.playAsync();
-      }
-    })();
+      };
+    }
   }, [currentSong?.uri]);
 
   const panResponder = PanResponder.create({
@@ -185,7 +192,9 @@ const Player = () => {
         <Text style={styles.songTitle} numberOfLines={1}>
           {currentSong?.title}
         </Text>
-        <Text style={styles.artistName}>{currentSong?.artist}</Text>
+        <Text style={styles.artistName} numberOfLines={1}>
+          {currentSong?.artist}
+        </Text>
       </View>
       <View style={styles.outerCircle}>
         <View style={styles.middleCircle}>
@@ -276,6 +285,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  infoContainer: {
+    padding: 10,
+    zIndex: 10,
+    position: 'absolute',
+    top: 160,
+    left: 10,
+    borderRadius: 15,
+  },
+  songTitle: {
+    fontSize: 14,
+    color: 'white',
+  },
+  artistName: {
+    fontSize: 12,
+    color: '#777777',
+  },
   outerCircle: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -314,22 +339,7 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 2,
   },
-  infoContainer: {
-    padding: 10,
-    zIndex: 10,
-    position: 'absolute',
-    top: 160,
-    left: 10,
-    borderRadius: 15,
-  },
-  songTitle: {
-    fontSize: 14,
-    color: 'white',
-  },
-  artistName: {
-    fontSize: 12,
-    color: '#777777',
-  },
+
   playPauseButton: {
     padding: 8,
   },

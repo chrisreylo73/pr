@@ -58,10 +58,13 @@ const ArtistPlaylistModal = ({ isModalVisable, setIsModalVisable, playlistName }
           <Text style={styles.title}>{playlistName.toUpperCase()}</Text>
         </View>
         <FlatList
-          contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
           data={songData.filter((song) => song.artist === playlistName)}
           renderItem={renderItem}
           keyExtractor={(item) => item.uri}
+          initialNumToRender={6}
+          maxToRenderPerBatch={6}
+          windowSize={6}
+          contentContainerStyle={{ paddingBottom: 340, paddingTop: 30 }}
         />
         <Footer />
       </LinearGradient>

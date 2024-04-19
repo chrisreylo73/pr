@@ -1,17 +1,11 @@
 import { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  ImageBackground,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import UserPlaylistModal from '~/components/UserPlaylistModal';
 import UserPlaylistActionsModal from '~/components/UserPlaylistActionsModal';
+import { useAppContext } from '~/services/AppContext';
 
 const UserPlaylist = ({ playlistName }) => {
+  const { currentPlaylist } = useAppContext();
   const [isUserPlaylistModalVisable, setIsUserPlaylistModalVisable] = useState(false);
   const [isUserPlaylistActionsModalVisable, setIsUserPlaylistActionsModalVisable] = useState(false);
   return (
@@ -20,7 +14,9 @@ const UserPlaylist = ({ playlistName }) => {
         style={styles.container}
         onPress={() => setIsUserPlaylistModalVisable(true)}
         onLongPress={() => setIsUserPlaylistActionsModalVisable(true)}>
-        <Text style={styles.title}>{playlistName?.toUpperCase()}</Text>
+        <Text style={{ color: currentPlaylist?.name === playlistName ? '#FFA500' : '#FFFFFF' }}>
+          {playlistName?.toUpperCase()}
+        </Text>
       </TouchableOpacity>
       <UserPlaylistModal
         isModalVisable={isUserPlaylistModalVisable}

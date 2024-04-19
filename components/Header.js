@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { useAppContext } from '~/services/AppContext';
 
 const Header = () => {
-  const { isDownloadModalVisable, setIsDownloadModalVisable } = useAppContext();
+  const { setIsDownloadModalVisable } = useAppContext();
 
   return (
     <SafeAreaView style={styles.header}>
@@ -23,13 +23,10 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'black',
     paddingTop: 10,
-    // elevation: 10,
-    // borderBottomWidth: 2,
   },
   title: {
     fontSize: 12,
     fontWeight: 'bold',
-    // marginBottom: 10,
     alignSelf: 'center',
     letterSpacing: 10,
     color: 'white',
@@ -39,7 +36,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     top: 0,
-    // backgroundColor: 'red',
     padding: 10,
   },
 });

@@ -7,10 +7,6 @@ const Footer = () => {
   const { currentSong, playState, setPlayState, setIsPlayerVisible, audio, setAudio } =
     useAppContext();
 
-  // const togglePlayState = useCallback(() => {
-  //   setPlayState((prevState) => !prevState);
-  // }, []);
-
   const showPlayer = useCallback(() => {
     setIsPlayerVisible(true);
   }, []);
@@ -66,36 +62,10 @@ const styles = StyleSheet.create({
   playback: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     height: 80,
   },
-  currentRouteContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: '60%',
-  },
-  routeContainer: {
-    width: 30,
-    height: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  route: {
-    width: 8,
-    aspectRatio: 1,
-    borderRadius: 100,
-    borderColor: 'white',
-    borderWidth: 1,
-  },
-  router: {
-    padding: 5,
-    alignItems: 'center',
-    height: 50,
-    width: '100%',
-  },
   songInfoContainer: {
-    width: '80%',
+    width: '85%',
     padding: 8,
   },
   songTitle: {
@@ -107,10 +77,9 @@ const styles = StyleSheet.create({
     color: '#777777',
   },
   playPauseButton: {
-    padding: 20,
-  },
-  routeTitle: {
-    color: 'white',
-    fontSize: 12,
+    width: '10%',
+    alignItems: 'center',
+    paddingVertical: 10,
+    justifyContent: 'center',
   },
 });

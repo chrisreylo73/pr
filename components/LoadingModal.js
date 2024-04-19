@@ -6,7 +6,6 @@ import { BarIndicator } from 'react-native-indicators';
 
 const LoadingModal = () => {
   const { isLoading } = useAppContext();
-
   return (
     <Modal
       style={styles.loadingContainer}

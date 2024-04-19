@@ -1,16 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  TextInput,
-  Alert,
-  ImageBackground,
-  Keyboard,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import Modal from 'react-native-modal';
 import { useAppContext } from '~/services/AppContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';

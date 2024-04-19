@@ -7,22 +7,7 @@ import UserPlaylist from '~/components/UserPlaylist';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const playlists = () => {
-  const {
-    currentSong,
-    setCurrentSong,
-    playState,
-    setPlayState,
-    isLoading,
-    setIsLoading,
-    songData,
-    setSongData,
-    artistNames,
-    setArtistNames,
-    playlistNames,
-    setPlaylistNames,
-    isPlayerVisible,
-    setIsPlayerVisible,
-  } = useAppContext();
+  const { playlistNames, setPlaylistNames } = useAppContext();
   const [isModalVisable, setIsModalVisable] = useState(false);
 
   const renderItem = ({ item }) => <UserPlaylist playlistName={item} />;
@@ -31,10 +16,13 @@ const playlists = () => {
     <View style={styles.container}>
       <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>
         <FlatList
-          contentContainerStyle={{ paddingBottom: 110, paddingTop: 10 }}
           data={playlistNames}
           renderItem={renderItem}
           keyExtractor={(index) => index.toString()}
+          initialNumToRender={6}
+          maxToRenderPerBatch={6}
+          windowSize={6}
+          contentContainerStyle={{ paddingBottom: 110, paddingTop: 10 }}
           numColumns={2}
         />
         <TouchableOpacity
@@ -62,6 +50,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#080808',
   },
+  gradient: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    padding: 10,
+  },
   addButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -74,11 +68,5 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 2,
     borderColor: '#101010',
-  },
-  gradient: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    padding: 10,
   },
 });

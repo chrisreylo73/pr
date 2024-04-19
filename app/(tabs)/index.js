@@ -168,16 +168,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#333740',
   },
-  flatListContent: { paddingBottom: 340, paddingTop: 20 },
   gradient: {
     width: '100%',
     height: '100%',
     position: 'absolute',
   },
-  moreButton: {
-    position: 'absolute',
-    bottom: 70,
-    backgroundColor: 'black',
-    padding: 10,
-  },
+  flatListContent: { paddingBottom: 340, paddingTop: 20 },
 });

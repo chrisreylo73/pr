@@ -11,11 +11,13 @@ const artists = () => {
     <View style={styles.container}>
       <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>
         <FlatList
-          contentContainerStyle={{ paddingBottom: 110, paddingTop: 10 }}
           data={artistNames}
-          extraData={artistNames}
           renderItem={renderItem}
           keyExtractor={(index) => index.toString()}
+          initialNumToRender={6}
+          maxToRenderPerBatch={6}
+          windowSize={6}
+          contentContainerStyle={{ paddingBottom: 110, paddingTop: 10 }}
           numColumns={2}
         />
       </LinearGradient>

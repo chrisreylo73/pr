@@ -16,40 +16,31 @@ const Song = ({ item, listType, listName, index }) => {
     isShuffleOn,
   } = useAppContext();
 
-  const startEditing = useCallback(() => {
-    setSongToEdit(item);
-    setIsEditSongModalVisable(true);
-  }, [songToEdit]);
-
   const handlePress = useCallback(() => {
     setCurrentSong(item);
     setCurrentSongIndex(index);
     let playlist = {};
     let filteredSongs = [];
-    const allSongs = [...songData];
+    const songDataCopy = [...songData];
     if (listType === 'allSongs') {
-      playlist = {
-        name: listName,
-        type: listType,
-        data: isShuffleOn ? shuffleArray(allSongs) : allSongs,
-      };
-    } else if (listType === 'artist' && currentPlaylist.name !== listName) {
-      filteredSongs = allSongs.filter((song) => song.artist === listName);
-      playlist = {
-        name: listName,
-        type: listType,
-        data: isShuffleOn ? shuffleArray(filteredSongs) : filteredSongs,
-      };
-    } else if (listType === 'playlist' && currentPlaylist.name !== listName) {
-      filteredSongs = allSongs.filter((song) => song.playListNames.includes(listName));
-      playlist = {
-        name: listName,
-        type: listType,
-        data: isShuffleOn ? shuffleArray(filteredSongs) : filteredSongs,
-      };
+      filteredSongs = songDataCopy;
+    } else if (listType === 'artist') {
+      filteredSongs = songDataCopy.filter((song) => song.artist === listName);
+    } else if (listType === 'playlist') {
+      filteredSongs = songDataCopy.filter((song) => song.playListNames.includes(listName));
     }
+    playlist = {
+      name: listName,
+      type: listType,
+      data: isShuffleOn ? shuffleArray(filteredSongs) : filteredSongs,
+    };
     setCurrentPlaylist(playlist);
-  }, [currentSong]);
+  }, [currentSong, isShuffleOn]);
+
+  const startEditing = useCallback(() => {
+    setSongToEdit(item);
+    setIsEditSongModalVisable(true);
+  }, [songToEdit]);
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -99,6 +90,7 @@ const Song = ({ item, listType, listName, index }) => {
 };
 
 export default memo(Song);
+
 const styles = StyleSheet.create({
   audioItem: {
     overflow: 'hidden',
@@ -115,17 +107,17 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.3)',
     borderRadius: 15,
   },
+  albumArtContainer: {
+    flex: 1,
+    height: '100%',
+    backgroundColor: 'white',
+  },
   songInfoContainer: {
     borderRadius: 0,
     justifyContent: 'flex-start',
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.85)',
     padding: 8,
-  },
-  albumArtContainer: {
-    flex: 1,
-    height: '100%',
-    backgroundColor: 'white',
   },
   songTitle: {
     fontSize: 16,
@@ -134,16 +126,5 @@ const styles = StyleSheet.create({
   artistName: {
     fontSize: 14,
     color: '#777777',
-  },
-  coverSongTitle: {
-    color: 'white',
-    fontSize: 30,
-    opacity: 0.05,
-  },
-  coverInfoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: '50%',
   },
 });
