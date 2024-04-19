@@ -13,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [isShuffleOn, setIsShuffleOn] = useState(false);
   const [songToEdit, setSongToEdit] = useState();
   const [isEditSongModalVisable, setIsEditSongModalVisable] = useState(false);
+  const [isDownloadModalVisable, setIsDownloadModalVisable] = useState(false);
   const [audio, setAudio] = useState(null);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
@@ -73,6 +74,8 @@ export const AppProvider = ({ children }) => {
         setCurrentSongIndex,
         currentPlaylist,
         setCurrentPlaylist,
+        isDownloadModalVisable,
+        setIsDownloadModalVisable,
       }}>
       {children}
     </AppContext.Provider>

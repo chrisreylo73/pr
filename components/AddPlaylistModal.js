@@ -14,8 +14,7 @@ import {
   ImageBackground,
   Keyboard,
 } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { Feather, AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { Storage } from 'expo-storage';
 

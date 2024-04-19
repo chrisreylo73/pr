@@ -14,10 +14,7 @@ import {
 import Modal from 'react-native-modal';
 import { useAppContext } from '~/services/AppContext';
 import { Storage } from 'expo-storage';
-import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Feather } from '@expo/vector-icons';
-import playlists from '~/app/(tabs)/playlists';
+import { Feather, AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 const AddToPlaylistModal = ({
   isAddToPlaylistVisable,

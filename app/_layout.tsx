@@ -7,6 +7,7 @@ import LoadingModal from '~/components/LoadingModal';
 import { AppProvider } from '~/services/AppContext';
 import { StatusBar } from 'expo-status-bar';
 import EditSongModal from '~/components/EditSongModal';
+import DownloadModal from '~/components/DownloadModal';
 
 const _layout = () => {
   return (
@@ -18,6 +19,7 @@ const _layout = () => {
       <Footer />
       <LoadingModal />
       <EditSongModal />
+      <DownloadModal />
     </AppProvider>
   );
 };

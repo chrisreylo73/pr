@@ -169,8 +169,6 @@ const Player = () => {
     return array;
   };
 
-  const addToPlaylistButtonPressed = useCallback(() => {}, []);
-
   return (
     <Modal
       style={styles.modal}
@@ -323,7 +321,6 @@ const styles = StyleSheet.create({
     top: 160,
     left: 10,
     borderRadius: 15,
-    // elevation: 8,
   },
   songTitle: {
     fontSize: 14,

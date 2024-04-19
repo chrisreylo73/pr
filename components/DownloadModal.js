@@ -10,6 +10,7 @@ import {
   ImageBackground,
   Keyboard,
   FlatList,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { useAppContext } from '~/services/AppContext';
@@ -17,69 +18,123 @@ import { Storage } from 'expo-storage';
 import { Feather, AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const EditSongModal = () => {
+const DownloadModal = () => {
   const {
     songData,
     setSongData,
     isEditSongModalVisable,
     setIsEditSongModalVisable,
-    songToEdit,
+    isDownloadModalVisable,
+    setIsDownloadModalVisable,
     backupColors,
   } = useAppContext();
+  const [url, setUrl] = useState(
+    'https://www.youtube.com/watch?v=HlTJ9ty3-7k&list=PL39VDaR03WJnGM0oQul7UlUMlGDeRErwJ&index=52'
+  );
   const [songTitle, setSongTitle] = useState('');
   const [artistName, setArtistName] = useState('');
   const [backupColor, setBackupColor] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [gotError, setGotError] = useState(false);
 
-  useEffect(() => {
-    setSongTitle(songToEdit?.title);
-    setArtistName(songToEdit?.artist);
-    setBackupColor(songToEdit?.backupColor);
-  }, [songToEdit]);
-
-  const onClose = () => {
-    // Keyboard.dismiss();
-    setTimeout(() => {}, 5000);
-    setIsEditSongModalVisable(false);
-    setSongTitle(songToEdit?.title);
-    setArtistName(songToEdit?.artist);
+  const urlChange = (inputText) => {
+    setUrl(inputText);
   };
 
-  const onChangeSongTitle = (inputText) => {
+  const songTitleChange = (inputText) => {
     setSongTitle(inputText);
   };
-  const onChangeArtistName = (inputText) => {
+
+  const artistNameChange = (inputText) => {
     setArtistName(inputText);
   };
-
-  const formatSting = (str) => {
-    const formattedString = str.trim().replace(/\s+/g, ' ').toLowerCase();
-    return formattedString.replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+  const onClose = () => {
+    Keyboard.dismiss();
+    setTimeout(() => {}, 5000);
+    setIsDownloadModalVisable(false);
+    setSongTitle('');
+    setArtistName('');
+    setBackupColor('');
+  };
+  const isValidUrl = () => {
+    const youtubePattern =
+      /^(http(s)?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([\w\-]+)(\?\S*)?$/;
+    return youtubePattern.test(url);
   };
 
-  const onUpdate = async () => {
-    const songs = [...songData];
-    const updatedSongData = songs
-      .map((song) =>
-        song.uri === songToEdit?.uri
-          ? {
-              ...songToEdit,
-              title: formatSting(songTitle),
-              artist: artistName ? formatSting(artistName) : 'Unknown Artist',
-              // album: albumName ? formatSting(albumName) : 'Unknown Album',
-              backupColor: backupColor,
-            }
-          : song
-      )
-      .sort((a, b) => a.title.localeCompare(b.title));
+  const resetError = () => {
+    setTimeout(() => {
+      setGotError(false);
+    }, 5000);
+  };
 
-    await Storage.setItem({
-      key: 'songData',
-      value: JSON.stringify(updatedSongData),
-    });
+  const onDownload = async () => {
+    if (!url) {
+      setGotError(true);
+      setErrorMessage('Please fill out URL');
+      console.log('!url');
+      resetError();
+      return;
+    } else if (!songTitle) {
+      setGotError(true);
+      setErrorMessage('Please fill out song title');
+      console.log('!songTitle');
+      resetError();
+      return;
+    } else if (!artistName) {
+      setGotError(true);
+      setErrorMessage('Please fill out artist name');
+      console.log('!artistName');
+      resetError();
+      return;
+    }
+    // else if (!isValidUrl()) {
+    //   setGotError(true);
+    //   setErrorMessage('Invalid URL');
+    //   console.log('!isValidUrl');
+    //   resetError();
+    //   return;
+    // }
+    setErrorMessage('');
 
-    setSongData(updatedSongData);
-    Keyboard.dismiss();
-    setIsEditSongModalVisable(false);
+    try {
+      const audioUrl = await fetchAudioUrl();
+      const downloadObject = FileSystem.createDownloadResumable(
+        audioUrl,
+        FileSystem.documentDirectory + songTitle + '.mp3'
+      );
+      const { uri } = await downloadObject.downloadAsync();
+      console.log('Audio downloaded to:', uri);
+      // const { sound } = await Audio.Sound.createAsync({ uri });
+      // setSound(sound);
+      // await sound.playAsync();
+    } catch (error) {
+      console.error('Failed to download audio:', error);
+    }
+    checkIfFileExists();
+    // await sound.playAsync();
+  };
+
+  const checkIfFileExists = async () => {
+    try {
+      const fileUri = FileSystem.documentDirectory + songTitle + '.mp3';
+      const fileInfo = await FileSystem.getInfoAsync(fileUri);
+      console.log(fileInfo.exists);
+      // return fileInfo.exists;
+    } catch (error) {
+      console.error('Error checking file existence:', error);
+      return false;
+    }
+  };
+
+  const fetchAudioUrl = async () => {
+    const youtubeURL =
+      'https://www.youtube.com/watch?v=HlTJ9ty3-7k&list=PL39VDaR03WJnGM0oQul7UlUMlGDeRErwJ&index=52';
+
+    const info = await ytdl.getInfo(url);
+    const audioFormat = ytdl.chooseFormat(info.formats, { filter: 'audioonly' });
+    console.log(audioFormat.url);
+    return audioFormat.url;
   };
 
   const renderItem = ({ item }) => (
@@ -96,7 +151,7 @@ const EditSongModal = () => {
   return (
     <Modal
       style={styles.modal}
-      isVisible={isEditSongModalVisable}
+      isVisible={isDownloadModalVisable}
       animationIn="fadeIn"
       animationOut="fadeOut"
       animationInTiming={300}
@@ -108,10 +163,21 @@ const EditSongModal = () => {
       useNativeDriver={true}
       onRequestClose={onClose}>
       <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>
+        <Text style={styles.inputHeader}>URL</Text>
+        {/* <KeyboardAvoidingView> */}
+        <TextInput
+          style={styles.input}
+          onChangeText={urlChange}
+          value={url}
+          caretHidden={false}
+          autoCorrect={false}
+          numberOfLines={1}
+        />
+
         <Text style={[styles.inputHeader]}>SONG TITLE</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeSongTitle}
+          onChangeText={songTitleChange}
           value={songTitle}
           caretHidden={false}
           autoCorrect={false}
@@ -121,25 +187,17 @@ const EditSongModal = () => {
         <Text style={styles.inputHeader}>ARTIST NAME</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeArtistName}
+          onChangeText={artistNameChange}
           value={artistName}
           caretHidden={false}
           autoCorrect={false}
           numberOfLines={1}
         />
-        {/* <Text style={styles.inputHeader}>ALBUM NAME</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeAlbumName}
-        value={albumName}
-        caretHidden={false}
-        autoCorrect={false}
-        numberOfLines={1}
-      /> */}
+
         <Text style={styles.inputHeader}>COVER ART</Text>
         <TouchableOpacity style={[styles.cover, { overflow: 'hidden' }]}>
           <ImageBackground
-            source={{ uri: songToEdit?.coverArtUri }}
+            source={{ uri: null }}
             style={[styles.albumArtContainer, { backgroundColor: 'black' }]}></ImageBackground>
         </TouchableOpacity>
         <Text style={styles.inputHeader}>BACKUP COLOR</Text>
@@ -153,15 +211,16 @@ const EditSongModal = () => {
         <TouchableOpacity style={styles.backButton} onPress={onClose}>
           <AntDesign name="left" size={20} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.saveButton} onPress={onUpdate}>
-          <Text>SAVE</Text>
+        <TouchableOpacity style={styles.saveButton} onPress={onDownload}>
+          <Feather name="download" size={24} color="black" />
         </TouchableOpacity>
+        {/* </KeyboardAvoidingView> */}
       </LinearGradient>
     </Modal>
   );
 };
 
-export default memo(EditSongModal);
+export default memo(DownloadModal);
 
 const styles = StyleSheet.create({
   modal: {
@@ -188,15 +247,13 @@ const styles = StyleSheet.create({
     height: 40,
     borderBottomColor: '#FFFFFF',
     borderBottomWidth: 2,
-    // backgroundColor: 'black',
-    // borderRadius: 10,
     textAlign: 'auto',
     fontSize: 15,
     color: '#FFA500',
     paddingHorizontal: 10,
   },
   cover: {
-    height: 270,
+    height: 190,
     aspectRatio: 1,
     borderColor: '#111111',
     borderWidth: 2,

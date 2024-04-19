@@ -1,12 +1,8 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { useAppContext } from '~/services/AppContext';
-// import SongActionsModal from '~/components/SongActionsModal';
-import FastImage from 'react-native-fast-image';
-import ExpoFastImage from 'expo-fast-image';
 
 const Song = ({ item, listType, listName, index }) => {
-  // const [isModalVisable, setIsModalVisable] = useState(false);
   const {
     currentSong,
     setCurrentSong,
@@ -17,6 +13,7 @@ const Song = ({ item, listType, listName, index }) => {
     setCurrentPlaylist,
     currentPlaylist,
     setCurrentSongIndex,
+    isShuffleOn,
   } = useAppContext();
 
   const startEditing = useCallback(() => {
@@ -34,27 +31,33 @@ const Song = ({ item, listType, listName, index }) => {
       playlist = {
         name: listName,
         type: listType,
-        data: allSongs,
+        data: isShuffleOn ? shuffleArray(allSongs) : allSongs,
       };
     } else if (listType === 'artist' && currentPlaylist.name !== listName) {
       filteredSongs = allSongs.filter((song) => song.artist === listName);
       playlist = {
         name: listName,
         type: listType,
-        data: filteredSongs,
+        data: isShuffleOn ? shuffleArray(filteredSongs) : filteredSongs,
       };
     } else if (listType === 'playlist' && currentPlaylist.name !== listName) {
       filteredSongs = allSongs.filter((song) => song.playListNames.includes(listName));
       playlist = {
         name: listName,
         type: listType,
-        data: filteredSongs,
+        data: isShuffleOn ? shuffleArray(filteredSongs) : filteredSongs,
       };
     }
     setCurrentPlaylist(playlist);
   }, [currentSong]);
 
-  const isCurrentSong = currentSong?.title === item.title;
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // Generate random index from 0 to i
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements at indices i and j
+    }
+    return array;
+  };
 
   return (
     <TouchableOpacity
@@ -73,7 +76,7 @@ const Song = ({ item, listType, listName, index }) => {
             style={
               (styles.songTitle,
               {
-                color: isCurrentSong ? '#FFA500' : 'white',
+                color: currentSong?.title === item.title ? '#FFA500' : 'white',
               })
             }
             numberOfLines={1}>
@@ -83,7 +86,7 @@ const Song = ({ item, listType, listName, index }) => {
             style={[
               styles.artistName,
               {
-                color: isCurrentSong ? '#7F6000' : '#777777',
+                color: currentSong?.title === item.title ? '#7F6000' : '#777777',
               },
             ]}
             numberOfLines={1}>
@@ -109,38 +112,20 @@ const styles = StyleSheet.create({
     borderLeftWidth: 2,
     borderRightWidth: 2,
     borderTopWidth: 3,
-    // borderBottomWidth: 0,
     borderColor: 'rgba(0, 0, 0, 0.3)',
     borderRadius: 15,
-    // elevation: 5,
-    // transform: [{ rotateZ: '1deg' }],
   },
   songInfoContainer: {
-    // overflow: 'hidden',
     borderRadius: 0,
     justifyContent: 'flex-start',
     flex: 1,
-    // width: '110%',
-    // height: '110%',
     backgroundColor: 'rgba(0, 0, 0, 0.85)',
     padding: 8,
-    // borderWidth: 1,
-    // borderColor: '#111111',
-    // borderLeftWidth: 1,
-    // borderRightWidth: 1,
-    // borderTopWidth: 1,
   },
   albumArtContainer: {
-    // overflow: 'hidden',
-    // borderRadius: 0,
     flex: 1,
     height: '100%',
     backgroundColor: 'white',
-    // borderWidth: 1,
-    // borderColor: '#111111',
-    // borderColor: 'black',
-    // borderRadius: 10,
-    // borderWidth: 1,
   },
   songTitle: {
     fontSize: 16,
@@ -150,21 +135,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#777777',
   },
-  // image: {
-  //   overflow: 'hidden',
-  //   borderRadius: 20,
-  //   flex: 1,
-  //   resizeMode: 'cover',
-  //   overflow: 'hidden',
-  // },
   coverSongTitle: {
     color: 'white',
     fontSize: 30,
     opacity: 0.05,
   },
   coverInfoContainer: {
-    // overflow: 'hidden',
-    // borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',

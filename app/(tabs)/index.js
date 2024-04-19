@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import { memo, useCallback, useState, useEffect } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import MusicInfo from 'expo-music-info-2';
@@ -6,7 +6,6 @@ import { Storage } from 'expo-storage';
 import { useAppContext } from '~/services/AppContext';
 import Song from '~/components/Song';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Feather } from '@expo/vector-icons';
 
 const index = () => {
   const { backupColors, setIsLoading, songData, setSongData, setArtistNames, setPlaylistNames } =
@@ -65,7 +64,7 @@ const index = () => {
             const metadata = await MusicInfo.getMusicInfoAsync(uri, {
               title: false,
               artist: true,
-              album: true,
+              album: false,
               genre: false,
               picture: true,
             });
@@ -76,7 +75,7 @@ const index = () => {
               title: formatSting(filename.replace(/\.[^/.]+$/, '')),
               duration: formatSongDuration(duration),
               artist: metadata && metadata.artist ? formatSting(metadata.artist) : 'Unknown Artist',
-              album: metadata && metadata.album ? formatSting(metadata.album) : 'Unknown Album',
+              // album: metadata && metadata.album ? formatSting(metadata.album) : 'Unknown Album',
               coverArtUri:
                 metadata && metadata.picture && metadata.picture.pictureData
                   ? metadata.picture.pictureData
@@ -159,9 +158,6 @@ const index = () => {
           contentContainerStyle={styles.flatListContent}
         />
       </LinearGradient>
-      {/* <TouchableOpacity style={styles.moreButton}>
-        <Feather name="plus" size={15} color="white" />
-      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };
@@ -180,7 +176,6 @@ const styles = StyleSheet.create({
   },
   moreButton: {
     position: 'absolute',
-    // right: 20,
     bottom: 70,
     backgroundColor: 'black',
     padding: 10,
