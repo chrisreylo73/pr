@@ -28,7 +28,7 @@ const AddToPlaylistModal = ({
   const [inPlaylist, setInPlaylist] = useState([]);
 
   useEffect(() => {
-    console.log(currentSong.playListNames);
+    // console.log(currentSong.playListNames);
     setInPlaylist([...currentSong.playListNames]);
   }, [currentSong]);
 

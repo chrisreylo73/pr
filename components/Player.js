@@ -11,6 +11,7 @@ import {
   PanResponder,
   Animated,
   ImageBackground,
+  Settings,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { useAppContext } from '~/services/AppContext';
@@ -44,28 +45,45 @@ const Player = () => {
   const [startAngle, setStartAngle] = useState(0);
 
   useEffect(() => {
-    try {
-      (async () => {
-        if (currentSong) {
-          setPlayState(true);
+    (async () => {
+      setPlayState(true);
+      // try {
+      if (audio) {
+        // Unload the current sound
+        await audio.stopAsync();
+        await audio.unloadAsync();
+      }
+      const { sound } = await Audio.Sound.createAsync({ uri: currentSong.uri });
+      setAudio(sound);
+      // await sound.playAsync();
+      // } catch (error) {
+      //   console.log('@ useEffect [currentSong?uri] :  ', error);
+      // }
+      return () => {
+        // Clean up function
+        (async () => {
+          // Unload all sounds when component unmounts
           if (audio) {
+            // Unload the current sound
+            await audio.stopAsync();
             await audio.unloadAsync();
           }
-          const uri = currentSong.uri;
-          const { sound } = await Audio.Sound.createAsync({ uri });
-          setAudio(sound);
-          await sound.playAsync();
-        }
-      })();
-    } catch (error) {
-      console.log('@ useEffect [currentSong?uri] :  ', error);
-      async () => {
-        if (audio) {
-          await audio.unloadAsync();
-        }
+        })();
       };
-    }
+    })();
   }, [currentSong?.uri]);
+  useEffect(() => {
+    (async () => {
+      // if (audio) {
+      //   // Unload the current sound
+      //   await audio.stopAsync();
+      //   await audio.unloadAsync();
+      // }
+      if (audio) {
+        audio.playAsync();
+      }
+    })();
+  }, [audio]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -100,14 +118,12 @@ const Player = () => {
 
   const playPauseButtonPressed = async () => {
     try {
-      if (audio) {
-        if (playState) {
-          await audio.pauseAsync();
-          setPlayState(false);
-        } else {
-          await audio.playAsync();
-          setPlayState(true);
-        }
+      if (playState) {
+        await audio.pauseAsync();
+        setPlayState(false);
+      } else {
+        await audio.playAsync();
+        setPlayState(true);
       }
     } catch (error) {
       console.log('@ playPauseButtonPressed:  ', error);
@@ -116,6 +132,9 @@ const Player = () => {
 
   const prevButtonPressed = async () => {
     try {
+      // if (audio) {
+      //   await audio.unloadAsync();
+      // }
       if (currentSongIndex !== 0) {
         const prevSongIndex = currentSongIndex - 1;
         setCurrentSongIndex(prevSongIndex);
@@ -128,11 +147,13 @@ const Player = () => {
 
   const nextButtonPressed = async () => {
     try {
+      // setTimeout(() => {
       if (currentSongIndex !== currentPlaylist.data.length - 1) {
         const nextSongIndex = currentSongIndex + 1;
         setCurrentSongIndex(nextSongIndex);
         setCurrentSong(currentPlaylist.data[nextSongIndex]);
       }
+      // }, 3000);
     } catch (error) {
       console.log('@ nextButtonPressed:  ', error);
     }
