@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { memo, useCallback } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { useAppContext } from '~/services/AppContext';
@@ -7,22 +7,22 @@ const Header = () => {
   const { setIsDownloadModalVisable } = useAppContext();
 
   return (
-    <SafeAreaView style={styles.header}>
+    <View style={styles.header}>
       <Text style={styles.title}>POCKET RECORDS</Text>
       <TouchableOpacity style={styles.moreButton} onPress={() => setIsDownloadModalVisable(true)}>
         <Feather name="more-vertical" size={15} color="white" />
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 };
-export default memo(Header);
+export default Header;
 
 const styles = StyleSheet.create({
   header: {
     alignSelf: 'center',
     width: '100%',
     backgroundColor: 'black',
-    paddingTop: 10,
+    paddingTop: 40,
   },
   title: {
     fontSize: 12,

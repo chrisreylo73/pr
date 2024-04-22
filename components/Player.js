@@ -45,32 +45,36 @@ const Player = () => {
   const [startAngle, setStartAngle] = useState(0);
 
   useEffect(() => {
-    (async () => {
-      setPlayState(true);
-      // try {
-      if (audio) {
-        // Unload the current sound
-        await audio.stopAsync();
-        await audio.unloadAsync();
-      }
-      const { sound } = await Audio.Sound.createAsync({ uri: currentSong.uri });
-      setAudio(sound);
-      // await sound.playAsync();
-      // } catch (error) {
-      //   console.log('@ useEffect [currentSong?uri] :  ', error);
-      // }
-      return () => {
-        // Clean up function
-        (async () => {
-          // Unload all sounds when component unmounts
-          if (audio) {
-            // Unload the current sound
-            await audio.stopAsync();
-            await audio.unloadAsync();
-          }
-        })();
-      };
-    })();
+    try {
+      (async () => {
+        setPlayState(true);
+        // try {
+        if (audio) {
+          // Unload the current sound
+          await audio.stopAsync();
+          await audio.unloadAsync();
+        }
+        const { sound } = await Audio.Sound.createAsync({ uri: currentSong.uri });
+        setAudio(sound);
+        // await sound.playAsync();
+        // } catch (error) {
+        //   console.log('@ useEffect [currentSong?uri] :  ', error);
+        // }
+        return () => {
+          // Clean up function
+          (async () => {
+            // Unload all sounds when component unmounts
+            if (audio) {
+              // Unload the current sound
+              await audio.stopAsync();
+              await audio.unloadAsync();
+            }
+          })();
+        };
+      })();
+    } catch (error) {
+      console.log('@ player currentSong?.uri' + error);
+    }
   }, [currentSong?.uri]);
   useEffect(() => {
     (async () => {

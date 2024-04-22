@@ -12,7 +12,6 @@ import DownloadModal from '~/components/DownloadModal';
 const _layout = () => {
   return (
     <AppProvider>
-      <StatusBar hidden />
       <Header />
       <Slot />
       <Player />

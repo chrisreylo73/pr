@@ -46,8 +46,6 @@ const ArtistPlaylistModal = ({ isModalVisable, setIsModalVisable, playlistName }
       animationOutTiming={300}
       coverScreen={true}
       hasBackdrop={true}
-      backdropOpacity={1}
-      backdropColor="#090909"
       useNativeDriver={true}
       onRequestClose={onClose}>
       <LinearGradient colors={['#000000', '#111111', '#000000']} style={styles.gradient}>

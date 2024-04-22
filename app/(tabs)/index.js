@@ -6,14 +6,19 @@ import { Storage } from 'expo-storage';
 import { useAppContext } from '~/services/AppContext';
 import Song from '~/components/Song';
 import { LinearGradient } from 'expo-linear-gradient';
+// import { StatusBar } from 'expo-status-bar';
 
 const index = () => {
   const { backupColors, setIsLoading, songData, setSongData, setArtistNames, setPlaylistNames } =
     useAppContext();
   // Get song data once page mounts
   useEffect(() => {
-    fetchData();
-    console.log('DATA MOUNTED');
+    try {
+      fetchData();
+      console.log('DATA MOUNTED');
+    } catch (error) {
+      console.log('@ mount ', error);
+    }
   }, []);
 
   useEffect(() => {
