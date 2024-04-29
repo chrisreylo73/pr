@@ -18,6 +18,7 @@ import { useAppContext } from '~/services/AppContext';
 import { AntDesign, MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import AddToPlaylistModal from '~/components/AddToPlaylistModal';
 import { Audio } from 'expo-av';
+import { debounce } from 'lodash';
 
 const Player = () => {
   const {
@@ -44,50 +45,34 @@ const Player = () => {
   const [spinValue] = useState(new Animated.Value(0));
   const [startAngle, setStartAngle] = useState(0);
 
+  const debouncedHandleSongChange = useCallback(debounce(handleSongChange, 1000), []);
+
   useEffect(() => {
-    try {
-      (async () => {
-        setPlayState(true);
-        // try {
-        if (audio) {
-          // Unload the current sound
-          await audio.stopAsync();
-          await audio.unloadAsync();
-        }
-        const { sound } = await Audio.Sound.createAsync({ uri: currentSong.uri });
-        setAudio(sound);
-        // await sound.playAsync();
-        // } catch (error) {
-        //   console.log('@ useEffect [currentSong?uri] :  ', error);
-        // }
-        return () => {
-          // Clean up function
-          (async () => {
-            // Unload all sounds when component unmounts
-            if (audio) {
-              // Unload the current sound
-              await audio.stopAsync();
-              await audio.unloadAsync();
-            }
-          })();
-        };
-      })();
-    } catch (error) {
-      console.log('@ player currentSong?.uri' + error);
+    if (!currentSong) return;
+    if (audio) {
+      audio.unloadAsync();
     }
-  }, [currentSong?.uri]);
-  useEffect(() => {
-    (async () => {
-      // if (audio) {
-      //   // Unload the current sound
-      //   await audio.stopAsync();
-      //   await audio.unloadAsync();
-      // }
+    debouncedHandleSongChange(currentSong);
+    return () => {
       if (audio) {
-        audio.playAsync();
+        audio.unloadAsync();
       }
-    })();
-  }, [audio]);
+    };
+  }, [currentSong?.uri]);
+
+  async function handleSongChange(currentSong) {
+    try {
+      if (audio) {
+        await audio.unloadAsync();
+      }
+      const { sound } = await Audio.Sound.createAsync({ uri: currentSong.uri });
+      setAudio(sound);
+      sound.playAsync();
+      setPlayState(true);
+    } catch (error) {
+      console.log('@ handleSongChange: ', error);
+    }
+  }
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -122,12 +107,16 @@ const Player = () => {
 
   const playPauseButtonPressed = async () => {
     try {
-      if (playState) {
-        await audio.pauseAsync();
-        setPlayState(false);
+      if (audio) {
+        if (playState) {
+          await audio.pauseAsync();
+          setPlayState(false);
+        } else {
+          await audio.playAsync();
+          setPlayState(true);
+        }
       } else {
-        await audio.playAsync();
-        setPlayState(true);
+        console.log('audio === null');
       }
     } catch (error) {
       console.log('@ playPauseButtonPressed:  ', error);
@@ -136,10 +125,11 @@ const Player = () => {
 
   const prevButtonPressed = async () => {
     try {
-      // if (audio) {
-      //   await audio.unloadAsync();
-      // }
       if (currentSongIndex !== 0) {
+        // if (audio) {
+        //   await audio.stopAsync();
+        //   await audio.unloadAsync();
+        // }
         const prevSongIndex = currentSongIndex - 1;
         setCurrentSongIndex(prevSongIndex);
         setCurrentSong(currentPlaylist.data[prevSongIndex]);
@@ -151,13 +141,15 @@ const Player = () => {
 
   const nextButtonPressed = async () => {
     try {
-      // setTimeout(() => {
       if (currentSongIndex !== currentPlaylist.data.length - 1) {
+        // if (audio) {
+        //   await audio.stopAsync();
+        //   await audio.unloadAsync();
+        // }
         const nextSongIndex = currentSongIndex + 1;
         setCurrentSongIndex(nextSongIndex);
         setCurrentSong(currentPlaylist.data[nextSongIndex]);
       }
-      // }, 3000);
     } catch (error) {
       console.log('@ nextButtonPressed:  ', error);
     }
