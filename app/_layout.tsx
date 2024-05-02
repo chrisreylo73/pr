@@ -13,6 +13,7 @@ const _layout = () => {
   return (
     <AppProvider>
       <Header />
+      <StatusBar hidden />
       <Slot />
       <Player />
       <Footer />

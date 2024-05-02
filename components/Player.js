@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback } from 'react';
+import React, { memo, useState, useEffect, useCallback, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,8 +8,6 @@ import {
   ScrollView,
   Alert,
   Dimensions,
-  PanResponder,
-  Animated,
   ImageBackground,
   Settings,
 } from 'react-native';
@@ -17,8 +15,18 @@ import Modal from 'react-native-modal';
 import { useAppContext } from '~/services/AppContext';
 import { AntDesign, MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import AddToPlaylistModal from '~/components/AddToPlaylistModal';
+import SpinningRecord from '~/components/SpinningRecord';
 import { Audio } from 'expo-av';
 import { debounce } from 'lodash';
+// import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+// import Animated, {
+//   useAnimatedStyle,
+//   useSharedValue,
+//   withTiming,
+//   Easing,
+//   runOnJS,
+// } from 'react-native-reanimated';
+import CircularProgress from 'react-native-circular-progress-indicator';
 
 const Player = () => {
   const {
@@ -42,8 +50,24 @@ const Player = () => {
   } = useAppContext();
 
   const [isAddToPlaylistVisable, setIsAddToPlaylistVisable] = useState(false);
-  const [spinValue] = useState(new Animated.Value(0));
-  const [startAngle, setStartAngle] = useState(0);
+  const [position, setPosition] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    if (audio) {
+      audio.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+    }
+
+    // console.log(currentSong.duration);
+  }, [audio]);
+
+  const onPlaybackStatusUpdate = (status) => {
+    if (status.isLoaded) {
+      setPosition(Number((status.positionMillis / 60000).toFixed(2)));
+
+      // console.log((status.positionMillis / 60000).toFixed(2));
+    }
+  };
 
   const debouncedHandleSongChange = useCallback(debounce(handleSongChange, 1000), []);
 
@@ -52,6 +76,7 @@ const Player = () => {
     if (audio) {
       audio.unloadAsync();
     }
+    setPlayState(true);
     debouncedHandleSongChange(currentSong);
     return () => {
       if (audio) {
@@ -68,38 +93,10 @@ const Player = () => {
       const { sound } = await Audio.Sound.createAsync({ uri: currentSong.uri });
       setAudio(sound);
       sound.playAsync();
-      setPlayState(true);
     } catch (error) {
       console.log('@ handleSongChange: ', error);
     }
   }
-
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderGrant: (evt, gestureState) => {
-      const { width, height } = Dimensions.get('window');
-      const centerX = width / 2;
-      const centerY = height / 2;
-      const x = gestureState.x0 - centerX;
-      const y = gestureState.y0 - centerY;
-      const angle = (Math.atan2(y, x) * 180) / Math.PI;
-      setStartAngle(angle);
-    },
-    onPanResponderMove: (evt, gestureState) => {
-      const { width, height } = Dimensions.get('window');
-      const centerX = width / 2;
-      const centerY = height / 2;
-      const x = gestureState.moveX - centerX;
-      const y = centerY - gestureState.moveY;
-      let angle = (Math.atan2(y, x) * 180) / Math.PI;
-      angle *= -1;
-      angle -= startAngle;
-      spinValue.setValue(angle);
-    },
-    onPanResponderRelease: () => {
-      setStartAngle(spinValue._value);
-    },
-  });
 
   const handleClose = useCallback(() => {
     setIsPlayerVisible(false);
@@ -108,11 +105,14 @@ const Player = () => {
   const playPauseButtonPressed = async () => {
     try {
       if (audio) {
+        await audio.setPositionAsync(position * 60000);
         if (playState) {
           await audio.pauseAsync();
+
           setPlayState(false);
         } else {
           await audio.playAsync();
+
           setPlayState(true);
         }
       } else {
@@ -216,38 +216,20 @@ const Player = () => {
       <View style={styles.outerCircle}>
         <View style={styles.middleCircle}>
           <View style={styles.innerCircle}>
-            <Animated.View
-              style={[
-                styles.record,
-                {
-                  transform: [
-                    {
-                      rotate: spinValue.interpolate({
-                        inputRange: [-180, 180],
-                        outputRange: ['-180deg', '180deg'],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-              {...panResponder.panHandlers}>
-              {currentSong?.coverArtUri ? (
-                <ImageBackground source={{ uri: currentSong?.coverArtUri }} style={{ flex: 1 }} />
-              ) : (
-                <View
-                  style={[
-                    {
-                      flex: 1,
-                      alignItems: 'center',
-                      padding: 10,
-                      justifyContent: 'center',
-                      backgroundColor: currentSong?.backupColor || 'black',
-                    },
-                  ]}>
-                  <Text style={styles.recordSongTitle}>{currentSong?.title.toUpperCase()}</Text>
-                </View>
-              )}
-            </Animated.View>
+            {/* <CircularProgress
+              value={val}
+              activeStrokeWidth={12}
+              progressValueColor={'#ecf0f1'}
+              maxValue={360}
+            /> */}
+            <SpinningRecord
+              currentSong={currentSong}
+              setPlayState={setPlayState}
+              playstate={playState}
+              setPosition={setPosition}
+              position={position}
+              audio={audio}
+            />
           </View>
         </View>
       </View>
